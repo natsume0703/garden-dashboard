@@ -1,0 +1,48 @@
+name: Sync Notion to data.json
+
+on:
+  schedule:
+    # JST 6:00 / 12:00 / 18:00 / 22:00（cronはUTC指定）
+    - cron: '0 21,3,9,13 * * *'
+  workflow_dispatch:        # 手動実行ボタン
+  repository_dispatch:      # 将来 iPhoneショートカットから叩く用
+    types: [garden-sync]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-notion
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Pythonを準備
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Notionから同期
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: 17fd5f782f50438fb796d54617be9cfd
+          OUTPUT_PATH: data.json
+          RECORD_LIMIT: '60'
+        run: python scripts/sync_notion.py
+
+      - name: 変更があればコミット
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          if git diff --staged --quiet; then
+            echo "変更なし。コミットをスキップします。"
+          else
+            git commit -m "chore: 栽培記録データを更新 ($(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M'))"
+            git push
+          fi
