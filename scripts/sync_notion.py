@@ -8,6 +8,7 @@ Notion「📋 栽培記録」DB → data.json 生成スクリプト
   NOTION_DATABASE_ID  栽培記録DBのID
   OUTPUT_PATH         出力先（省略時 data.json）
   RECORD_LIMIT        recordsに含める件数（省略時 60）
+  ARCHIVE_DAYS        この日数以上記録がない株を「過去の株」とする（省略時 30）
 
 依存ライブラリなし（標準ライブラリのみ）
 """
@@ -25,6 +26,7 @@ NOTION_TOKEN = os.environ.get("NOTION_TOKEN", "").strip()
 DATABASE_ID = os.environ.get("NOTION_DATABASE_ID", "").strip()
 OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data.json")
 RECORD_LIMIT = int(os.environ.get("RECORD_LIMIT", "60"))
+ARCHIVE_DAYS = int(os.environ.get("ARCHIVE_DAYS", "30"))
 
 NOTION_VERSION = "2022-06-28"
 API_URL = "https://api.notion.com/v1/databases/{}/query"
@@ -202,17 +204,42 @@ def days_between(from_date, today):
     return (today - d).days
 
 
+def classify(plant, today):
+    """株ごとに追加タグと緊急度を決める。数値が小さいほど急ぎ。"""
+    flags = []
+    urgency = 5
+
+    due = to_date(plant["due"])
+    if plant["health"] == "異常":
+        urgency = 0
+    if due and plant["status"] == "未対応" and due <= today:
+        flags.append("期限")
+        urgency = min(urgency, 1)
+    if plant["harvest"] == "急ぎ":
+        flags.append("収穫")
+        urgency = min(urgency, 2)
+    if plant["watering"] == "必要":
+        flags.append("水やり")
+        urgency = min(urgency, 3)
+    if plant["health"] == "注意":
+        urgency = min(urgency, 4)
+
+    plant["flags"] = flags
+    plant["urgency"] = urgency
+    return plant
+
+
 def build_output(records):
     today = datetime.now(JST).date()
     week_ago = today - timedelta(days=7)
 
-    # --- 植物ごとの最新状態 -------------------------------------------------
+    # --- 株ごとの最新状態 ---------------------------------------------------
     plants = {}
     for r in records:
         name = r["plant"]
         if not name or name in plants:
             continue  # 日付降順なので最初に出たものが最新
-        elapsed = days_between(r["last_watered"], today)
+        gap = days_between(r["date"], today)
         plants[name] = {
             "name": name,
             "phase": r["phase"],
@@ -223,52 +250,64 @@ def build_output(records):
             "due": r["due"],
             "priority": r["priority"],
             "last_watered": r["last_watered"],
-            "days_since_water": elapsed,
+            "days_since_water": days_between(r["last_watered"], today),
             "last_record": r["date"],
-            "days_since_record": days_between(r["date"], today),
+            "days_since_record": gap,
             "ai_comment": r["ai_comment"],
             "action": r["action"],
+            # 一定期間記録がなければ「過去の株」とみなす
+            "active": (gap is None) or (gap < ARCHIVE_DAYS),
         }
 
-    # --- アラート -----------------------------------------------------------
-    alerts = []
     for p in plants.values():
-        if p["health"] == "異常":
-            alerts.append({"plant": p["name"], "level": "異常",
-                           "message": p["action"] or p["ai_comment"] or "健康状態が異常です"})
-        elif p["health"] == "注意":
-            alerts.append({"plant": p["name"], "level": "注意",
-                           "message": p["action"] or p["ai_comment"] or "健康状態に注意が必要です"})
-        if p["watering"] == "必要":
-            alerts.append({"plant": p["name"], "level": "水やり",
-                           "message": "水やりが必要です"})
-        if p["harvest"] == "急ぎ":
-            alerts.append({"plant": p["name"], "level": "収穫",
-                           "message": "収穫時期を過ぎています"})
-        due = to_date(p["due"])
-        if due and p["status"] == "未対応" and due <= today:
-            alerts.append({"plant": p["name"], "level": "期限",
-                           "message": "対応期限（{}）を過ぎています".format(p["due"])})
+        classify(p, today)
 
-    level_order = {"異常": 0, "期限": 1, "収穫": 2, "水やり": 3, "注意": 4}
-    alerts.sort(key=lambda a: level_order.get(a["level"], 9))
+    active = sorted(
+        [p for p in plants.values() if p["active"]],
+        key=lambda p: (p["urgency"], p["name"]),
+    )
+    archived = sorted(
+        [p for p in plants.values() if not p["active"]],
+        key=lambda p: p["last_record"] or "",
+        reverse=True,
+    )
+    archived_names = [p["name"] for p in archived]
 
-    # --- 直近7日の集計 ------------------------------------------------------
-    recent = [r for r in records if to_date(r["date"]) and to_date(r["date"]) >= week_ago]
+    # --- 直近7日の集計（栽培中の株のみ） ------------------------------------
+    recent = [
+        r for r in records
+        if to_date(r["date"]) and to_date(r["date"]) >= week_ago
+        and r["plant"] not in archived_names
+    ]
+
     stats = {
-        "total_records": len(records),
+        "plants_active": len(active),
+        "plants_archived": len(archived),
+        "needs_attention": sum(1 for p in active if p["urgency"] <= 3),
         "records_7d": len(recent),
-        "watering_7d": sum(1 for r in recent if "💧水やり" in (r["works"] or [])),
+        "watering_7d": sum(1 for r in recent if any("水やり" in w for w in (r["works"] or []))),
         "harvest_7d": sum(1 for r in recent if any("収穫" in w for w in (r["works"] or []))),
-        "plants_tracked": len(plants),
-        "alerts_count": len(alerts),
+        "total_records": len(records),
     }
+
+    # --- 最上部に出す重大な報せ（異常・期限切れのみ） ------------------------
+    critical = [
+        {
+            "plant": p["name"],
+            "level": "異常" if p["health"] == "異常" else "期限",
+            "message": p["action"] or "対応期限（{}）を過ぎています".format(p["due"]),
+        }
+        for p in active if p["urgency"] <= 1
+    ]
 
     return {
         "generated_at": datetime.now(JST).isoformat(timespec="seconds"),
+        "archive_days": ARCHIVE_DAYS,
         "stats": stats,
-        "alerts": alerts,
-        "plants": sorted(plants.values(), key=lambda p: p["name"]),
+        "critical": critical,
+        "plants": active,
+        "archived": archived,
+        "archived_names": archived_names,
         "records": records[:RECORD_LIMIT],
     }
 
@@ -282,7 +321,6 @@ def main():
     print("取得件数: {}".format(len(pages)))
 
     records = [build_record(p) for p in pages]
-    # 日付が空のレコードは末尾へ
     records.sort(key=lambda r: r["date"] or "0000-00-00", reverse=True)
 
     output = build_output(records)
@@ -290,8 +328,13 @@ def main():
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print("出力: {} （植物 {} / アラート {}）".format(
-        OUTPUT_PATH, len(output["plants"]), len(output["alerts"])))
+    print("出力: {} （栽培中 {} / 過去 {} / 要対応 {}）".format(
+        OUTPUT_PATH,
+        output["stats"]["plants_active"],
+        output["stats"]["plants_archived"],
+        output["stats"]["needs_attention"]))
+    if output["archived_names"]:
+        print("過去の株: " + "、".join(output["archived_names"]))
 
 
 if __name__ == "__main__":
