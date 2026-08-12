@@ -143,7 +143,7 @@
   .now .metrics{display:flex;flex-wrap:wrap;}
   .now .m{padding:0 16px;border-left:1px solid rgba(0,0,0,.09);text-align:center;min-width:74px;}
   .now .m:first-child{border-left:none;}
-  .now .m b{display:block;font-size:16px;font-weight:700;}
+  .now .m b{display:block;font-size:16px;font-weight:700;white-space:nowrap;}
   .now .m span{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.1em;margin-top:2px;}
   .arw{display:inline-block;line-height:1;transform-origin:50% 50%;}
 
@@ -271,8 +271,17 @@
     h1{font-size:25px;}
     header{align-items:flex-start;}
     .place{text-align:left;}
-    .motif{width:110px;height:110px;opacity:.11;}
+    .motif{width:148px;height:148px;opacity:.3;right:-4px;}
     .motif.s2{display:none;}
+    .motif.s3{width:88px;height:88px;left:-30px;opacity:.12;}
+    /* 現在の天気は上下に分け、4つの指標を等幅に並べて段落ちを防ぐ */
+    .now{flex-direction:column;align-items:stretch;gap:16px;padding:18px 14px;}
+    .now .lead{justify-content:center;}
+    .now .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(0,0,0,.09);padding-top:14px;}
+    .now .m{padding:0 2px;min-width:0;}
+    .now .m b{font-size:14px;}
+    .now .m b small{font-size:10px;}
+    .now .m span{font-size:9.5px;letter-spacing:.04em;}
     .hours{grid-template-columns:repeat(4,1fr);}
     .hr:nth-child(5){border-left:none;}
     .hr:nth-child(n+5){border-top:1px solid var(--line);}
@@ -282,6 +291,11 @@
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
     .fig b{font-size:23px;}
+    /* 3つ＋1つに折り返さないよう、狭い画面では2列2段に組む */
+    .figures{display:grid;grid-template-columns:1fr 1fr;}
+    .fig{border-left:1px solid var(--line);border-top:1px solid var(--line);}
+    .fig:nth-child(-n+2){border-top:none;}
+    .fig:nth-child(odd){border-left:none;}
   }
 </style>
 </head>
