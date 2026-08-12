@@ -18,6 +18,9 @@
     --harvest:#7B5EA7;
     --sky:#E8F1F6;
     --accent:#3F6B45;
+    --accent-soft:#3F6B4526;
+    --card:#FFFFFF;
+    --title:#1B2A20;
   }
 
   *{box-sizing:border-box;}
@@ -49,7 +52,7 @@
   h1{
     font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
     font-size:32px;font-weight:600;letter-spacing:.14em;margin:0 0 6px;line-height:1.3;
-    position:relative;
+    position:relative;color:var(--title);
   }
   .sub{font-size:12px;color:var(--ink-soft);letter-spacing:.08em;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:relative;}
   .place{font-size:11.5px;color:var(--ink-soft);letter-spacing:.1em;text-align:right;line-height:1.9;position:relative;}
@@ -65,7 +68,7 @@
   section{margin-top:44px;}
   h2{
     font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
-    font-size:17px;font-weight:600;letter-spacing:.18em;
+    font-size:17px;font-weight:600;letter-spacing:.18em;color:var(--title);
     margin:0 0 16px;padding-bottom:10px;
     border-bottom:1px solid var(--line);box-shadow:0 1px 0 0 var(--accent-soft);
     display:flex;justify-content:space-between;align-items:baseline;gap:12px;
@@ -73,7 +76,7 @@
   h2 em{font-style:normal;font-family:"Hiragino Sans",sans-serif;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);text-align:right;}
 
   /* 折りたたみ */
-  details{border:1px solid var(--line);background:#fff;margin-top:10px;}
+  details{border:1px solid var(--line);background:var(--card);margin-top:10px;}
   summary{
     cursor:pointer;padding:13px 18px;font-size:12.5px;letter-spacing:.08em;color:var(--ink-soft);
     list-style:none;display:flex;justify-content:space-between;align-items:center;
@@ -86,7 +89,7 @@
   .body{padding:16px 18px 18px;}
 
   /* ---------- 数値帯 ---------- */
-  .figures{display:flex;flex-wrap:wrap;text-align:center;border:1px solid var(--line);background:#fff;}
+  .figures{display:flex;flex-wrap:wrap;text-align:center;border:1px solid var(--line);background:var(--card);}
   .fig{flex:1 1 110px;padding:16px 4px 14px;border-left:1px solid var(--line);}
   .fig:first-child{border-left:none;}
   .fig b{display:block;font-size:25px;font-weight:700;line-height:1.1;letter-spacing:.02em;}
@@ -100,8 +103,8 @@
   .critical p:last-child{margin-bottom:0;}
 
   /* ---------- 株カード ---------- */
-  .plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:#fff;border:1px solid var(--line);margin-top:12px;}
-  .card{background:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line);}
+  .plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:var(--card);border:1px solid var(--line);margin-top:12px;}
+  .card{background:var(--card);padding:18px 18px 16px;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .card .nm{font-size:16px;font-weight:700;letter-spacing:.04em;}
@@ -177,18 +180,23 @@
   .cal .mn{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;letter-spacing:.12em;}
   .cal .nav{display:flex;gap:6px;}
   .cal .nav button{
-    border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-family:inherit;
+    border:1px solid var(--line);background:var(--card);color:var(--ink-soft);font-family:inherit;
     font-size:12px;padding:3px 11px;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;
   }
   .cal .nav button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
   .cal .nav button:disabled{opacity:.35;cursor:default;}
-  .cal .nav button:disabled:hover{background:#fff;color:var(--ink-soft);border-color:var(--line);}
+  .cal .nav button:disabled:hover{background:var(--card);color:var(--ink-soft);border-color:var(--line);}
   .cal .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
-  .cal .dow{font-size:10px;color:var(--ink-soft);letter-spacing:.06em;padding-bottom:4px;}
+  .cal .dow{font-size:10px;color:var(--ink-soft);letter-spacing:.06em;padding:3px 0 5px;border-radius:2px;}
+  .cal .dow.sun{background:rgba(166,61,44,.10);}
+  .cal .dow.sat{background:rgba(46,111,148,.10);}
   .cal .dd{
     font-size:12.5px;padding:8px 0 5px;position:relative;border-radius:2px;
     border:1px solid transparent;background:none;font-family:inherit;color:inherit;width:100%;
   }
+  /* 休みの日は網掛けにして、平日との差を大きくする */
+  .cal .dd.hol{background:rgba(166,61,44,.09);}
+  .cal .dd.sat{background:rgba(46,111,148,.09);}
   .cal .dd.empty{visibility:hidden;}
   /* 記録のある日は下に太い帯を敷いて、離れた位置からでも見えるようにする */
   .cal .dd.hit{cursor:pointer;font-weight:700;}
@@ -199,7 +207,7 @@
   .cal .dd.hit.bad::after{background:var(--alert);}
   .cal .dd:not(.hit)::after{content:"";display:block;height:5px;margin-top:5px;}
   .cal .dd.hit:hover{border-color:var(--ink-soft);}
-  .cal .dd.on{border-color:var(--ink);background:#F2F5EF;}
+  .cal .dd.on{border-color:var(--ink);background:var(--accent-soft);}
   .cal .dd.today{background:var(--ink);color:var(--paper);font-weight:700;}
   .cal .dd.today.on{background:var(--ink);}
   .lg{font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
@@ -250,7 +258,7 @@
   .credit{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-align:center;line-height:2;}
 
   .state{padding:40px 0;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.08em;}
-  .state.err{text-align:left;border-left:3px solid var(--alert);background:#fff;padding:18px 20px;color:var(--ink);}
+  .state.err{text-align:left;border-left:3px solid var(--alert);background:var(--card);padding:18px 20px;color:var(--ink);}
   .state.err b{display:block;margin-bottom:6px;}
   .state.err span{font-size:12.5px;color:var(--ink-soft);}
 
@@ -389,11 +397,27 @@ function drawMotif(m){
   return g;
 }
 
+/* 2色を混ぜる。季節色をどれだけ効かせるかを比率で指定する */
+function mix(hex, base, ratio){
+  const p = (h) => [1,3,5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const [r1,g1,b1] = p(hex), [r2,g2,b2] = p(base);
+  const v = (a, b) => Math.round(a * ratio + b * (1 - ratio)).toString(16).padStart(2, "0");
+  return `#${v(r1,r2)}${v(g1,g2)}${v(b1,b2)}`;
+}
+
 function applySeasonStyle(month){
-  const m = MOTIF[month];
+  const m = MOTIF[month], c = m.c;
   const root = document.documentElement.style;
-  root.setProperty("--accent", m.c);
-  root.setProperty("--accent-soft", m.c + "26");   /* 同じ色の薄い版 */
+  /* 地色は淡く、文字は濃く。同じ季節色から全体を組み立てる */
+  root.setProperty("--accent", c);
+  root.setProperty("--accent-soft", c + "26");
+  root.setProperty("--paper", mix(c, "#F7F9F4", .07));
+  root.setProperty("--card", mix(c, "#FFFFFF", .045));
+  root.setProperty("--ink", mix(c, "#1B2A20", .20));
+  root.setProperty("--ink-soft", mix(c, "#525F55", .24));
+  root.setProperty("--line", mix(c, "#DCE3D6", .28));
+  root.setProperty("--sky", mix(c, "#E8F1F6", .14));
+  root.setProperty("--title", mix(c, "#1B2A20", .52));
   const g = drawMotif(m);
   $("#motif").innerHTML = g;
   $("#motif2").innerHTML = g;
@@ -836,13 +860,9 @@ function render(d){
     h += `<div class="plants">`;
     pl.forEach(p => {
       const flags = (p.flags || []).map(f => `<span class="flag ${esc(f)}">${esc(f)}</span>`).join("");
-      /* フェーズが未入力のことが多いため、空なら最終記録日を代わりに出す */
-      const sub = p.phase
-        ? esc(p.phase)
-        : (p.last_record ? "最終記録　" + esc(p.last_record.replace(/-/g, ".")) : "記録なし");
       h += `<div class="card u${p.urgency ?? 5}">
         <div class="top">
-          <div><div class="nm">${esc(p.name)}</div><div class="phase">${sub}</div></div>
+          <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
           <span class="badge ${hc(p.health)}">${esc(p.health || "未判定")}</span>
         </div>
         <div class="flags">${flags}</div>
