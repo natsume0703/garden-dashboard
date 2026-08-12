@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-12T19:05:31+09:00",
+  "generated_at": "2026-08-12T19:12:14+09:00",
   "archive_days": 30,
   "stats": {
-    "plants_active": 5,
-    "plants_archived": 2,
-    "needs_attention": 3,
-    "records_7d": 11,
+    "plants_active": 6,
+    "plants_archived": 1,
+    "needs_attention": 4,
+    "records_7d": 12,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 24
+    "total_records": 25
   },
   "critical": [],
   "plants": [
@@ -76,6 +76,27 @@
       "urgency": 3
     },
     {
+      "name": "🍆ナス",
+      "phase": null,
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "status": "未対応",
+      "due": null,
+      "priority": "🟡中",
+      "last_watered": "2026-08-12",
+      "days_since_water": 0,
+      "last_record": "2026-08-12",
+      "days_since_record": 0,
+      "ai_comment": "土の表面がかなり乾燥しており、植物全体に軽い水ストレスが見られます。ナスは水分を多く必要とするため、適切な水やりが重要です。",
+      "action": "今日は鉢底から水が流れ出るまでたっぷりと水を与え、以降は土の表面が乾いたらすぐに水やりをしてください。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
+    },
+    {
       "name": "🍅トマト",
       "phase": null,
       "health": "注意",
@@ -116,27 +137,6 @@
   ],
   "archived": [
     {
-      "name": "🍆ナス",
-      "phase": null,
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "status": null,
-      "due": null,
-      "priority": null,
-      "last_watered": "2026-06-15",
-      "days_since_water": 58,
-      "last_record": "2026-06-15",
-      "days_since_record": 58,
-      "ai_comment": "葉がやや元気なく見え、土の表面も乾燥しています。ナスは定期的な水やりを好むため、土の乾燥には注意が必要です。",
-      "action": "鉢底から水が流れ出るまでたっぷりと水を与え、土の湿り具合を確認してください。",
-      "active": false,
-      "flags": [
-        "水やり"
-      ],
-      "urgency": 3
-    },
-    {
       "name": "🍉すいか",
       "phase": null,
       "health": null,
@@ -157,10 +157,31 @@
     }
   ],
   "archived_names": [
-    "🍆ナス",
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3badc851-a820-813d-83df-e0972082cc47",
+      "date": "2026-08-12",
+      "created": "2026-08-12T10:11:00",
+      "title": "🍆ナス",
+      "plant": "🍆ナス",
+      "phase": null,
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "weather": "🌤くもり",
+      "temp": 25,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": null,
+      "last_watered": "2026-08-12",
+      "ai_comment": "土の表面がかなり乾燥しており、植物全体に軽い水ストレスが見られます。ナスは水分を多く必要とするため、適切な水やりが重要です。",
+      "action": "今日は鉢底から水が流れ出るまでたっぷりと水を与え、以降は土の表面が乾いたらすぐに水やりをしてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3badc851-a820-81dc-94c0-f4a198f5d81d",
       "date": "2026-08-12",
