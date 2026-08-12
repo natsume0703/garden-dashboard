@@ -14,6 +14,7 @@
     --soil:#8A6B4F;
     --water:#2E6F94;
     --warn:#B07A12;
+    --warn-deep:#8A5E0A;
     --alert:#A63D2C;
     --harvest:#7B5EA7;
     --sky:#E8F1F6;
@@ -111,16 +112,28 @@
 
   /* ---------- 株カード ---------- */
   .plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:var(--card);border:1px solid var(--line);margin-top:12px;}
-  .card{background:var(--card);padding:18px 18px 16px;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line);}
+  .card{
+    background:var(--card);padding:18px 18px 16px 15px;display:flex;flex-direction:column;
+    box-shadow:0 0 0 1px var(--line);border-left:4px solid var(--ink-soft);
+  }
+  /* 状態は左端の帯でも示す。並べたとき端を追うだけで見分けられる */
+  .card.s良好{border-left-color:var(--leaf);}
+  .card.s注意{border-left-color:var(--warn);}
+  .card.s異常{border-left-color:var(--alert);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .card .nm{font-size:16px;font-weight:700;letter-spacing:.04em;}
   .card .phase{font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-top:2px;}
-  .badge{font-size:10.5px;letter-spacing:.08em;padding:3px 9px;border-radius:2px;white-space:nowrap;border:1px solid;}
-  .badge.良好{color:var(--leaf);border-color:var(--leaf);}
-  .badge.注意{color:var(--warn);border-color:var(--warn);}
-  .badge.異常{color:#fff;border-color:var(--alert);background:var(--alert);}
-  .badge.unknown{color:var(--ink-soft);border-color:var(--line);}
+  /* 色だけでなく記号でも区別できるようにする */
+  .badge{
+    font-size:10.5px;letter-spacing:.08em;padding:3px 9px 3px 7px;border-radius:2px;
+    white-space:nowrap;color:#fff;font-weight:700;background:var(--ink-soft);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .badge .ic{width:12px;height:12px;color:#fff;}
+  .badge.良好{background:var(--leaf);}
+  .badge.注意{background:var(--warn-deep);}
+  .badge.異常{background:var(--alert);}
   /* 高さを揃えるため、印がない株でも枠だけ確保する */
   .flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;min-height:20px;}
   .flag{font-size:10.5px;letter-spacing:.08em;padding:2px 8px;border-radius:2px;color:#fff;background:var(--ink-soft);white-space:nowrap;}
@@ -236,10 +249,14 @@
   td.d{color:var(--ink-soft);white-space:nowrap;font-size:12px;}
   td.p{font-weight:700;white-space:nowrap;}
   td.w{color:var(--ink-soft);font-size:12px;}
-  .pill{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:2px;}
-  .pill.良好{color:var(--leaf);background:#EDF3EC;}
-  .pill.注意{color:var(--warn);background:#FBF3E2;}
+  /* 一覧の状態表示も記号を添えて揃える */
+  .pill{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;padding:1px 7px 1px 5px;border-radius:2px;white-space:nowrap;}
+  .pill .ic{width:11px;height:11px;}
+  .pill.良好{color:#2E5233;background:#E7EFE6;}
+  .pill.注意{color:#7A5208;background:#F7EFDC;}
   .pill.異常{color:#fff;background:var(--alert);}
+  .pill.異常 .ic{color:#fff;}
+  .pill.unknown{color:var(--ink-soft);background:var(--line);}
   .past .r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dotted var(--line);font-size:13px;}
   .past .r:last-child{border-bottom:none;}
   .past .r span{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
@@ -386,6 +403,11 @@ const ICONS = {
   dish:     `<circle cx="10.5" cy="12" r="7.5"/><circle cx="10.5" cy="12" r="4"/><path d="M20.5 4.5v15"/><path d="M20.5 4.5c-1.6 1-1.6 4.5 0 5.5"/>`,
   pot:      `<path d="M5 10.5h14l-1.4 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8Z"/><path d="M12 10.5V7"/><path d="M12 8.6C9.6 8.6 8 7 8 4.6c2.4 0 4 1.6 4 4Z"/><path d="M12.6 8c0-2 1.4-3.4 3.6-3.4 0 2-1.4 3.4-3.6 3.4Z"/>`,
   bulb:     `<path d="M9 17.5h6"/><path d="M9.8 20.5h4.4"/><path d="M12 3.5a6 6 0 0 0-3.4 10.9c.5.4.8 1 .8 1.6h5.2c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3.5Z"/>`,
+  /* 状態を表す記号。色が見分けにくくても形で判別できる */
+  ok:       `<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>`,
+  warn:     `<path d="M12 3.8 21.5 20H2.5Z"/><path d="M12 10v4.2M12 17.2v.6"/>`,
+  bad:      `<circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.2v.6"/>`,
+  q:        `<circle cx="12" cy="12" r="9"/><path d="M9.4 9.4a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.2-2.6 3.9M12 17.2v.6"/>`,
 };
 
 function icon(name, cls){
@@ -821,6 +843,10 @@ function gauge(days){
     <div class="bar${days >= 4 ? " thirsty" : ""}">${cells}</div></div>`;
 }
 const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
+const HICON = {良好:"ok", 注意:"warn", 異常:"bad", unknown:"q"};
+/* 状態の札。色と記号の両方で示す */
+const badge = (h) => `<span class="badge ${hc(h)}">${icon(HICON[hc(h)])}${esc(h || "未判定")}</span>`;
+const pill  = (h) => `<span class="pill ${hc(h)}">${icon(HICON[hc(h)])}${esc(h)}</span>`;
 
 function calendar(){
   const now = new Date();
@@ -892,7 +918,7 @@ function showDay(key){
   let h = `<div class="daybox"><h5>${dt.getMonth()+1}月${dt.getDate()}日（${DOW[dt.getDay()]}）の記録　${rs.length}件</h5>`;
   rs.forEach(r => {
     h += `<div class="rw"><b>${esc(r.plant || "—")}</b>
-      ${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : ""}
+      ${r.health ? pill(r.health) : ""}
       <span>${esc(r.action || r.ai_comment || "コメントなし").slice(0, 90)}</span></div>`;
   });
   const box = $("#daybox");
@@ -935,10 +961,10 @@ function render(d){
     h += `<div class="plants">`;
     pl.forEach(p => {
       const flags = (p.flags || []).map(f => `<span class="flag ${esc(f)}">${esc(f)}</span>`).join("");
-      h += `<div class="card u${p.urgency ?? 5}">
+      h += `<div class="card u${p.urgency ?? 5} s${hc(p.health)}">
         <div class="top">
           <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
-          <span class="badge ${hc(p.health)}">${esc(p.health || "未判定")}</span>
+          ${badge(p.health)}
         </div>
         <div class="flags">${flags}</div>
         ${gauge(p.days_since_water)}
@@ -966,7 +992,7 @@ function render(d){
     const works = (r.works && r.works.length) ? r.works.join("・") : "—";
     t += `<tr><td class="d">${esc((r.date || "").replace(/-/g, "."))}</td>
       <td class="p">${esc(r.plant || "—")}</td>
-      <td>${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : "—"}</td>
+      <td>${r.health ? pill(r.health) : "—"}</td>
       <td class="d">${esc(r.watering || "—")}</td>
       <td class="w">${esc(works)}</td></tr>`;
   });
