@@ -137,6 +137,22 @@
   }
   .rng b{color:var(--ink);font-weight:700;font-size:12px;}
 
+  /* ---------- 季節のたより ---------- */
+  .season{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#fff;border:1px solid var(--line);}
+  .sc{background:#EFF4EA;padding:18px 20px;box-shadow:0 0 0 1px var(--line);}
+  .sc.tip{background:#fff;}
+  .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--leaf);font-weight:700;}
+  .sc h4{
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    font-size:15px;font-weight:600;letter-spacing:.1em;margin:6px 0 9px;
+  }
+  .sc p{margin:0;font-size:13px;line-height:1.85;color:var(--ink-soft);}
+  .sc p b{color:var(--ink);font-weight:700;}
+  .sc .kw{
+    display:inline-block;font-size:11px;letter-spacing:.08em;color:var(--leaf);
+    border:1px solid var(--leaf);border-radius:2px;padding:1px 8px;margin-bottom:8px;
+  }
+
   /* ---------- 数値帯 ---------- */
   .figures{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);text-align:center;}
   .fig{flex:1 1 120px;padding:22px 0 20px;border-right:1px solid var(--line);}
@@ -267,6 +283,7 @@
     .now .m{padding:0 12px;min-width:66px;}
     .wk{grid-template-columns:50px 24px 40px 1fr;gap:8px;padding:11px 12px;}
     .wk .wd{display:none;}
+    .season{grid-template-columns:1fr;}
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
@@ -292,6 +309,8 @@
     <h2>空のようす<em>読み込み中</em></h2>
     <div class="state">天気を取得しています…</div>
   </section>
+
+  <section id="season"></section>
 
   <div id="app"><div class="state">Notionのデータを取得しています…</div></div>
 
@@ -414,6 +433,91 @@ async function loadWeather(){
   $("#weather").innerHTML = h;
 }
 
+/* ===================== 季節のたより ===================== */
+/* 今月の花と花言葉 */
+const FLOWERS = [
+  ["福寿草（フクジュソウ）","幸せを招く","雪の残る地面から真っ先に咲く、新年を告げる花です。"],
+  ["梅（ウメ）","高潔・忍耐","寒さの底で咲くため、古来ものごとの始まりに重ねられてきました。"],
+  ["桜（サクラ）","精神の美","咲く期間の短さが、かえって毎年の記憶を濃くします。"],
+  ["チューリップ","思いやり","球根に一年分の力を蓄えてから咲く、準備の花です。"],
+  ["藤（フジ）","やさしさ","棚から垂れる姿が、風の通り道を目に見せてくれます。"],
+  ["紫陽花（アジサイ）","辛抱強い愛情","土が酸性だと青、アルカリ性だと赤みを帯びます。"],
+  ["向日葵（ヒマワリ）","憧れ・敬慕","つぼみのうちは日を追い、咲くと東を向いて止まります。"],
+  ["朝顔（アサガオ）","固い絆","夜明け前の暗さを感じ取って、時刻を計って開きます。"],
+  ["秋桜（コスモス）","乙女の真心","細い茎ほど風にしなり、倒れずに秋を越します。"],
+  ["金木犀（キンモクセイ）","謙虚・真実","姿より先に香りが届く、数少ない花です。"],
+  ["菊（キク）","高貴・真の愛","日が短くなるのを合図に、つぼみを作り始めます。"],
+  ["シクラメン","内気なはにかみ","うつむいて咲くのは、雨から花粉を守るためだと言われます。"],
+];
+
+/* 日替わりのひとこと。日付から選ぶので、同じ日は何度開いても同じ内容 */
+const TIPS = [
+  ["水やり","朝にたっぷり、夕に控えめ","夏の夕方の水やりは、夜に鉢の中が蒸れて根を傷めることがあります。朝のうちに鉢底から流れ出るまで与えるのが基本です。"],
+  ["水やり","受け皿の水は捨てる","溜まった水に根が浸かり続けると、酸素が届かず根腐れの入り口になります。"],
+  ["水やり","鉢を持ち上げて確かめる","土の色より重さのほうが正直です。乾いた鉢と湿った鉢の重さの差を覚えると、指を挿さずに判断できます。"],
+  ["置き場所","コンクリートの照り返し","ベランダの床は真夏に50度を超えます。鉢を直接置かず、すのこや台で5cm浮かせると根が守られます。"],
+  ["置き場所","高層階は風が強い","12階では地上の1.5倍ほどの風が吹きます。背の高い株は早めに支柱を立てておくと安心です。"],
+  ["置き場所","南向きは冬こそ好条件","太陽の高度が下がる冬は、南向きのベランダの奥まで日が届きます。夏に日陰だった場所も冬は特等席になります。"],
+  ["トマト","わき芽は小さいうちに","葉のつけ根から出る芽を摘むと、実に養分が集まります。手で横に倒すように折ると、傷口が乾きやすくなります。"],
+  ["トマト","水を控えると甘くなる","実がつき始めてから水をやや控えると糖度が上がります。ただし急な乾燥は実割れを招くので、少しずつ減らします。"],
+  ["トマト","下葉は取り除く","地面に近い葉は病気の入り口になりがちです。風通しを作ることが、薬より確実な予防になります。"],
+  ["バジル","摘むほど茂る","先端を摘むと脇から二本に分かれます。摘心を繰り返すほど収穫量が増える、珍しい野菜です。"],
+  ["バジル","花が咲く前に摘む","花を咲かせると葉が硬くなります。つぼみを見つけたら早めに摘み取ってください。"],
+  ["バジル","トマトとは相性が良い","隣に植えると害虫が寄りにくくなると言われます。料理での相性と同じく、畑でも good な組み合わせです。"],
+  ["大葉","日陰でもよく育つ","強い直射より、半日陰のほうが葉が柔らかく仕上がります。夏は他の株の陰が特等席になります。"],
+  ["大葉","下から順に収穫する","上の葉を残すと成長が続きます。一度に取りすぎず、大きい葉から順に摘みましょう。"],
+  ["大葉","こぼれ種で翌年も生える","一株だけ花を咲かせておくと、翌春に自然と芽を出します。"],
+  ["パキラ","乾かし気味が正解","観葉植物の枯れる原因の多くは水のやりすぎです。土が完全に乾いてから、と覚えておくと失敗しません。"],
+  ["パキラ","葉を拭くと元気になる","埃が積もると光合成が鈍ります。月に一度、濡らした布で葉を拭くだけで見違えます。"],
+  ["ゴムの木","切ると枝分かれする","上に伸びるだけの株は、思い切って先を切ると脇芽が出て姿が整います。"],
+  ["土づくり","古い土は再生できる","日光に当てて乾かし、腐葉土と苦土石灰を混ぜれば繰り返し使えます。ベランダでは黒いゴミ袋が便利です。"],
+  ["土づくり","鉢底石は毎回洗う","目詰まりすると水はけが悪くなります。洗って乾かせば何年も使えます。"],
+  ["肥料","効かせすぎない","葉ばかり茂って実がつかないのは、窒素が多すぎる合図です。実を採る野菜にはリン酸の多い肥料を選びます。"],
+  ["肥料","真夏と真冬は休ませる","株が弱っているときの追肥は逆効果です。元気に伸びている時期にだけ与えます。"],
+  ["虫","風通しが最大の防除","葉が重なった場所にハダニやアブラムシが集まります。込み合った葉を減らすだけで発生が減ります。"],
+  ["虫","葉の裏を見る習慣","虫のほとんどは葉の裏にいます。水やりのついでに一株だけでも裏返すと、被害が広がる前に気づけます。"],
+  ["虫","牛乳スプレーという手","アブラムシには薄めた牛乳を吹きかけて乾かす方法があります。ただし匂うので、乾いたら水で流しましょう。"],
+  ["収穫","朝採りがいちばん美味しい","夜の間に糖分と水分を蓄えるため、朝の野菜は味が濃く日持ちもします。"],
+  ["収穫","採り遅れは株を疲れさせる","実を残したままにすると、種を作ることに力を注いで次の実がつきにくくなります。"],
+  ["記録","写真は同じ角度で","毎回同じ位置から撮ると、並べたときに成長がはっきり見えます。"],
+  ["記録","失敗こそ書き残す","枯らした記録は翌年いちばん役に立ちます。原因の見当がついたら一言添えておきましょう。"],
+  ["暮らし","ハーブは水に挿すだけで増える","バジルの茎を水に挿すと一週間ほどで根が出ます。買った一袋から株を増やせます。"],
+  ["暮らし","使いきれない葉は冷凍する","大葉は洗って水気を拭き、重ねて冷凍すると香りが残ります。凍ったまま揉めば刻む手間もいりません。"],
+  ["暮らし","土は燃えるゴミに出せない","自治体によって扱いが違います。園芸店の回収や再生利用を調べておくと、株の入れ替えが楽になります。"],
+  ["季節","梅雨は根腐れの季節","雨が続くと鉢が乾きません。雨に当たる場所の鉢は、この時期だけ軒下へ移すと安全です。"],
+  ["季節","台風の前に鉢を下ろす","高層階のベランダでは鉢が飛ぶ危険があります。背の高い株は横に寝かせるだけでも被害が減ります。"],
+  ["季節","秋の種まきは虫が少ない","春より害虫の勢いが弱く、初心者でも育てやすい季節です。葉物野菜が特に向いています。"],
+  ["季節","冬の水やりは午前中に","夕方に与えると夜間に凍ることがあります。暖かい時間帯を選びましょう。"],
+  ["観察","葉の色が薄いのは肥料切れ","下の葉から黄色くなるときは栄養不足、上の葉からなら根の傷みを疑います。"],
+  ["観察","しおれても夕方に戻るなら大丈夫","昼のしおれは蒸散が追いつかないだけのことが多いです。夕方も戻らないときが本当の水切れです。"],
+  ["観察","新芽を見れば調子がわかる","古い葉より、いま伸びている芽の勢いが株の現状を映します。"],
+  ["道具","ハサミは使うたび拭く","病気は刃を伝って株から株へ移ります。アルコールで拭くひと手間が伝染を止めます。"],
+];
+
+function renderSeason(){
+  const now = new Date();
+  const [fl, kw, fd] = FLOWERS[now.getMonth()];
+
+  /* 元日からの通算日数でその日のひとことを決める */
+  const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+  const [cat, ttl, body] = TIPS[doy % TIPS.length];
+
+  $("#season").innerHTML = `<h2>季節のたより<em>今日のひと息</em></h2>
+    <div class="season">
+      <div class="sc">
+        <div class="lab">SEASON</div>
+        <h4>今月の花と言葉</h4>
+        <p><b>${fl}</b>　花言葉「${kw}」<br>${fd}</p>
+      </div>
+      <div class="sc tip">
+        <div class="lab">TIP OF THE DAY</div>
+        <h4>今日のひとこと</h4>
+        <span class="kw">${cat}</span>
+        <p><b>${ttl}</b><br>${body}</p>
+      </div>
+    </div>`;
+}
+
 /* ===================== 栽培記録 ===================== */
 function gauge(days){
   if (days === null || days === undefined){
@@ -509,7 +613,8 @@ function render(d){
 
   const skip = new Set(d.archived_names || []);
   const rc = (d.records || []).filter(r => !skip.has(r.plant)).slice(0, 20);
-  h += `<section><h2>直近の記録<em>栽培中の株・新しい順に20件</em></h2>
+  h += `<section><h2>直近の記録<em>栽培中の株</em></h2>
+    <details><summary>新しい順に${rc.length}件</summary><div style="padding:4px 18px 18px">
     <table><thead><tr><th>日付</th><th>株</th><th>状態</th><th>水やり</th><th class="w">作業</th></tr></thead><tbody>`;
   rc.forEach(r => {
     const works = (r.works && r.works.length) ? r.works.join("・") : "—";
@@ -521,7 +626,7 @@ function render(d){
       <td class="w">${esc(works)}</td>
     </tr>`;
   });
-  h += `</tbody></table>
+  h += `</tbody></table></div></details>
     <div class="foot"><span>過去の株を含むすべての記録はNotionにあります。</span>
     <a href="${DB_URL}" target="_blank" rel="noopener">栽培記録をNotionで開く</a></div></section>`;
 
@@ -532,17 +637,24 @@ function render(d){
 
 async function loadGarden(){
   $("#app").innerHTML = `<div class="state">Notionのデータを取得しています…</div>`;
-  try {
-    const res = await fetch("data.json?t=" + Date.now(), {cache:"no-store"});
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    render(await res.json());
-  } catch(e){
-    $("#stamp").textContent = "同期できていません";
-    $("#app").innerHTML = `<section><div class="state err">
-      <b>栽培データを読み込めませんでした</b>
-      <span>data.json が同じ場所にあるか確認してください。GitHub Actions の同期が一度も成功していない場合は、Actions タブから「Sync Notion to data.json」を実行します。（${esc(e.message)}）</span>
-    </div></section>`;
+  /* 同じ場所 → 公開URL の順に試す。ファイルを直接開いた場合も後者で読める */
+  const routes = ["data.json", "https://natsume0703.github.io/garden-dashboard/data.json"];
+  let last = "";
+  for (const url of routes){
+    try {
+      const res = await fetch(url + "?t=" + Date.now(), {cache:"no-store"});
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      render(await res.json());
+      return;
+    } catch(e){
+      last = e.message;
+    }
   }
+  $("#stamp").textContent = "同期できていません";
+  $("#app").innerHTML = `<section><div class="state err">
+    <b>栽培データを読み込めませんでした</b>
+    <span>GitHub Actions の同期が一度も成功していない場合は、Actions タブから「Sync Notion to data.json」を実行してください。（${esc(last)}）</span>
+  </div></section>`;
 }
 
 /* ===================== 起動 ===================== */
@@ -550,6 +662,7 @@ const n = new Date();
 $("#today").textContent = `${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日（${DOW[n.getDay()]}）`;
 
 $("#reload").addEventListener("click", () => { loadWeather(); loadGarden(); });
+renderSeason();
 loadWeather();
 loadGarden();
 setInterval(loadWeather, 10 * 60 * 1000);
