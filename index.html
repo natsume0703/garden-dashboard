@@ -78,7 +78,6 @@
   /* 見出しや札に添える線画。ヘッダーの絵柄と同じ描き方で季節色に連動する */
   .ic{flex:0 0 auto;color:var(--accent);}
   h2 .ic{width:19px;height:19px;}
-  .sc .lab .ic{width:14px;height:14px;}
 
   /* 折りたたみ */
   details{border:1px solid var(--line);background:var(--card);margin-top:10px;}
@@ -249,19 +248,32 @@
   .foot a:hover{color:var(--ink);}
 
   /* ---------- 季節のたより ---------- */
+  /* 札ごとに色を変えて賑やかにする。背景には同じ絵柄を大きく透かす */
   .season{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--paper);border:1px solid var(--line);}
-  .sc{background:var(--paper);padding:17px 19px;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;}
-  .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:7px;}
-  .sc h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;font-weight:600;letter-spacing:.1em;margin:5px 0 8px;}
-  .sc p{margin:0;font-size:12.5px;line-height:1.85;color:var(--ink-soft);}
-  .sc p b{color:var(--ink);font-weight:700;}
-  .sc .kw{display:inline-block;font-size:10.5px;letter-spacing:.08em;color:var(--accent);border:1px solid currentColor;border-radius:2px;padding:0 7px;margin-bottom:7px;align-self:flex-start;}
+  .sc{
+    position:relative;overflow:hidden;padding:16px 19px 17px;
+    box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;
+    border-top:3px solid var(--w);
+  }
+  /* 背景に同じ絵柄を大きく透かして、札ごとの表情を出す */
+  .sc .wm{
+    position:absolute;right:-16px;bottom:-20px;width:104px;height:104px;
+    color:var(--w);opacity:.14;pointer-events:none;transform:rotate(-8deg);
+    stroke-width:1;
+  }
+  .sc > *{position:relative;}
+  .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--c);font-weight:700;display:flex;align-items:center;gap:7px;}
+  .sc .lab .ic{width:14px;height:14px;color:var(--c);}
+  .sc h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;font-weight:600;letter-spacing:.1em;margin:5px 0 8px;color:var(--c);}
+  .sc p{margin:0;font-size:12.5px;line-height:1.85;color:var(--b);}
+  .sc p b{color:var(--c);font-weight:700;}
+  .sc .kw{display:inline-block;font-size:10.5px;letter-spacing:.08em;color:var(--c);border:1px solid currentColor;border-radius:2px;padding:0 7px;margin-bottom:7px;align-self:flex-start;}
   .sc .go{
     margin-top:auto;padding-top:11px;font-size:11.5px;letter-spacing:.06em;
-    color:var(--accent);text-decoration:none;display:inline-block;
+    color:var(--c);text-decoration:none;display:inline-block;font-weight:700;
   }
   .sc .go::after{content:" ↗";font-size:10px;}
-  .sc .go:hover{color:var(--ink);}
+  .sc .go:hover{opacity:.7;}
 
   .credit{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-align:center;line-height:2;}
 
@@ -447,13 +459,16 @@ function mix(hex, base, ratio){
   return `#${v(r1,r2)}${v(g1,g2)}${v(b1,b2)}`;
 }
 
+let PAPER = "#F7F9F4";   /* いまの地色。札の淡い背景を作るのに使う */
+
 function applySeasonStyle(month){
   const m = MOTIF[month], c = m.c;
   const root = document.documentElement.style;
   /* 地色は淡く、文字は濃く。同じ季節色から全体を組み立てる */
+  PAPER = mix(c, "#F7F9F4", .07);
   root.setProperty("--accent", c);
   root.setProperty("--accent-soft", c + "26");
-  root.setProperty("--paper", mix(c, "#F7F9F4", .07));
+  root.setProperty("--paper", PAPER);
   root.setProperty("--card", mix(c, "#FFFFFF", .045));
   root.setProperty("--ink", mix(c, "#1B2A20", .20));
   root.setProperty("--ink-soft", mix(c, "#525F55", .24));
@@ -662,23 +677,40 @@ function renderSeason(){
   const sg = SUGGEST.filter(s => s[0].includes(mo + 1));
   const [, sn, sd, skw] = (sg.length ? sg : SUGGEST)[doy % (sg.length ? sg.length : SUGGEST.length)];
 
-  $("#season").innerHTML = `<h2><span class="t">${icon("letter")}季節のたより</span><em>今日のひと息</em></h2>
-    <div class="season">
-      <div class="sc"><div class="lab">${icon("flower")}SEASON</div><h4>今月の花と言葉</h4>
-        <p><b>${fl}</b>　花言葉「${kw}」<br>${fd}</p></div>
-      <div class="sc"><div class="lab">${icon("sekki")}SEKKI</div><h4>いまの節気</h4>
-        <p><b>${sk[2]}</b>（${sk[0]}月${sk[1]}日ごろ〜）<br>${sk[3]}</p></div>
-      <div class="sc"><div class="lab">${icon("season")}IN SEASON</div><h4>旬の味</h4>
-        <p>${SHUN[mo]}</p></div>
-      <div class="sc"><div class="lab">${icon("dish")}TODAY'S DISH</div><h4>今日の一皿</h4>
-        <p><b>${dn}</b><br>${dd}</p>
-        <a class="go" href="${cook(dk)}" target="_blank" rel="noopener">レシピを探す</a></div>
-      <div class="sc"><div class="lab">${icon("pot")}WHY NOT GROW</div><h4>育ててみませんか</h4>
-        <p><b>${sn}</b><br>${sd}</p>
-        <a class="go" href="${grow(skw)}" target="_blank" rel="noopener">育て方を調べる</a></div>
-      <div class="sc"><div class="lab">${icon("bulb")}TIP OF THE DAY</div><h4>今日のひとこと</h4>
-        <span class="kw">${cat}</span><p><b>${ttl}</b><br>${body}</p></div>
+  /* 札ごとに色と絵柄を持たせる。1枚目だけはその月の季節色を継ぐ */
+  const CARDS = [
+    ["flower", null,      "SEASON",        "今月の花と言葉",
+      `<b>${fl}</b>　花言葉「${kw}」<br>${fd}`],
+    ["sekki",  "#B8873A", "SEKKI",         "いまの節気",
+      `<b>${sk[2]}</b>（${sk[0]}月${sk[1]}日ごろ〜）<br>${sk[3]}`],
+    ["season", "#4E7C46", "IN SEASON",     "旬の味", SHUN[mo]],
+    ["dish",   "#B0644E", "TODAY'S DISH",  "今日の一皿",
+      `<b>${dn}</b><br>${dd}`, cook(dk), "レシピを探す"],
+    ["pot",    "#3E7E77", "WHY NOT GROW",  "育ててみませんか",
+      `<b>${sn}</b><br>${sd}`, grow(skw), "育て方を調べる"],
+    ["bulb",   "#5A6BA8", "TIP OF THE DAY","今日のひとこと",
+      `<b>${ttl}</b><br>${body}`, null, null, cat],
+  ];
+
+  let cards = "";
+  CARDS.forEach(([ic, col, lab, ttl2, text, url, link, tag]) => {
+    const c = col || MOTIF[mo].c;
+    /* 背景を色で染めるぶん、文字にも同じ色を混ぜて濃度を保つ */
+    const style = `--c:${mix(c, "#1B2A20", .42)};--w:${c};--b:${mix(c, "#414D45", .18)}`
+                + `;background:${mix(c, PAPER, .07)}`;
+    cards += `<div class="sc" style="${style}">
+      ${icon(ic, "wm")}
+      <div class="lab">${icon(ic)}${lab}</div>
+      <h4>${ttl2}</h4>
+      ${tag ? `<span class="kw">${tag}</span>` : ""}
+      <p>${text}</p>
+      ${url ? `<a class="go" href="${url}" target="_blank" rel="noopener">${link}</a>` : ""}
     </div>`;
+  });
+
+  $("#season").innerHTML =
+    `<h2><span class="t">${icon("letter")}季節のたより</span><em>今日のひと息</em></h2>
+     <div class="season">${cards}</div>`;
 }
 
 /* ===================== 天気 ===================== */
