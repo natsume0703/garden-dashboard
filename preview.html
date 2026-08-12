@@ -55,7 +55,7 @@
   .reload:focus-visible{outline:2px solid var(--leaf);outline-offset:2px;}
 
   /* ---------- 数値帯 ---------- */
-  .figures{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);}
+  .figures{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);text-align:center;}
   .fig{flex:1 1 120px;padding:22px 0 20px;border-right:1px solid var(--line);}
   .fig:last-child{border-right:none;}
   .fig b{
@@ -89,11 +89,15 @@
   }
 
   /* ---------- 株カード ---------- */
+  /* 罫線は各カードの影で描く。こうすると列が埋まらない行に灰色の空白が出ない */
   .plants{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
-    gap:1px;background:var(--line);border:1px solid var(--line);
+    gap:1px;background:#fff;border:1px solid var(--line);
   }
-  .card{background:#fff;padding:20px 20px 18px;display:flex;flex-direction:column;}
+  .card{
+    background:#fff;padding:20px 20px 18px;display:flex;flex-direction:column;
+    box-shadow:0 0 0 1px var(--line);
+  }
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .card .nm{font-size:16px;font-weight:700;letter-spacing:.04em;}
