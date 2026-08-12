@@ -34,14 +34,18 @@
   /* ---------- ヘッダー ---------- */
   header{
     position:relative;overflow:hidden;
-    padding:44px 0 24px;border-bottom:2px solid var(--ink);
+    padding:40px 22px 24px;margin:0 -22px;
+    border-top:4px solid var(--accent);
+    border-bottom:2px solid var(--ink);
+    background:linear-gradient(170deg, var(--accent-soft) 0%, transparent 72%);
     display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
   }
   .motif{
-    position:absolute;right:-14px;top:8px;width:150px;height:150px;
-    color:var(--accent);opacity:.16;pointer-events:none;
+    position:absolute;right:6px;top:-10px;width:196px;height:196px;
+    color:var(--accent);opacity:.34;pointer-events:none;
   }
-  .motif.s2{right:120px;top:44px;width:78px;height:78px;opacity:.09;}
+  .motif.s2{right:186px;top:58px;width:96px;height:96px;opacity:.2;}
+  .motif.s3{right:auto;left:-26px;top:64px;width:120px;height:120px;opacity:.13;}
   h1{
     font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
     font-size:32px;font-weight:600;letter-spacing:.14em;margin:0 0 6px;line-height:1.3;
@@ -62,7 +66,8 @@
   h2{
     font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
     font-size:17px;font-weight:600;letter-spacing:.18em;
-    margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);
+    margin:0 0 16px;padding-bottom:10px;
+    border-bottom:1px solid var(--line);box-shadow:0 1px 0 0 var(--accent-soft);
     display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   }
   h2 em{font-style:normal;font-family:"Hiragino Sans",sans-serif;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);text-align:right;}
@@ -84,7 +89,7 @@
   .figures{display:flex;flex-wrap:wrap;text-align:center;border:1px solid var(--line);background:#fff;}
   .fig{flex:1 1 110px;padding:16px 4px 14px;border-left:1px solid var(--line);}
   .fig:first-child{border-left:none;}
-  .fig b{display:block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:27px;font-weight:600;line-height:1;}
+  .fig b{display:block;font-size:25px;font-weight:700;line-height:1.1;letter-spacing:.02em;}
   .fig.hot b{color:var(--alert);}
   .fig span{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.1em;margin-top:6px;}
 
@@ -168,25 +173,38 @@
   .sat{color:var(--water);}
 
   /* ---------- カレンダー ---------- */
-  .cal .mn{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:14px;letter-spacing:.12em;margin-bottom:10px;}
+  .cal .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .cal .mn{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;letter-spacing:.12em;}
+  .cal .nav{display:flex;gap:6px;}
+  .cal .nav button{
+    border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-family:inherit;
+    font-size:12px;padding:3px 11px;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;
+  }
+  .cal .nav button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .cal .nav button:disabled{opacity:.35;cursor:default;}
+  .cal .nav button:disabled:hover{background:#fff;color:var(--ink-soft);border-color:var(--line);}
   .cal .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
   .cal .dow{font-size:10px;color:var(--ink-soft);letter-spacing:.06em;padding-bottom:4px;}
   .cal .dd{
-    font-size:12px;padding:7px 0 11px;position:relative;border-radius:2px;
+    font-size:12.5px;padding:8px 0 5px;position:relative;border-radius:2px;
     border:1px solid transparent;background:none;font-family:inherit;color:inherit;width:100%;
   }
   .cal .dd.empty{visibility:hidden;}
-  .cal .dd.hit{cursor:pointer;}
-  .cal .dd.hit:hover{border-color:var(--line);}
-  .cal .dd.on{border-color:var(--ink);}
+  /* 記録のある日は下に太い帯を敷いて、離れた位置からでも見えるようにする */
+  .cal .dd.hit{cursor:pointer;font-weight:700;}
+  .cal .dd.hit::after{
+    content:"";display:block;height:5px;margin:5px auto 0;width:62%;border-radius:3px;background:var(--leaf);
+  }
+  .cal .dd.hit.warn::after{background:var(--warn);}
+  .cal .dd.hit.bad::after{background:var(--alert);}
+  .cal .dd:not(.hit)::after{content:"";display:block;height:5px;margin-top:5px;}
+  .cal .dd.hit:hover{border-color:var(--ink-soft);}
+  .cal .dd.on{border-color:var(--ink);background:#F2F5EF;}
   .cal .dd.today{background:var(--ink);color:var(--paper);font-weight:700;}
-  .cal .dd i{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--leaf);}
-  .cal .dd i.warn{background:var(--warn);}
-  .cal .dd i.bad{background:var(--alert);}
-  .cal .dd.today i{box-shadow:0 0 0 1.5px var(--ink);}
-  .lg{font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;}
+  .cal .dd.today.on{background:var(--ink);}
+  .lg{font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
   .lg span{display:flex;align-items:center;gap:5px;}
-  .lg i{width:5px;height:5px;border-radius:50%;display:inline-block;background:var(--leaf);}
+  .lg i{width:14px;height:5px;border-radius:3px;display:inline-block;background:var(--leaf);}
   .lg i.warn{background:var(--warn);}
   .lg i.bad{background:var(--alert);}
   .daybox{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;}
@@ -215,13 +233,19 @@
   .foot a:hover{color:var(--ink);}
 
   /* ---------- 季節のたより ---------- */
-  .season{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
-  .sc{background:var(--paper);padding:17px 19px;}
+  .season{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--paper);border:1px solid var(--line);}
+  .sc{background:var(--paper);padding:17px 19px;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;}
   .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;}
   .sc h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;font-weight:600;letter-spacing:.1em;margin:5px 0 8px;}
   .sc p{margin:0;font-size:12.5px;line-height:1.85;color:var(--ink-soft);}
   .sc p b{color:var(--ink);font-weight:700;}
-  .sc .kw{display:inline-block;font-size:10.5px;letter-spacing:.08em;color:var(--accent);border:1px solid currentColor;border-radius:2px;padding:0 7px;margin-bottom:7px;}
+  .sc .kw{display:inline-block;font-size:10.5px;letter-spacing:.08em;color:var(--accent);border:1px solid currentColor;border-radius:2px;padding:0 7px;margin-bottom:7px;align-self:flex-start;}
+  .sc .go{
+    margin-top:auto;padding-top:11px;font-size:11.5px;letter-spacing:.06em;
+    color:var(--accent);text-decoration:none;display:inline-block;
+  }
+  .sc .go::after{content:" ↗";font-size:10px;}
+  .sc .go:hover{color:var(--ink);}
 
   .credit{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-align:center;line-height:2;}
 
@@ -259,6 +283,7 @@
   <header>
     <svg class="motif" id="motif" viewBox="0 0 100 100" aria-hidden="true"></svg>
     <svg class="motif s2" id="motif2" viewBox="0 0 100 100" aria-hidden="true"></svg>
+    <svg class="motif s3" id="motif3" viewBox="0 0 100 100" aria-hidden="true"></svg>
     <div>
       <h1>菜園ダッシュボード</h1>
       <div class="sub">
@@ -366,10 +391,13 @@ function drawMotif(m){
 
 function applySeasonStyle(month){
   const m = MOTIF[month];
-  document.documentElement.style.setProperty("--accent", m.c);
+  const root = document.documentElement.style;
+  root.setProperty("--accent", m.c);
+  root.setProperty("--accent-soft", m.c + "26");   /* 同じ色の薄い版 */
   const g = drawMotif(m);
   $("#motif").innerHTML = g;
   $("#motif2").innerHTML = g;
+  $("#motif3").innerHTML = g;
 }
 
 /* ===================== 日本の祝日 ===================== */
@@ -511,6 +539,42 @@ const TIPS = [
   ["道具","ハサミは使うたび拭く","病気は刃を伝って株から株へ移ります。アルコールで拭くひと手間が伝染を止めます。"],
 ];
 
+/* 今日の一皿。育てている株に合わせて選び、レシピ検索へつなぐ */
+const DISHES = [
+  ["バジル","バジルの葉を粗く刻んで","冷やしたトマトに刻んだバジルとオリーブ油、塩を回しかけるだけ。摘みたての香りが立ちます。","トマト バジル マリネ"],
+  ["バジル","手づくりのジェノベーゼ","バジルの葉と松の実、にんにく、オリーブ油をすり潰します。パスタのほか、蒸し野菜にも合います。","バジルソース 手作り"],
+  ["バジル","バジルとチーズの冷やしトースト","モッツァレラとバジルをのせて焼くだけ。摘んだ葉は焼いた後にのせると香りが残ります。","カプレーゼ トースト"],
+  ["大葉","大葉の醤油漬け","洗って水気を拭いた葉を、醤油とごま油、にんにくで重ねて漬けます。ご飯が止まらなくなる常備菜です。","大葉 醤油漬け"],
+  ["大葉","大葉と豚肉の巻き焼き","豚こまで大葉を巻いて焼くだけ。香りが油の重さを流してくれます。","大葉 豚肉 巻き"],
+  ["大葉","刻み大葉の薬味だれ","刻んだ大葉にみょうが、生姜、麺つゆを合わせます。冷奴にも素麺にも使える万能だれです。","大葉 薬味 たれ"],
+  ["トマト","焼きトマトの出汁びたし","半分に切って焼き、温かい出汁に浸けて冷やします。甘みが驚くほど濃くなります。","焼きトマト 出汁浸し"],
+  ["トマト","トマトの卵炒め","強火で手早く。塩だけで十分に味が決まるのは、完熟した実ならではです。","トマト 卵 炒め"],
+  ["トマト","丸ごとトマトの炊き込みご飯","米の上にトマトを一つ置いて炊くだけ。混ぜると全体が淡い橙色になります。","トマト 炊き込みご飯"],
+  ["すべて","ハーブと夏野菜の揚げ浸し","茄子やパプリカを素揚げし、刻んだハーブを散らして麺つゆに浸します。作り置きが利きます。","夏野菜 揚げ浸し"],
+  ["すべて","摘みたてハーブのサラダ","ちぎった葉に塩とオリーブ油、レモン。素材が良い日ほど、手を加えないほうが美味しくなります。","ハーブサラダ"],
+];
+
+/* 育ててみませんか。この環境（南向きベランダ・強い日差しと風）で無理のないものを季節ごとに */
+const SUGGEST = [
+  [[2,3,4],"ラディッシュ","種まきから収穫までおよそ一か月。失敗が少なく、成果が早く見えるので気持ちが続きます。","ラディッシュ プランター 育て方"],
+  [[2,3,4],"スナップえんどう","つるを窓側に誘引すれば、初夏まで日除けを兼ねてくれます。","スナップエンドウ プランター 育て方"],
+  [[3,4,5],"イタリアンパセリ","半日陰でも育ち、少しずつ摘んで長く使えます。バジルより暑さに強い点も利点です。","イタリアンパセリ プランター 育て方"],
+  [[4,5,6],"ミニトマト（アイコ）","細長い実は皮が裂けにくく、雨の多い年でも収穫が安定します。","アイコ ミニトマト 育て方"],
+  [[4,5,6],"ミント","繁殖力が強いので、地植えでなく鉢で育てるのが正解です。ベランダ向きの植物といえます。","ミント プランター 育て方"],
+  [[5,6,7],"ゴーヤ","つるが茂れば西日を遮る緑のカーテンになります。実だけでなく涼しさも収穫できます。","ゴーヤ プランター 緑のカーテン"],
+  [[5,6,7],"空心菜","真夏の暑さでこそ勢いを増す、数少ない野菜です。摘んでも次々と伸びます。","空心菜 プランター 育て方"],
+  [[7,8,9],"オクラ","強い日差しと乾燥に耐えます。南向きの高層階は本来の自生地に近い環境です。","オクラ プランター 育て方"],
+  [[8,9,10],"小松菜","秋まきは虫が少なく、種から二か月ほどで収穫できます。冬に向けて甘みが増します。","小松菜 プランター 秋まき"],
+  [[9,10,11],"ほうれん草","霜に当たるほど甘くなります。冬のベランダを無駄にしない一株です。","ほうれん草 プランター 育て方"],
+  [[10,11,12],"チャイブ","一度植えれば毎年芽を出します。細い葉は薬味として少しずつ使えます。","チャイブ プランター 育て方"],
+  [[11,12,1],"パンジー・ビオラ","冬の間ずっと咲き続けます。野菜の少ない季節にベランダの色を保ってくれます。","ビオラ プランター 育て方"],
+  [[12,1,2],"芽キャベツ","寒さで締まる冬野菜。収穫までは長いですが、育つ姿が面白い植物です。","芽キャベツ プランター 育て方"],
+  [[1,2,3],"豆苗（再生栽培）","買った豆苗の根を水に浸けるだけ。真冬でも室内の窓辺で二度は収穫できます。","豆苗 再生栽培"],
+];
+
+const cook = (k) => "https://cookpad.com/search/" + encodeURIComponent(k);
+const grow = (k) => "https://www.google.com/search?q=" + encodeURIComponent(k);
+
 function renderSeason(){
   const now = new Date();
   const mo = now.getMonth(), md = (now.getMonth() + 1) * 100 + now.getDate();
@@ -523,6 +587,15 @@ function renderSeason(){
   const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
   const [cat, ttl, body] = TIPS[doy % TIPS.length];
 
+  /* 育てている株に合う料理を選ぶ。該当がなければ全体から */
+  const names = ACTIVE.join("");
+  const fit = DISHES.filter(d => d[0] === "すべて" || names.includes(d[0]));
+  const [, dn, dd, dk] = (fit.length ? fit : DISHES)[doy % (fit.length ? fit.length : DISHES.length)];
+
+  /* いまの季節に植えられるものを選ぶ */
+  const sg = SUGGEST.filter(s => s[0].includes(mo + 1));
+  const [, sn, sd, skw] = (sg.length ? sg : SUGGEST)[doy % (sg.length ? sg.length : SUGGEST.length)];
+
   $("#season").innerHTML = `<h2>季節のたより<em>今日のひと息</em></h2>
     <div class="season">
       <div class="sc"><div class="lab">SEASON</div><h4>今月の花と言葉</h4>
@@ -531,6 +604,12 @@ function renderSeason(){
         <p><b>${sk[2]}</b>（${sk[0]}月${sk[1]}日ごろ〜）<br>${sk[3]}</p></div>
       <div class="sc"><div class="lab">IN SEASON</div><h4>旬の味</h4>
         <p>${SHUN[mo]}</p></div>
+      <div class="sc"><div class="lab">TODAY'S DISH</div><h4>今日の一皿</h4>
+        <p><b>${dn}</b><br>${dd}</p>
+        <a class="go" href="${cook(dk)}" target="_blank" rel="noopener">レシピを探す</a></div>
+      <div class="sc"><div class="lab">WHY NOT GROW</div><h4>育ててみませんか</h4>
+        <p><b>${sn}</b><br>${sd}</p>
+        <a class="go" href="${grow(skw)}" target="_blank" rel="noopener">育て方を調べる</a></div>
       <div class="sc"><div class="lab">TIP OF THE DAY</div><h4>今日のひとこと</h4>
         <span class="kw">${cat}</span><p><b>${ttl}</b><br>${body}</p></div>
     </div>`;
@@ -627,6 +706,9 @@ async function loadWeather(){
 
 /* ===================== 栽培記録 ===================== */
 let RECORDS = [];
+let ACTIVE = [];
+let CAL = null;          /* 表示中の年月 */
+let PICKED = null;       /* 選ばれている日 */
 
 function gauge(days){
   if (days == null){
@@ -644,42 +726,70 @@ const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
 
 function calendar(){
   const now = new Date();
-  const y = now.getFullYear(), m = now.getMonth(), today = now.getDate();
+  const y = CAL.y, m = CAL.m;
+  const isThis = (y === now.getFullYear() && m === now.getMonth());
   const first = new Date(y, m, 1).getDay(), last = new Date(y, m + 1, 0).getDate();
   const hol = holidays(y);
 
-  /* その日の記録をまとめ、最も重い健康状態で点の色を決める */
+  /* その日の記録をまとめ、最も重い健康状態で帯の色を決める */
   const byDay = {};
-  RECORDS.forEach(r => {
-    if (!r.date) return;
-    (byDay[r.date] = byDay[r.date] || []).push(r);
-  });
+  RECORDS.forEach(r => { if (r.date) (byDay[r.date] = byDay[r.date] || []).push(r); });
+
+  /* 記録が残っている範囲を求め、その外へは進めないようにする */
+  const days = Object.keys(byDay).sort();
+  const oldest = days[0] || "", newest = days[days.length - 1] || "";
+  const cur = `${y}-${pad(m + 1)}`;
+  const canPrev = oldest && cur > oldest.slice(0, 7);
+  const canNext = !isThis;
 
   let g = "";
   DOW.forEach((d, i) => { g += `<div class="dow ${i === 0 ? "sun" : i === 6 ? "sat" : ""}">${d}</div>`; });
   for (let i = 0; i < first; i++) g += `<div class="dd empty">0</div>`;
 
+  let hits = 0;
   for (let d = 1; d <= last; d++){
     const key = `${y}-${pad(m + 1)}-${pad(d)}`;
     const w = (first + d - 1) % 7;
     const hn = hol.get(key);
     const rs = byDay[key] || [];
+    if (rs.length) hits++;
     const worst = rs.some(r => r.health === "異常") ? "bad" : rs.some(r => r.health === "注意") ? "warn" : "";
-    const cls = ["dd", d === today ? "today" : "", rs.length ? "hit" : "",
+    const isToday = isThis && d === now.getDate();
+    const cls = ["dd", isToday ? "today" : "", rs.length ? "hit" : "", worst,
+                 key === PICKED ? "on" : "",
                  (hn || w === 0) ? "hol" : w === 6 ? "sat" : ""].filter(Boolean).join(" ");
-    g += `<${rs.length ? "button" : "div"} class="${cls}" ${rs.length ? `data-day="${key}" type="button"` : ""}
-      ${hn ? `title="${hn}"` : ""}>${d}${rs.length ? `<i class="${worst}"></i>` : ""}</${rs.length ? "button" : "div"}>`;
+    g += rs.length
+      ? `<button class="${cls}" data-day="${key}" type="button" ${hn ? `title="${hn}"` : ""}>${d}</button>`
+      : `<div class="${cls}" ${hn ? `title="${hn}"` : ""}>${d}</div>`;
   }
 
-  return `<div class="cal"><div class="mn">${y}年 ${m + 1}月</div><div class="grid">${g}</div>
+  return `<div class="cal">
+    <div class="hd">
+      <div class="mn">${y}年 ${m + 1}月　<span style="font-size:11px;color:var(--ink-soft);letter-spacing:.06em">記録${hits}日</span></div>
+      <div class="nav">
+        <button type="button" data-mv="-1" ${canPrev ? "" : "disabled"}>前の月</button>
+        <button type="button" data-mv="0" ${isThis ? "disabled" : ""}>今月</button>
+        <button type="button" data-mv="1" ${canNext ? "" : "disabled"}>次の月</button>
+      </div>
+    </div>
+    <div class="grid">${g}</div>
     <div class="lg">
       <span><i></i>良好のみ</span><span><i class="warn"></i>注意あり</span><span><i class="bad"></i>異常あり</span>
-      <span>点のある日をおすとその日の記録が開きます</span>
+      <span>色の帯がある日をおすと、その日の記録が開きます</span>
     </div><div id="daybox"></div></div>`;
+}
+
+function paintCalendar(){
+  const box = $("#calwrap");
+  if (!box) return;
+  box.innerHTML = calendar();
+  if (PICKED) showDay(PICKED);
 }
 
 function showDay(key){
   const rs = RECORDS.filter(r => r.date === key);
+  if (!rs.length) return;
+  PICKED = key;
   const dt = new Date(key + "T00:00:00");
   let h = `<div class="daybox"><h5>${dt.getMonth()+1}月${dt.getDate()}日（${DOW[dt.getDay()]}）の記録　${rs.length}件</h5>`;
   rs.forEach(r => {
@@ -687,7 +797,8 @@ function showDay(key){
       ${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : ""}
       <span>${esc(r.action || r.ai_comment || "コメントなし").slice(0, 90)}</span></div>`;
   });
-  $("#daybox").innerHTML = h + `</div>`;
+  const box = $("#daybox");
+  if (box) box.innerHTML = h + `</div>`;
   document.querySelectorAll(".cal .dd.on").forEach(e => e.classList.remove("on"));
   document.querySelector(`.cal .dd[data-day="${key}"]`)?.classList.add("on");
 }
@@ -695,6 +806,11 @@ function showDay(key){
 function render(d){
   const s = d.stats || {};
   RECORDS = d.records || [];
+  ACTIVE = (d.plants || []).map(p => p.name || "");
+  if (!CAL){
+    const n = new Date();
+    CAL = {y:n.getFullYear(), m:n.getMonth()};
+  }
   $("#stamp").textContent = "最終同期 " + (d.generated_at || "").replace("T", " ").slice(0, 16);
 
   /* ① 株のようす */
@@ -720,9 +836,13 @@ function render(d){
     h += `<div class="plants">`;
     pl.forEach(p => {
       const flags = (p.flags || []).map(f => `<span class="flag ${esc(f)}">${esc(f)}</span>`).join("");
+      /* フェーズが未入力のことが多いため、空なら最終記録日を代わりに出す */
+      const sub = p.phase
+        ? esc(p.phase)
+        : (p.last_record ? "最終記録　" + esc(p.last_record.replace(/-/g, ".")) : "記録なし");
       h += `<div class="card u${p.urgency ?? 5}">
         <div class="top">
-          <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
+          <div><div class="nm">${esc(p.name)}</div><div class="phase">${sub}</div></div>
           <span class="badge ${hc(p.health)}">${esc(p.health || "未判定")}</span>
         </div>
         <div class="flags">${flags}</div>
@@ -739,8 +859,8 @@ function render(d){
   app.innerHTML = h;
 
   /* ③〜⑤ 天気のうしろに置くもの */
-  let t = `<section><h2>記録カレンダー<em>今月</em></h2>
-    <details><summary>${new Date().getMonth() + 1}月の記録を見る</summary><div class="body">${calendar()}</div></details></section>`;
+  let t = `<section><h2>記録カレンダー<em>月をまたいで見られます</em></h2>
+    <details><summary>記録のあった日を見る</summary><div class="body" id="calwrap"></div></details></section>`;
 
   const skip = new Set(d.archived_names || []);
   const rc = RECORDS.filter(r => !skip.has(r.plant)).slice(0, 20);
@@ -770,10 +890,25 @@ function render(d){
     t += `</div></details></section>`;
   }
   $("#tail").innerHTML = t;
+  paintCalendar();
+  renderSeason();   /* 育てている株が分かってから料理を選び直す */
 
   $("#tail").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-day]");
-    if (b) showDay(b.dataset.day);
+    const day = ev.target.closest("[data-day]");
+    if (day){ showDay(day.dataset.day); return; }
+
+    const mv = ev.target.closest("[data-mv]");
+    if (!mv) return;
+    const step = Number(mv.dataset.mv);
+    if (step === 0){
+      const n = new Date();
+      CAL = {y:n.getFullYear(), m:n.getMonth()};
+    } else {
+      const d = new Date(CAL.y, CAL.m + step, 1);
+      CAL = {y:d.getFullYear(), m:d.getMonth()};
+    }
+    PICKED = null;
+    paintCalendar();
   });
 }
 
