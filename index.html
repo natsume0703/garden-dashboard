@@ -17,255 +17,217 @@
     --alert:#A63D2C;
     --harvest:#7B5EA7;
     --sky:#E8F1F6;
+    --accent:#3F6B45;
   }
 
   *{box-sizing:border-box;}
 
   body{
-    margin:0;
-    padding:0 20px 80px;
-    background:var(--paper);
-    color:var(--ink);
+    margin:0;padding:0 20px 80px;
+    background:var(--paper);color:var(--ink);
     font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
-    font-size:15px;
-    line-height:1.75;
-    -webkit-font-smoothing:antialiased;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
   }
-
   .wrap{max-width:880px;margin:0 auto;}
   a{color:inherit;}
 
   /* ---------- ヘッダー ---------- */
   header{
+    position:relative;overflow:hidden;
     padding:44px 0 24px;border-bottom:2px solid var(--ink);
     display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
   }
+  .motif{
+    position:absolute;right:-14px;top:8px;width:150px;height:150px;
+    color:var(--accent);opacity:.16;pointer-events:none;
+  }
+  .motif.s2{right:120px;top:44px;width:78px;height:78px;opacity:.09;}
   h1{
     font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
-    font-size:32px;font-weight:600;letter-spacing:.14em;
-    margin:0 0 6px;line-height:1.3;
+    font-size:32px;font-weight:600;letter-spacing:.14em;margin:0 0 6px;line-height:1.3;
+    position:relative;
   }
-  .sub{
-    font-size:12px;color:var(--ink-soft);letter-spacing:.08em;
-    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-  }
-  .place{font-size:11.5px;color:var(--ink-soft);letter-spacing:.1em;text-align:right;line-height:1.9;}
+  .sub{font-size:12px;color:var(--ink-soft);letter-spacing:.08em;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:relative;}
+  .place{font-size:11.5px;color:var(--ink-soft);letter-spacing:.1em;text-align:right;line-height:1.9;position:relative;}
   .reload{
     border:1px solid var(--line);background:transparent;color:var(--ink-soft);
     font-family:inherit;font-size:11px;letter-spacing:.08em;
-    padding:4px 12px;border-radius:2px;cursor:pointer;
-    transition:background .15s,color .15s;
+    padding:4px 12px;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;
   }
   .reload:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-  .reload:focus-visible{outline:2px solid var(--leaf);outline-offset:2px;}
+  .reload:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
   /* ---------- セクション ---------- */
-  section{margin-top:46px;}
+  section{margin-top:44px;}
   h2{
     font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
     font-size:17px;font-weight:600;letter-spacing:.18em;
-    margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line);
+    margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);
     display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   }
-  h2 em{
-    font-style:normal;font-family:"Hiragino Sans",sans-serif;
-    font-size:11px;letter-spacing:.1em;color:var(--ink-soft);text-align:right;
-  }
+  h2 em{font-style:normal;font-family:"Hiragino Sans",sans-serif;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);text-align:right;}
 
-  /* ---------- 天気：現在 ---------- */
-  .now{
-    background:var(--sky);border:1px solid var(--line);
-    padding:22px 24px;display:flex;align-items:center;
-    justify-content:space-between;gap:24px;flex-wrap:wrap;
+  /* 折りたたみ */
+  details{border:1px solid var(--line);background:#fff;margin-top:10px;}
+  summary{
+    cursor:pointer;padding:13px 18px;font-size:12.5px;letter-spacing:.08em;color:var(--ink-soft);
+    list-style:none;display:flex;justify-content:space-between;align-items:center;
   }
-  .now .lead{display:flex;align-items:center;gap:18px;}
-  .now .ic{font-size:46px;line-height:1;}
-  .now .tp{
-    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
-    font-size:46px;font-weight:600;line-height:1;letter-spacing:.02em;
-  }
-  .now .tp small{font-size:17px;font-weight:400;margin-left:2px;}
-  .now .cond{font-size:13px;letter-spacing:.08em;margin-top:5px;color:var(--ink-soft);}
-  .now .metrics{display:flex;gap:0;flex-wrap:wrap;}
-  .now .m{padding:0 18px;border-left:1px solid rgba(0,0,0,.09);text-align:center;min-width:76px;}
-  .now .m:first-child{border-left:none;}
-  .now .m b{display:block;font-size:16px;font-weight:700;letter-spacing:.02em;}
-  .now .m span{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.1em;margin-top:2px;}
-
-  /* 風向きの矢印 */
-  .arw{display:inline-block;line-height:1;transform-origin:50% 50%;}
-
-  /* ---------- 天気：時間ごと ---------- */
-  .hours{
-    display:flex;overflow-x:auto;border:1px solid var(--line);background:#fff;
-    scrollbar-width:thin;
-  }
-  .hr{
-    flex:0 0 66px;padding:13px 0 12px;text-align:center;
-    border-left:1px solid var(--line);
-  }
-  .hr:first-child{border-left:none;}
-  .hr.night{background:#FAFBF8;}
-  .hr .t{font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;}
-  .hr .i{font-size:19px;line-height:1.5;}
-  .hr .d{font-size:14px;font-weight:700;}
-  .hr .p{font-size:10px;color:var(--water);height:15px;letter-spacing:.02em;}
-  .hr .w{font-size:11px;color:var(--ink-soft);margin-top:2px;}
-  .scroll-hint{font-size:10.5px;color:var(--ink-soft);letter-spacing:.08em;margin-top:7px;}
-
-  /* ---------- 天気：週間 ---------- */
-  .week{border:1px solid var(--line);background:#fff;}
-  .wk{
-    display:grid;grid-template-columns:58px 30px 46px 1fr 62px;
-    align-items:center;gap:10px;padding:11px 16px;
-    border-top:1px solid var(--line);font-size:13px;
-  }
-  .wk:first-child{border-top:none;}
-  .wk.today{background:#F2F7F0;}
-  .wk .dy{letter-spacing:.04em;}
-  .wk .dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
-  .wk .dy.sun{color:var(--alert);}
-  .wk .dy.sat{color:var(--water);}
-  .wk .ic{font-size:17px;text-align:center;}
-  .wk .pp{font-size:11px;color:var(--water);text-align:right;letter-spacing:.02em;}
-  .wk .wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
-  .rng{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);}
-  .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:60px;}
-  .rng .fill{
-    position:absolute;height:100%;border-radius:3px;
-    background:linear-gradient(90deg,#7FA8C4,#D8A15C);
-  }
-  .rng b{color:var(--ink);font-weight:700;font-size:12px;}
-
-  /* ---------- 季節のたより ---------- */
-  .season{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#fff;border:1px solid var(--line);}
-  .sc{background:#EFF4EA;padding:18px 20px;box-shadow:0 0 0 1px var(--line);}
-  .sc.tip{background:#fff;}
-  .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--leaf);font-weight:700;}
-  .sc h4{
-    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
-    font-size:15px;font-weight:600;letter-spacing:.1em;margin:6px 0 9px;
-  }
-  .sc p{margin:0;font-size:13px;line-height:1.85;color:var(--ink-soft);}
-  .sc p b{color:var(--ink);font-weight:700;}
-  .sc .kw{
-    display:inline-block;font-size:11px;letter-spacing:.08em;color:var(--leaf);
-    border:1px solid var(--leaf);border-radius:2px;padding:1px 8px;margin-bottom:8px;
-  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:"＋";font-size:13px;color:var(--ink-soft);}
+  details[open] summary::after{content:"−";}
+  details[open] summary{border-bottom:1px solid var(--line);color:var(--ink);}
+  summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .body{padding:16px 18px 18px;}
 
   /* ---------- 数値帯 ---------- */
-  .figures{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);text-align:center;}
-  .fig{flex:1 1 120px;padding:22px 0 20px;border-right:1px solid var(--line);}
-  .fig:last-child{border-right:none;}
-  .fig b{
-    display:block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
-    font-size:32px;font-weight:600;line-height:1;letter-spacing:.02em;
-  }
+  .figures{display:flex;flex-wrap:wrap;text-align:center;border:1px solid var(--line);background:#fff;}
+  .fig{flex:1 1 110px;padding:16px 4px 14px;border-left:1px solid var(--line);}
+  .fig:first-child{border-left:none;}
+  .fig b{display:block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:27px;font-weight:600;line-height:1;}
   .fig.hot b{color:var(--alert);}
-  .fig span{display:block;font-size:11px;color:var(--ink-soft);letter-spacing:.12em;margin-top:8px;}
+  .fig span{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.1em;margin-top:6px;}
 
   /* ---------- 重大な報せ ---------- */
-  .critical{margin-top:28px;border:1px solid var(--alert);background:#FBEFED;padding:16px 20px;}
-  .critical h3{margin:0 0 8px;font-size:12px;letter-spacing:.14em;color:var(--alert);font-weight:700;}
+  .critical{margin-top:12px;border:1px solid var(--alert);background:#FBEFED;padding:15px 18px;}
+  .critical h3{margin:0 0 6px;font-size:11.5px;letter-spacing:.14em;color:var(--alert);font-weight:700;}
   .critical p{margin:0 0 4px;font-size:13.5px;line-height:1.7;}
   .critical p:last-child{margin-bottom:0;}
 
   /* ---------- 株カード ---------- */
-  .plants{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
-    gap:1px;background:#fff;border:1px solid var(--line);
-  }
-  .card{
-    background:#fff;padding:20px 20px 18px;display:flex;flex-direction:column;
-    box-shadow:0 0 0 1px var(--line);
-  }
+  .plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:#fff;border:1px solid var(--line);margin-top:12px;}
+  .card{background:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .card .nm{font-size:16px;font-weight:700;letter-spacing:.04em;}
   .card .phase{font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-top:2px;}
-
   .badge{font-size:10.5px;letter-spacing:.08em;padding:3px 9px;border-radius:2px;white-space:nowrap;border:1px solid;}
   .badge.良好{color:var(--leaf);border-color:var(--leaf);}
   .badge.注意{color:var(--warn);border-color:var(--warn);}
   .badge.異常{color:#fff;border-color:var(--alert);background:var(--alert);}
   .badge.unknown{color:var(--ink-soft);border-color:var(--line);}
-
-  .flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:11px;}
+  /* 高さを揃えるため、印がない株でも枠だけ確保する */
+  .flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;min-height:20px;}
   .flag{font-size:10.5px;letter-spacing:.08em;padding:2px 8px;border-radius:2px;color:#fff;background:var(--ink-soft);white-space:nowrap;}
   .flag.水やり{background:var(--water);}
   .flag.収穫{background:var(--harvest);}
   .flag.期限{background:var(--alert);}
-
-  .gauge{margin:15px 0 14px;}
+  .gauge{margin:12px 0 13px;}
   .gauge .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-bottom:6px;}
   .gauge .row .val{color:var(--ink);font-weight:700;}
   .bar{display:flex;gap:2px;height:7px;}
   .bar i{flex:1;background:var(--line);border-radius:1px;}
   .bar i.on{background:var(--water);}
   .bar.thirsty i.on{background:var(--soil);}
-
-  .note{font-size:12.5px;color:var(--ink-soft);line-height:1.7;border-top:1px dotted var(--line);padding-top:12px;margin-top:auto;}
+  .note{font-size:12.5px;color:var(--ink-soft);line-height:1.7;border-top:1px dotted var(--line);padding-top:11px;margin-top:auto;}
   .note b{color:var(--ink);font-weight:700;}
 
-  /* ---------- 過去の株 ---------- */
-  details{border:1px solid var(--line);background:#fff;}
-  summary{
-    cursor:pointer;padding:14px 18px;font-size:13px;letter-spacing:.08em;
-    list-style:none;display:flex;justify-content:space-between;align-items:center;
+  /* ---------- 天気：現在 ---------- */
+  .now{
+    background:var(--sky);border:1px solid var(--line);padding:20px 22px;
+    display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;
   }
-  summary::-webkit-details-marker{display:none;}
-  summary::after{content:"開く";font-size:11px;color:var(--ink-soft);letter-spacing:.1em;}
-  details[open] summary::after{content:"閉じる";}
-  summary:focus-visible{outline:2px solid var(--leaf);outline-offset:-2px;}
-  .past{border-top:1px solid var(--line);padding:6px 18px 16px;}
-  .past .r{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dotted var(--line);font-size:13px;}
-  .past .r:last-child{border-bottom:none;}
-  .past .r span{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
+  .now .lead{display:flex;align-items:center;gap:18px;}
+  .now .ic{font-size:44px;line-height:1;}
+  .now .tp{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:44px;font-weight:600;line-height:1;}
+  .now .tp small{font-size:16px;font-weight:400;margin-left:2px;}
+  .now .cond{font-size:13px;letter-spacing:.08em;margin-top:5px;color:var(--ink-soft);}
+  .now .metrics{display:flex;flex-wrap:wrap;}
+  .now .m{padding:0 16px;border-left:1px solid rgba(0,0,0,.09);text-align:center;min-width:74px;}
+  .now .m:first-child{border-left:none;}
+  .now .m b{display:block;font-size:16px;font-weight:700;}
+  .now .m span{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.1em;margin-top:2px;}
+  .arw{display:inline-block;line-height:1;transform-origin:50% 50%;}
+
+  /* ---------- 天気：3時間ごと ---------- */
+  .hours{display:grid;grid-template-columns:repeat(8,1fr);}
+  .hr{padding:10px 2px 9px;text-align:center;border-left:1px solid var(--line);}
+  .hr:first-child{border-left:none;}
+  .hr.night{background:#FAFBF8;}
+  .hr .t{font-size:10.5px;color:var(--ink-soft);}
+  .hr .i{font-size:18px;line-height:1.5;}
+  .hr .d{font-size:14px;font-weight:700;}
+  .hr .p{font-size:10px;color:var(--water);height:15px;}
+  .hr .w{font-size:11px;color:var(--ink-soft);}
+
+  /* ---------- 天気：週間 ---------- */
+  .wk{display:grid;grid-template-columns:62px 28px 44px 1fr 60px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;}
+  .wk:first-child{border-top:none;}
+  .wk .dy{letter-spacing:.04em;}
+  .wk .dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
+  .wk .ic{font-size:17px;text-align:center;}
+  .wk .pp{font-size:11px;color:var(--water);text-align:right;}
+  .wk .wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
+  .rng{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);}
+  .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:50px;}
+  .rng .fill{position:absolute;height:100%;border-radius:3px;background:linear-gradient(90deg,#7FA8C4,#D8A15C);}
+  .rng b{color:var(--ink);font-weight:700;font-size:12px;}
+
+  /* 曜日と祝日の色 */
+  .sun,.hol{color:var(--alert);}
+  .sat{color:var(--water);}
 
   /* ---------- カレンダー ---------- */
-  .cal{border:1px solid var(--line);background:#fff;padding:16px 18px 18px;}
-  .cal .mn{
-    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
-    font-size:14px;letter-spacing:.12em;margin-bottom:12px;
-  }
+  .cal .mn{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:14px;letter-spacing:.12em;margin-bottom:10px;}
   .cal .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
   .cal .dow{font-size:10px;color:var(--ink-soft);letter-spacing:.06em;padding-bottom:4px;}
-  .cal .dow.sun{color:var(--alert);}
-  .cal .dow.sat{color:var(--water);}
-  .cal .dd{font-size:12px;padding:6px 0 9px;position:relative;border-radius:2px;}
-  .cal .dd.empty{visibility:hidden;}
-  .cal .dd.today{background:var(--ink);color:var(--paper);font-weight:700;}
-  .cal .dd.rec::after{
-    content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
-    width:4px;height:4px;border-radius:50%;background:var(--leaf);
+  .cal .dd{
+    font-size:12px;padding:7px 0 11px;position:relative;border-radius:2px;
+    border:1px solid transparent;background:none;font-family:inherit;color:inherit;width:100%;
   }
-  .cal .dd.today.rec::after{background:var(--paper);}
-  .cal .lg{font-size:10.5px;color:var(--ink-soft);letter-spacing:.08em;margin-top:12px;display:flex;align-items:center;gap:6px;}
-  .cal .lg i{width:4px;height:4px;border-radius:50%;background:var(--leaf);display:inline-block;}
+  .cal .dd.empty{visibility:hidden;}
+  .cal .dd.hit{cursor:pointer;}
+  .cal .dd.hit:hover{border-color:var(--line);}
+  .cal .dd.on{border-color:var(--ink);}
+  .cal .dd.today{background:var(--ink);color:var(--paper);font-weight:700;}
+  .cal .dd i{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--leaf);}
+  .cal .dd i.warn{background:var(--warn);}
+  .cal .dd i.bad{background:var(--alert);}
+  .cal .dd.today i{box-shadow:0 0 0 1.5px var(--ink);}
+  .lg{font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;}
+  .lg span{display:flex;align-items:center;gap:5px;}
+  .lg i{width:5px;height:5px;border-radius:50%;display:inline-block;background:var(--leaf);}
+  .lg i.warn{background:var(--warn);}
+  .lg i.bad{background:var(--alert);}
+  .daybox{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;}
+  .daybox h5{margin:0 0 8px;font-size:12px;letter-spacing:.1em;color:var(--ink-soft);font-weight:400;}
+  .daybox .rw{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px dotted var(--line);}
+  .daybox .rw:last-child{border-bottom:none;}
+  .daybox .rw b{white-space:nowrap;}
+  .daybox .rw span{color:var(--ink-soft);font-size:12.5px;}
 
   /* ---------- 記録テーブル ---------- */
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th{text-align:left;font-size:10.5px;letter-spacing:.12em;color:var(--ink-soft);font-weight:400;padding:0 10px 8px 0;border-bottom:1px solid var(--line);}
-  td{padding:11px 10px 11px 0;border-bottom:1px solid var(--line);vertical-align:top;}
+  td{padding:10px 10px 10px 0;border-bottom:1px solid var(--line);vertical-align:top;}
   td.d{color:var(--ink-soft);white-space:nowrap;font-size:12px;}
   td.p{font-weight:700;white-space:nowrap;}
   td.w{color:var(--ink-soft);font-size:12px;}
-  .pill{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:2px;letter-spacing:.06em;}
+  .pill{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:2px;}
   .pill.良好{color:var(--leaf);background:#EDF3EC;}
   .pill.注意{color:var(--warn);background:#FBF3E2;}
   .pill.異常{color:#fff;background:var(--alert);}
-
-  .foot{margin-top:14px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .past .r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dotted var(--line);font-size:13px;}
+  .past .r:last-child{border-bottom:none;}
+  .past .r span{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
+  .foot{margin-top:12px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .foot a{color:var(--water);text-decoration:none;border-bottom:1px solid currentColor;}
   .foot a:hover{color:var(--ink);}
 
-  .credit{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-align:center;line-height:2;}
+  /* ---------- 季節のたより ---------- */
+  .season{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+  .sc{background:var(--paper);padding:17px 19px;}
+  .sc .lab{font-size:9.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;}
+  .sc h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;font-weight:600;letter-spacing:.1em;margin:5px 0 8px;}
+  .sc p{margin:0;font-size:12.5px;line-height:1.85;color:var(--ink-soft);}
+  .sc p b{color:var(--ink);font-weight:700;}
+  .sc .kw{display:inline-block;font-size:10.5px;letter-spacing:.08em;color:var(--accent);border:1px solid currentColor;border-radius:2px;padding:0 7px;margin-bottom:7px;}
 
-  /* ---------- 状態表示 ---------- */
-  .state{padding:44px 0;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.08em;}
-  .state.calm{padding:30px 0;}
+  .credit{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-align:center;line-height:2;}
+
+  .state{padding:40px 0;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.08em;}
   .state.err{text-align:left;border-left:3px solid var(--alert);background:#fff;padding:18px 20px;color:var(--ink);}
-  .state.err b{display:block;margin-bottom:6px;letter-spacing:.06em;}
+  .state.err b{display:block;margin-bottom:6px;}
   .state.err span{font-size:12.5px;color:var(--ink-soft);}
 
   .fade{animation:fade .45s ease both;}
@@ -277,16 +239,17 @@
     h1{font-size:25px;}
     header{align-items:flex-start;}
     .place{text-align:left;}
-    .fig b{font-size:26px;}
-    .now{padding:18px;gap:16px;}
-    .now .tp,.now .ic{font-size:38px;}
-    .now .m{padding:0 12px;min-width:66px;}
-    .wk{grid-template-columns:50px 24px 40px 1fr;gap:8px;padding:11px 12px;}
+    .motif{width:110px;height:110px;opacity:.11;}
+    .motif.s2{display:none;}
+    .hours{grid-template-columns:repeat(4,1fr);}
+    .hr:nth-child(5){border-left:none;}
+    .hr:nth-child(n+5){border-top:1px solid var(--line);}
+    .wk{grid-template-columns:54px 24px 40px 1fr;gap:8px;}
     .wk .wd{display:none;}
-    .season{grid-template-columns:1fr;}
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
+    .fig b{font-size:23px;}
   }
 </style>
 </head>
@@ -294,6 +257,8 @@
 <div class="wrap">
 
   <header>
+    <svg class="motif" id="motif" viewBox="0 0 100 100" aria-hidden="true"></svg>
+    <svg class="motif s2" id="motif2" viewBox="0 0 100 100" aria-hidden="true"></svg>
     <div>
       <h1>菜園ダッシュボード</h1>
       <div class="sub">
@@ -305,14 +270,10 @@
     <div class="place">埼玉・三郷市<br>12階ベランダ</div>
   </header>
 
-  <section id="weather">
-    <h2>空のようす<em>読み込み中</em></h2>
-    <div class="state">天気を取得しています…</div>
-  </section>
-
-  <section id="season"></section>
-
   <div id="app"><div class="state">Notionのデータを取得しています…</div></div>
+  <section id="weather"><h2>空のようす<em>読み込み中</em></h2><div class="state">天気を取得しています…</div></section>
+  <div id="tail"></div>
+  <section id="season"></section>
 
   <div class="credit">
     夏目家 菜園管理システム<br>
@@ -323,118 +284,132 @@
 
 <script>
 /* ===================== 設定 ===================== */
-const DB_URL  = "https://www.notion.so/17fd5f782f50438fb796d54617be9cfd";
+const DB_URL = "https://www.notion.so/17fd5f782f50438fb796d54617be9cfd";
 const LAT = 35.8307, LON = 139.8722;
 
-const $  = (s) => document.querySelector(s);
+const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const DOW = ["日","月","火","水","木","金","土"];
+const pad = (n) => String(n).padStart(2, "0");
 
-const W_ICON = {0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌧️",
-  56:"🌧️",57:"🌧️",61:"🌧️",63:"🌧️",65:"🌧️",66:"🌧️",67:"🌧️",71:"🌨️",73:"🌨️",75:"🌨️",
-  77:"🌨️",80:"🌦️",81:"🌧️",82:"🌧️",85:"🌨️",86:"🌨️",95:"⛈️",96:"⛈️",99:"⛈️"};
+const W_ICON = {0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌧️",56:"🌧️",57:"🌧️",
+  61:"🌧️",63:"🌧️",65:"🌧️",66:"🌧️",67:"🌧️",71:"🌨️",73:"🌨️",75:"🌨️",77:"🌨️",80:"🌦️",81:"🌧️",82:"🌧️",
+  85:"🌨️",86:"🌨️",95:"⛈️",96:"⛈️",99:"⛈️"};
 const W_NAME = {0:"快晴",1:"晴れ",2:"薄曇り",3:"曇り",45:"霧",48:"霧",51:"小雨",53:"霧雨",55:"強い霧雨",
-  56:"凍雨",57:"凍雨",61:"小雨",63:"雨",65:"大雨",66:"凍雨",67:"凍雨",71:"小雪",73:"雪",75:"大雪",
-  77:"雪",80:"にわか雨",81:"雨",82:"激しい雨",85:"にわか雪",86:"にわか雪",95:"雷雨",96:"雷雨",99:"激しい雷雨"};
-const COMPASS = ["北","北北東","北東","東北東","東","東南東","南東","南南東",
-                 "南","南南西","南西","西南西","西","西北西","北西","北北西"];
+  56:"凍雨",57:"凍雨",61:"小雨",63:"雨",65:"大雨",66:"凍雨",67:"凍雨",71:"小雪",73:"雪",75:"大雪",77:"雪",
+  80:"にわか雨",81:"雨",82:"激しい雨",85:"にわか雪",86:"にわか雪",95:"雷雨",96:"雷雨",99:"激しい雷雨"};
+const COMPASS = ["北","北北東","北東","東北東","東","東南東","南東","南南東","南","南南西","南西","西南西","西","西北西","北西","北北西"];
 
-/* 気象の風向は「風が吹いてくる向き」。矢印は進む向きに回す */
+/* 気象の風向は風が吹いてくる向き。矢印は進む向きに回す */
 function wind(deg){
-  if (deg === null || deg === undefined) return "—";
-  const name = COMPASS[Math.round(deg / 22.5) % 16];
-  return `<span class="arw" style="transform:rotate(${(deg + 180) % 360}deg)">↑</span> ${name}`;
+  if (deg == null) return "—";
+  return `<span class="arw" style="transform:rotate(${(deg + 180) % 360}deg)">↑</span> ${COMPASS[Math.round(deg / 22.5) % 16]}`;
 }
 
-/* ===================== 天気 ===================== */
-async function loadWeather(){
-  const p = new URLSearchParams({
-    latitude:LAT, longitude:LON, timezone:"Asia/Tokyo", forecast_days:"7",
-    current:"temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,precipitation",
-    hourly:"temperature_2m,precipitation_probability,weather_code,wind_direction_10m",
-    daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant"
-  });
+/* ===================== 月ごとの意匠 ===================== */
+/* 花や結晶を図形の組み合わせで描く。写真を使わないので軽く、季節で色も変わる */
+const MOTIF = [
+  {c:"#6E8CA0", t:"snow"},                          // 1月 雪の結晶
+  {c:"#9C7B8E", t:"flower", n:5, rx:8,  ry:8},      // 2月 梅
+  {c:"#C08A96", t:"flower", n:5, rx:6,  ry:12},     // 3月 桜
+  {c:"#B96A5E", t:"tulip"},                         // 4月 チューリップ
+  {c:"#6F9A57", t:"leaf"},                          // 5月 若葉
+  {c:"#6E7FA8", t:"cluster"},                       // 6月 紫陽花
+  {c:"#C89A2E", t:"flower", n:16, rx:5, ry:15},     // 7月 向日葵
+  {c:"#7A73B0", t:"morning"},                       // 8月 朝顔
+  {c:"#B07E96", t:"flower", n:8, rx:4,  ry:16},     // 9月 コスモス
+  {c:"#C4863C", t:"branch"},                        // 10月 金木犀
+  {c:"#A05A4A", t:"flower", n:24, rx:2, ry:18},     // 11月 菊
+  {c:"#9B5C74", t:"cyclamen"},                      // 12月 シクラメン
+];
 
-  let d;
-  try {
-    const r = await fetch("https://api.open-meteo.com/v1/forecast?" + p);
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    d = await r.json();
-  } catch(e){
-    $("#weather").innerHTML = `<h2>空のようす<em>取得できず</em></h2>
-      <div class="state err"><b>天気を取得できませんでした</b>
-      <span>通信の状態を確認して、もう一度お試しください。（${esc(e.message)}）</span></div>`;
-    return;
+function drawMotif(m){
+  const S = 'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"';
+  let g = "";
+  if (m.t === "flower"){
+    for (let i = 0; i < m.n; i++){
+      g += `<ellipse cx="50" cy="${50 - m.ry - 4}" rx="${m.rx}" ry="${m.ry}" ${S} transform="rotate(${360 / m.n * i} 50 50)"/>`;
+    }
+    g += `<circle cx="50" cy="50" r="6" ${S}/>`;
+  } else if (m.t === "snow"){
+    for (let i = 0; i < 6; i++){
+      g += `<g transform="rotate(${60 * i} 50 50)"><path d="M50 50 V14" ${S}/><path d="M50 24 l7 7 M50 24 l-7 7 M50 36 l6 6 M50 36 l-6 6" ${S}/></g>`;
+    }
+  } else if (m.t === "tulip"){
+    g += `<path d="M34 40 q0 26 16 34 q16-8 16-34 q-8 8-16 2 q-8 6-16-2Z" ${S}/>
+          <path d="M50 74 V96" ${S}/><path d="M50 84 q-18-4-22-18 q16-2 22 10" ${S}/>`;
+  } else if (m.t === "leaf"){
+    g += `<path d="M50 92 C22 74 20 40 50 12 C80 40 78 74 50 92Z" ${S}/><path d="M50 90 V20" ${S}/>
+          <path d="M50 44 l-16-12 M50 44 l16-12 M50 64 l-14-11 M50 64 l14-11" ${S}/>`;
+  } else if (m.t === "cluster"){
+    const pts = [[50,26],[32,42],[68,42],[41,64],[59,64],[50,46]];
+    pts.forEach(([x,y]) => {
+      for (let i = 0; i < 4; i++) g += `<ellipse cx="${x}" cy="${y - 9}" rx="5" ry="7" ${S} transform="rotate(${90 * i} ${x} ${y})"/>`;
+    });
+  } else if (m.t === "morning"){
+    g += `<circle cx="50" cy="44" r="27" ${S}/><circle cx="50" cy="44" r="9" ${S}/>`;
+    for (let i = 0; i < 5; i++) g += `<path d="M50 44 L50 17" ${S} transform="rotate(${72 * i} 50 44)"/>`;
+    g += `<path d="M50 71 q6 14-6 20 q-12 4-8-6 q4-8 12-4" ${S}/>`;
+  } else if (m.t === "branch"){
+    g += `<path d="M20 84 Q46 60 82 22" ${S}/>`;
+    [[36,70],[52,54],[68,38],[44,62],[60,46]].forEach(([x,y]) => {
+      for (let i = 0; i < 4; i++) g += `<ellipse cx="${x}" cy="${y - 5}" rx="3" ry="4" ${S} transform="rotate(${90 * i} ${x} ${y})"/>`;
+    });
+  } else if (m.t === "cyclamen"){
+    for (let i = 0; i < 5; i++){
+      g += `<path d="M50 52 q-7-22 0-34 q7 12 0 34" ${S} transform="rotate(${(i - 2) * 26} 50 52)"/>`;
+    }
+    g += `<path d="M50 52 V94" ${S}/><path d="M50 88 q-20-2-24-16 q18-4 24 8" ${S}/>`;
   }
+  return g;
+}
 
-  const c = d.current, H = d.hourly, D = d.daily;
-  let h = `<h2>空のようす<em>三郷市・Open-Meteo</em></h2>`;
+function applySeasonStyle(month){
+  const m = MOTIF[month];
+  document.documentElement.style.setProperty("--accent", m.c);
+  const g = drawMotif(m);
+  $("#motif").innerHTML = g;
+  $("#motif2").innerHTML = g;
+}
 
-  /* 現在 */
-  h += `<div class="now">
-    <div class="lead">
-      <div class="ic">${W_ICON[c.weather_code] || "🌡️"}</div>
-      <div>
-        <div class="tp">${Math.round(c.temperature_2m)}<small>°C</small></div>
-        <div class="cond">${W_NAME[c.weather_code] || "—"}　体感 ${Math.round(c.apparent_temperature)}°C</div>
-      </div>
-    </div>
-    <div class="metrics">
-      <div class="m"><b>${c.relative_humidity_2m}<small>%</small></b><span>湿度</span></div>
-      <div class="m"><b>${c.precipitation}<small>mm</small></b><span>降水量</span></div>
-      <div class="m"><b>${c.wind_speed_10m.toFixed(1)}<small>m/s</small></b><span>風速</span></div>
-      <div class="m"><b>${wind(c.wind_direction_10m)}</b><span>風向</span></div>
-    </div>
-  </div>`;
+/* ===================== 日本の祝日 ===================== */
+function holidays(y){
+  const H = new Map();
+  const set = (m, d, n) => H.set(`${y}-${pad(m)}-${pad(d)}`, n);
+  const nthMon = (m, n) => 1 + ((8 - new Date(y, m - 1, 1).getDay()) % 7) + (n - 1) * 7;
 
-  /* 時間ごと（現在時刻から24時間） */
-  const nowISO = (c.time || "").slice(0, 13);
-  let from = H.time.findIndex(t => t.slice(0, 13) >= nowISO);
-  if (from < 0) from = 0;
+  set(1, 1, "元日");            set(1, nthMon(1, 2), "成人の日");
+  set(2, 11, "建国記念の日");    set(2, 23, "天皇誕生日");
+  set(4, 29, "昭和の日");
+  set(5, 3, "憲法記念日");       set(5, 4, "みどりの日");      set(5, 5, "こどもの日");
+  set(7, nthMon(7, 3), "海の日");
+  set(8, 11, "山の日");
+  set(9, nthMon(9, 3), "敬老の日");
+  set(10, nthMon(10, 2), "スポーツの日");
+  set(11, 3, "文化の日");        set(11, 23, "勤労感謝の日");
 
-  h += `<div style="margin-top:26px"><div class="hours">`;
-  for (let i = from; i < Math.min(from + 24, H.time.length); i++){
-    const dt = new Date(H.time[i]);
-    const hh = dt.getHours();
-    const pp = H.precipitation_probability?.[i] ?? 0;
-    h += `<div class="hr${(hh < 6 || hh >= 19) ? " night" : ""}">
-      <div class="t">${i === from ? "今" : hh + "時"}</div>
-      <div class="i">${W_ICON[H.weather_code[i]] || "・"}</div>
-      <div class="d">${Math.round(H.temperature_2m[i])}°</div>
-      <div class="p">${pp >= 10 ? pp + "%" : ""}</div>
-      <div class="w"><span class="arw" style="transform:rotate(${(H.wind_direction_10m[i] + 180) % 360}deg)">↑</span></div>
-    </div>`;
-  }
-  h += `</div><div class="scroll-hint">横にスクロールすると24時間先まで見られます。数字は降水確率、矢印は風の向きです。</div></div>`;
+  /* 春分・秋分は年ごとに動くため近似式で求める（1980〜2099年に有効） */
+  const eq = (a) => Math.floor(a + 0.242194 * (y - 1980) - Math.floor((y - 1980) / 4));
+  set(3, eq(20.8431), "春分の日");
+  const shubun = eq(23.2488);
+  set(9, shubun, "秋分の日");
 
-  /* 週間 */
-  const lo = Math.min(...D.temperature_2m_min), hi = Math.max(...D.temperature_2m_max);
-  const span = Math.max(hi - lo, 1);
-  h += `<div style="margin-top:26px"><div class="week">`;
-  D.time.forEach((t, i) => {
-    const dt = new Date(t + "T00:00:00");
-    const w = dt.getDay();
-    const mn = D.temperature_2m_min[i], mx = D.temperature_2m_max[i];
-    const pp = D.precipitation_probability_max?.[i] ?? 0;
-    h += `<div class="wk${i === 0 ? " today" : ""}">
-      <div class="dy${w === 0 ? " sun" : w === 6 ? " sat" : ""}">${i === 0 ? "今日" : DOW[w] + "曜"}<s>${dt.getMonth()+1}/${dt.getDate()}</s></div>
-      <div class="ic">${W_ICON[D.weather_code[i]] || "・"}</div>
-      <div class="pp">${pp >= 10 ? pp + "%" : ""}</div>
-      <div class="rng">
-        <span>${Math.round(mn)}°</span>
-        <span class="track"><span class="fill" style="left:${(mn-lo)/span*100}%;width:${Math.max((mx-mn)/span*100,4)}%"></span></span>
-        <b>${Math.round(mx)}°</b>
-      </div>
-      <div class="wd">${D.wind_speed_10m_max[i].toFixed(0)}m/s ${wind(D.wind_direction_10m_dominant[i])}</div>
-    </div>`;
+  /* 敬老の日と秋分の日に挟まれた平日は国民の休日になる */
+  const keiro = nthMon(9, 3);
+  if (shubun - keiro === 2) set(9, keiro + 1, "国民の休日");
+
+  /* 日曜と重なった祝日は、次の平日が振替休日になる */
+  [...H.keys()].forEach(k => {
+    const d = new Date(k + "T00:00:00");
+    if (d.getDay() !== 0) return;
+    let n = new Date(d);
+    do { n.setDate(n.getDate() + 1); } while (H.has(`${y}-${pad(n.getMonth()+1)}-${pad(n.getDate())}`));
+    set(n.getMonth() + 1, n.getDate(), "振替休日");
   });
-  h += `</div></div>`;
-
-  $("#weather").innerHTML = h;
+  return H;
 }
 
 /* ===================== 季節のたより ===================== */
-/* 今月の花と花言葉 */
 const FLOWERS = [
   ["福寿草（フクジュソウ）","幸せを招く","雪の残る地面から真っ先に咲く、新年を告げる花です。"],
   ["梅（ウメ）","高潔・忍耐","寒さの底で咲くため、古来ものごとの始まりに重ねられてきました。"],
@@ -450,7 +425,49 @@ const FLOWERS = [
   ["シクラメン","内気なはにかみ","うつむいて咲くのは、雨から花粉を守るためだと言われます。"],
 ];
 
-/* 日替わりのひとこと。日付から選ぶので、同じ日は何度開いても同じ内容 */
+/* 二十四節気。おおよその始まりの日で判定する */
+const SEKKI = [
+  [1,6,"小寒","寒さがいよいよ厳しくなるころ。鉢の土が凍る日は水やりを控えます。"],
+  [1,20,"大寒","一年で最も冷える時期。冬を越す株は、日中の暖かい時間に水を与えます。"],
+  [2,4,"立春","暦の上の春。種まきの計画を立てるのに良い区切りです。"],
+  [2,19,"雨水","雪が雨に変わるころ。土がゆるみ、根が動き始めます。"],
+  [3,6,"啓蟄","土の中の虫が動き出すころ。越冬した害虫の卵にも目を配ります。"],
+  [3,21,"春分","昼と夜の長さが等しくなる日。多くの野菜の植えつけ適期です。"],
+  [4,5,"清明","草木が生き生きと芽吹くころ。苗の植えつけが本格化します。"],
+  [4,20,"穀雨","穀物を潤す雨が降るころ。植えたばかりの苗が根づきます。"],
+  [5,6,"立夏","夏の入り口。日差しが強まり、水の減りが早くなります。"],
+  [5,21,"小満","草木が茂って満ちるころ。わき芽かきと支柱立ての季節です。"],
+  [6,6,"芒種","種まきの終わりを告げるころ。梅雨に備えて風通しを整えます。"],
+  [6,21,"夏至","一年で最も昼が長い日。この日を境に少しずつ日が短くなります。"],
+  [7,7,"小暑","暑さが本格化するころ。朝の水やりを欠かさないようにします。"],
+  [7,23,"大暑","一年で最も暑い時期。鉢の下に台を置き、地面の熱を避けます。"],
+  [8,7,"立秋","暦の上では秋。実際の暑さの盛りですが、日は確実に短くなります。"],
+  [8,23,"処暑","暑さがやわらぐころ。秋まき野菜の準備を始める頃合いです。"],
+  [9,8,"白露","朝晩に露が結ぶころ。昼夜の寒暖差が実を甘くします。"],
+  [9,23,"秋分","再び昼夜が等しくなる日。夏野菜の片づけ時です。"],
+  [10,8,"寒露","露が冷たく感じられるころ。取り込む鉢を選び始めます。"],
+  [10,23,"霜降","霜が降り始めるころ。寒さに弱い株は屋内へ移します。"],
+  [11,7,"立冬","冬の入り口。生育が緩やかになり、肥料を減らします。"],
+  [11,22,"小雪","わずかに雪が舞うころ。水やりは控えめが基本になります。"],
+  [12,7,"大雪","本格的な冬。土の凍結と乾燥の両方に気を配ります。"],
+  [12,22,"冬至","最も昼が短い日。ここから日が延び、春へ向かいます。"],
+];
+
+const SHUN = [
+  "白菜、大根、ねぎ、春菊。鍋の主役が甘みを増す季節です。",
+  "菜の花、ブロッコリー、水菜。ほろ苦さが冬の眠りを覚まします。",
+  "新玉ねぎ、うど、菜花。やわらかな春の香りが並びます。",
+  "たけのこ、アスパラガス、絹さや。芽吹きの勢いをそのまま食べます。",
+  "そら豆、新じゃが、グリーンピース。豆の季節がやってきます。",
+  "きゅうり、ズッキーニ、青梅。水気の多い野菜が体を冷やします。",
+  "トマト、なす、ピーマン、枝豆。夏野菜がいっせいに実ります。",
+  "オクラ、ゴーヤ、とうもろこし。暑さに強い野菜が力を見せます。",
+  "さつまいも、里芋、なす。秋なすは皮がやわらかく味が濃くなります。",
+  "きのこ、栗、かぼちゃ。実りの秋が食卓に広がります。",
+  "れんこん、ごぼう、ほうれん草。根菜が甘みを蓄えます。",
+  "大根、かぶ、小松菜。霜に当たった葉物が驚くほど甘くなります。",
+];
+
 const TIPS = [
   ["水やり","朝にたっぷり、夕に控えめ","夏の夕方の水やりは、夜に鉢の中が蒸れて根を傷めることがあります。朝のうちに鉢底から流れ出るまで与えるのが基本です。"],
   ["水やり","受け皿の水は捨てる","溜まった水に根が浸かり続けると、酸素が届かず根腐れの入り口になります。"],
@@ -463,7 +480,7 @@ const TIPS = [
   ["トマト","下葉は取り除く","地面に近い葉は病気の入り口になりがちです。風通しを作ることが、薬より確実な予防になります。"],
   ["バジル","摘むほど茂る","先端を摘むと脇から二本に分かれます。摘心を繰り返すほど収穫量が増える、珍しい野菜です。"],
   ["バジル","花が咲く前に摘む","花を咲かせると葉が硬くなります。つぼみを見つけたら早めに摘み取ってください。"],
-  ["バジル","トマトとは相性が良い","隣に植えると害虫が寄りにくくなると言われます。料理での相性と同じく、畑でも good な組み合わせです。"],
+  ["バジル","トマトとは相性が良い","隣に置くと害虫が寄りにくくなると言われます。料理での相性と同じく、鉢の上でも良い組み合わせです。"],
   ["大葉","日陰でもよく育つ","強い直射より、半日陰のほうが葉が柔らかく仕上がります。夏は他の株の陰が特等席になります。"],
   ["大葉","下から順に収穫する","上の葉を残すと成長が続きます。一度に取りすぎず、大きい葉から順に摘みましょう。"],
   ["大葉","こぼれ種で翌年も生える","一株だけ花を咲かせておくと、翌春に自然と芽を出します。"],
@@ -496,31 +513,123 @@ const TIPS = [
 
 function renderSeason(){
   const now = new Date();
-  const [fl, kw, fd] = FLOWERS[now.getMonth()];
+  const mo = now.getMonth(), md = (now.getMonth() + 1) * 100 + now.getDate();
+  const [fl, kw, fd] = FLOWERS[mo];
 
-  /* 元日からの通算日数でその日のひとことを決める */
+  /* いま当てはまる節気を探す。年始は前年の大雪から続いている */
+  let sk = SEKKI[SEKKI.length - 1];
+  SEKKI.forEach(s => { if (s[0] * 100 + s[1] <= md) sk = s; });
+
   const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
   const [cat, ttl, body] = TIPS[doy % TIPS.length];
 
   $("#season").innerHTML = `<h2>季節のたより<em>今日のひと息</em></h2>
     <div class="season">
-      <div class="sc">
-        <div class="lab">SEASON</div>
-        <h4>今月の花と言葉</h4>
-        <p><b>${fl}</b>　花言葉「${kw}」<br>${fd}</p>
-      </div>
-      <div class="sc tip">
-        <div class="lab">TIP OF THE DAY</div>
-        <h4>今日のひとこと</h4>
-        <span class="kw">${cat}</span>
-        <p><b>${ttl}</b><br>${body}</p>
-      </div>
+      <div class="sc"><div class="lab">SEASON</div><h4>今月の花と言葉</h4>
+        <p><b>${fl}</b>　花言葉「${kw}」<br>${fd}</p></div>
+      <div class="sc"><div class="lab">SEKKI</div><h4>いまの節気</h4>
+        <p><b>${sk[2]}</b>（${sk[0]}月${sk[1]}日ごろ〜）<br>${sk[3]}</p></div>
+      <div class="sc"><div class="lab">IN SEASON</div><h4>旬の味</h4>
+        <p>${SHUN[mo]}</p></div>
+      <div class="sc"><div class="lab">TIP OF THE DAY</div><h4>今日のひとこと</h4>
+        <span class="kw">${cat}</span><p><b>${ttl}</b><br>${body}</p></div>
     </div>`;
 }
 
+/* ===================== 天気 ===================== */
+async function loadWeather(){
+  const q = new URLSearchParams({
+    latitude:LAT, longitude:LON, timezone:"Asia/Tokyo", forecast_days:"7",
+    current:"temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,precipitation",
+    hourly:"temperature_2m,precipitation_probability,weather_code,wind_direction_10m",
+    daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant"
+  });
+
+  let d;
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?" + q);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    d = await r.json();
+  } catch(e){
+    $("#weather").innerHTML = `<h2>空のようす<em>取得できず</em></h2>
+      <div class="state err"><b>天気を取得できませんでした</b>
+      <span>通信の状態を確認して、もう一度お試しください。（${esc(e.message)}）</span></div>`;
+    return;
+  }
+
+  const c = d.current, H = d.hourly, D = d.daily;
+  let h = `<h2>空のようす<em>三郷市・Open-Meteo</em></h2>`;
+
+  h += `<div class="now">
+    <div class="lead">
+      <div class="ic">${W_ICON[c.weather_code] || "🌡️"}</div>
+      <div>
+        <div class="tp">${Math.round(c.temperature_2m)}<small>°C</small></div>
+        <div class="cond">${W_NAME[c.weather_code] || "—"}　体感 ${Math.round(c.apparent_temperature)}°C</div>
+      </div>
+    </div>
+    <div class="metrics">
+      <div class="m"><b>${c.relative_humidity_2m}<small>%</small></b><span>湿度</span></div>
+      <div class="m"><b>${c.precipitation}<small>mm</small></b><span>降水量</span></div>
+      <div class="m"><b>${c.wind_speed_10m.toFixed(1)}<small>m/s</small></b><span>風速</span></div>
+      <div class="m"><b>${wind(c.wind_direction_10m)}</b><span>風向</span></div>
+    </div>
+  </div>`;
+
+  /* 3時間ごとに8つ。横スクロールなしで24時間ぶんが収まる */
+  const nowH = (c.time || "").slice(0, 13);
+  let i0 = H.time.findIndex(t => t.slice(0, 13) >= nowH);
+  if (i0 < 0) i0 = 0;
+  let cells = "", maxP = 0;
+  for (let k = 0; k < 8; k++){
+    const i = i0 + k * 3;
+    if (i >= H.time.length) break;
+    const dt = new Date(H.time[i]), hh = dt.getHours();
+    const pp = H.precipitation_probability?.[i] ?? 0;
+    maxP = Math.max(maxP, pp);
+    cells += `<div class="hr${(hh < 6 || hh >= 19) ? " night" : ""}">
+      <div class="t">${k === 0 ? "今" : hh + "時"}</div>
+      <div class="i">${W_ICON[H.weather_code[i]] || "・"}</div>
+      <div class="d">${Math.round(H.temperature_2m[i])}°</div>
+      <div class="p">${pp >= 10 ? pp + "%" : ""}</div>
+      <div class="w"><span class="arw" style="transform:rotate(${(H.wind_direction_10m[i] + 180) % 360}deg)">↑</span></div>
+    </div>`;
+  }
+  h += `<details><summary>これから24時間　3時間ごと${maxP >= 30 ? `・最大降水確率 ${maxP}%` : ""}</summary>
+    <div class="hours">${cells}</div>
+    <div class="body" style="padding-top:10px;font-size:11px;color:var(--ink-soft)">青い数字は降水確率、矢印は風の向きです。</div></details>`;
+
+  /* 週間 */
+  const lo = Math.min(...D.temperature_2m_min), hi = Math.max(...D.temperature_2m_max);
+  const span = Math.max(hi - lo, 1);
+  const hol = holidays(new Date().getFullYear());
+  let rows = "";
+  D.time.forEach((t, i) => {
+    const dt = new Date(t + "T00:00:00"), w = dt.getDay();
+    const isHol = hol.has(t);
+    const mn = D.temperature_2m_min[i], mx = D.temperature_2m_max[i];
+    const pp = D.precipitation_probability_max?.[i] ?? 0;
+    rows += `<div class="wk">
+      <div class="dy ${isHol || w === 0 ? "sun" : w === 6 ? "sat" : ""}" ${isHol ? `title="${hol.get(t)}"` : ""}>${i === 0 ? "今日" : DOW[w] + "曜"}<s>${dt.getMonth()+1}/${dt.getDate()}</s></div>
+      <div class="ic">${W_ICON[D.weather_code[i]] || "・"}</div>
+      <div class="pp">${pp >= 10 ? pp + "%" : ""}</div>
+      <div class="rng"><span>${Math.round(mn)}°</span>
+        <span class="track"><span class="fill" style="left:${(mn-lo)/span*100}%;width:${Math.max((mx-mn)/span*100,4)}%"></span></span>
+        <b>${Math.round(mx)}°</b></div>
+      <div class="wd">${D.wind_speed_10m_max[i].toFixed(0)}m/s ${wind(D.wind_direction_10m_dominant[i])}</div>
+    </div>`;
+  });
+  h += `<details><summary>この先一週間　${Math.round(Math.min(...D.temperature_2m_min))}°〜${Math.round(Math.max(...D.temperature_2m_max))}°</summary>
+    <div class="body">${rows}</div></details>`;
+
+  $("#weather").innerHTML = h;
+}
+
 /* ===================== 栽培記録 ===================== */
+let RECORDS = [];
+
 function gauge(days){
-  if (days === null || days === undefined){
+  if (days == null){
     return `<div class="gauge"><div class="row"><span>乾き具合</span><span>記録なし</span></div>
       <div class="bar">${"<i></i>".repeat(7)}</div></div>`;
   }
@@ -531,40 +640,71 @@ function gauge(days){
     <div class="row"><span>最終水やり</span><span class="val">${days === 0 ? "今日" : days + "日前"}</span></div>
     <div class="bar${days >= 4 ? " thirsty" : ""}">${cells}</div></div>`;
 }
-
 const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
 
-function calendar(records){
+function calendar(){
   const now = new Date();
   const y = now.getFullYear(), m = now.getMonth(), today = now.getDate();
-  const first = new Date(y, m, 1).getDay();
-  const last = new Date(y, m + 1, 0).getDate();
-  const pad = (n) => String(n).padStart(2, "0");
-  const done = new Set((records || []).map(r => r.date).filter(Boolean));
+  const first = new Date(y, m, 1).getDay(), last = new Date(y, m + 1, 0).getDate();
+  const hol = holidays(y);
 
-  let h = `<div class="cal"><div class="mn">${y}年 ${m + 1}月</div><div class="grid">`;
-  DOW.forEach((d, i) => {
-    h += `<div class="dow${i === 0 ? " sun" : i === 6 ? " sat" : ""}">${d}</div>`;
+  /* その日の記録をまとめ、最も重い健康状態で点の色を決める */
+  const byDay = {};
+  RECORDS.forEach(r => {
+    if (!r.date) return;
+    (byDay[r.date] = byDay[r.date] || []).push(r);
   });
-  for (let i = 0; i < first; i++) h += `<div class="dd empty">0</div>`;
+
+  let g = "";
+  DOW.forEach((d, i) => { g += `<div class="dow ${i === 0 ? "sun" : i === 6 ? "sat" : ""}">${d}</div>`; });
+  for (let i = 0; i < first; i++) g += `<div class="dd empty">0</div>`;
+
   for (let d = 1; d <= last; d++){
     const key = `${y}-${pad(m + 1)}-${pad(d)}`;
-    const cls = ["dd", d === today ? "today" : "", done.has(key) ? "rec" : ""].filter(Boolean).join(" ");
-    h += `<div class="${cls}">${d}</div>`;
+    const w = (first + d - 1) % 7;
+    const hn = hol.get(key);
+    const rs = byDay[key] || [];
+    const worst = rs.some(r => r.health === "異常") ? "bad" : rs.some(r => r.health === "注意") ? "warn" : "";
+    const cls = ["dd", d === today ? "today" : "", rs.length ? "hit" : "",
+                 (hn || w === 0) ? "hol" : w === 6 ? "sat" : ""].filter(Boolean).join(" ");
+    g += `<${rs.length ? "button" : "div"} class="${cls}" ${rs.length ? `data-day="${key}" type="button"` : ""}
+      ${hn ? `title="${hn}"` : ""}>${d}${rs.length ? `<i class="${worst}"></i>` : ""}</${rs.length ? "button" : "div"}>`;
   }
-  return h + `</div><div class="lg"><i></i>記録のある日</div></div>`;
+
+  return `<div class="cal"><div class="mn">${y}年 ${m + 1}月</div><div class="grid">${g}</div>
+    <div class="lg">
+      <span><i></i>良好のみ</span><span><i class="warn"></i>注意あり</span><span><i class="bad"></i>異常あり</span>
+      <span>点のある日をおすとその日の記録が開きます</span>
+    </div><div id="daybox"></div></div>`;
+}
+
+function showDay(key){
+  const rs = RECORDS.filter(r => r.date === key);
+  const dt = new Date(key + "T00:00:00");
+  let h = `<div class="daybox"><h5>${dt.getMonth()+1}月${dt.getDate()}日（${DOW[dt.getDay()]}）の記録　${rs.length}件</h5>`;
+  rs.forEach(r => {
+    h += `<div class="rw"><b>${esc(r.plant || "—")}</b>
+      ${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : ""}
+      <span>${esc(r.action || r.ai_comment || "コメントなし").slice(0, 90)}</span></div>`;
+  });
+  $("#daybox").innerHTML = h + `</div>`;
+  document.querySelectorAll(".cal .dd.on").forEach(e => e.classList.remove("on"));
+  document.querySelector(`.cal .dd[data-day="${key}"]`)?.classList.add("on");
 }
 
 function render(d){
   const s = d.stats || {};
+  RECORDS = d.records || [];
   $("#stamp").textContent = "最終同期 " + (d.generated_at || "").replace("T", " ").slice(0, 16);
 
-  let h = `<div class="figures">
-    <div class="fig"><b>${s.plants_active ?? 0}</b><span>栽培中の株</span></div>
-    <div class="fig${(s.needs_attention ?? 0) > 0 ? " hot" : ""}"><b>${s.needs_attention ?? 0}</b><span>対応が必要</span></div>
-    <div class="fig"><b>${s.records_7d ?? 0}</b><span>今週の記録</span></div>
-    <div class="fig"><b>${s.total_records ?? 0}</b><span>記録の総数</span></div>
-  </div>`;
+  /* ① 株のようす */
+  let h = `<section><h2>株のようす<em>急ぎの順</em></h2>
+    <div class="figures">
+      <div class="fig"><b>${s.plants_active ?? 0}</b><span>栽培中の株</span></div>
+      <div class="fig${(s.needs_attention ?? 0) > 0 ? " hot" : ""}"><b>${s.needs_attention ?? 0}</b><span>対応が必要</span></div>
+      <div class="fig"><b>${s.records_7d ?? 0}</b><span>今週の記録</span></div>
+      <div class="fig"><b>${s.total_records ?? 0}</b><span>記録の総数</span></div>
+    </div>`;
 
   const cr = d.critical || [];
   if (cr.length){
@@ -574,22 +714,18 @@ function render(d){
   }
 
   const pl = d.plants || [];
-  h += `<section><h2>株の様子<em>急ぎの順</em></h2>`;
   if (!pl.length){
-    h += `<div class="state calm">栽培中の株がありません。</div>`;
+    h += `<div class="state">栽培中の株がありません。</div>`;
   } else {
     h += `<div class="plants">`;
     pl.forEach(p => {
       const flags = (p.flags || []).map(f => `<span class="flag ${esc(f)}">${esc(f)}</span>`).join("");
       h += `<div class="card u${p.urgency ?? 5}">
         <div class="top">
-          <div>
-            <div class="nm">${esc(p.name)}</div>
-            <div class="phase">${esc(p.phase || "フェーズ未設定")}</div>
-          </div>
+          <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
           <span class="badge ${hc(p.health)}">${esc(p.health || "未判定")}</span>
         </div>
-        ${flags ? `<div class="flags">${flags}</div>` : ""}
+        <div class="flags">${flags}</div>
         ${gauge(p.days_since_water)}
         <div class="note">${p.action ? `<b>次の一手</b>　${esc(p.action)}` : (p.ai_comment ? esc(p.ai_comment) : "コメントはまだありません。")}</div>
       </div>`;
@@ -598,46 +734,51 @@ function render(d){
   }
   h += `</section>`;
 
-  const ar = d.archived || [];
-  if (ar.length){
-    h += `<section><h2>過去の株<em>${d.archive_days ?? 30}日以上記録なし</em></h2>
-      <details><summary>栽培を終えた${ar.length}株</summary><div class="past">`;
-    ar.forEach(p => {
-      h += `<div class="r"><b>${esc(p.name)}</b>
-        <span>最後の記録　${esc((p.last_record || "").replace(/-/g, "."))}（${p.days_since_record}日前）</span></div>`;
-    });
-    h += `</div></details></section>`;
-  }
-
-  h += `<section><h2>記録カレンダー<em>今月</em></h2>${calendar(d.records)}</section>`;
-
-  const skip = new Set(d.archived_names || []);
-  const rc = (d.records || []).filter(r => !skip.has(r.plant)).slice(0, 20);
-  h += `<section><h2>直近の記録<em>栽培中の株</em></h2>
-    <details><summary>新しい順に${rc.length}件</summary><div style="padding:4px 18px 18px">
-    <table><thead><tr><th>日付</th><th>株</th><th>状態</th><th>水やり</th><th class="w">作業</th></tr></thead><tbody>`;
-  rc.forEach(r => {
-    const works = (r.works && r.works.length) ? r.works.join("・") : "—";
-    h += `<tr>
-      <td class="d">${esc((r.date || "").replace(/-/g, "."))}</td>
-      <td class="p">${esc(r.plant || "—")}</td>
-      <td>${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : "—"}</td>
-      <td class="d">${esc(r.watering || "—")}</td>
-      <td class="w">${esc(works)}</td>
-    </tr>`;
-  });
-  h += `</tbody></table></div></details>
-    <div class="foot"><span>過去の株を含むすべての記録はNotionにあります。</span>
-    <a href="${DB_URL}" target="_blank" rel="noopener">栽培記録をNotionで開く</a></div></section>`;
-
   const app = $("#app");
   app.className = "fade";
   app.innerHTML = h;
+
+  /* ③〜⑤ 天気のうしろに置くもの */
+  let t = `<section><h2>記録カレンダー<em>今月</em></h2>
+    <details><summary>${new Date().getMonth() + 1}月の記録を見る</summary><div class="body">${calendar()}</div></details></section>`;
+
+  const skip = new Set(d.archived_names || []);
+  const rc = RECORDS.filter(r => !skip.has(r.plant)).slice(0, 20);
+  t += `<section><h2>直近の記録<em>栽培中の株</em></h2>
+    <details><summary>新しい順に${rc.length}件</summary><div class="body">
+    <table><thead><tr><th>日付</th><th>株</th><th>状態</th><th>水やり</th><th class="w">作業</th></tr></thead><tbody>`;
+  rc.forEach(r => {
+    const works = (r.works && r.works.length) ? r.works.join("・") : "—";
+    t += `<tr><td class="d">${esc((r.date || "").replace(/-/g, "."))}</td>
+      <td class="p">${esc(r.plant || "—")}</td>
+      <td>${r.health ? `<span class="pill ${hc(r.health)}">${esc(r.health)}</span>` : "—"}</td>
+      <td class="d">${esc(r.watering || "—")}</td>
+      <td class="w">${esc(works)}</td></tr>`;
+  });
+  t += `</tbody></table></div></details>
+    <div class="foot"><span>過去の株を含むすべての記録はNotionにあります。</span>
+    <a href="${DB_URL}" target="_blank" rel="noopener">栽培記録をNotionで開く</a></div></section>`;
+
+  const ar = d.archived || [];
+  if (ar.length){
+    t += `<section><h2>過去の株<em>${d.archive_days ?? 30}日以上記録なし</em></h2>
+      <details><summary>栽培を終えた${ar.length}株</summary><div class="body past">`;
+    ar.forEach(p => {
+      t += `<div class="r"><b>${esc(p.name)}</b>
+        <span>最後の記録　${esc((p.last_record || "").replace(/-/g, "."))}（${p.days_since_record}日前）</span></div>`;
+    });
+    t += `</div></details></section>`;
+  }
+  $("#tail").innerHTML = t;
+
+  $("#tail").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-day]");
+    if (b) showDay(b.dataset.day);
+  });
 }
 
 async function loadGarden(){
   $("#app").innerHTML = `<div class="state">Notionのデータを取得しています…</div>`;
-  /* 同じ場所 → 公開URL の順に試す。ファイルを直接開いた場合も後者で読める */
   const routes = ["data.json", "https://natsume0703.github.io/garden-dashboard/data.json"];
   let last = "";
   for (const url of routes){
@@ -646,23 +787,23 @@ async function loadGarden(){
       if (!res.ok) throw new Error("HTTP " + res.status);
       render(await res.json());
       return;
-    } catch(e){
-      last = e.message;
-    }
+    } catch(e){ last = e.message; }
   }
   $("#stamp").textContent = "同期できていません";
-  $("#app").innerHTML = `<section><div class="state err">
-    <b>栽培データを読み込めませんでした</b>
-    <span>GitHub Actions の同期が一度も成功していない場合は、Actions タブから「Sync Notion to data.json」を実行してください。（${esc(last)}）</span>
-  </div></section>`;
+  $("#app").innerHTML = `<section><div class="state err"><b>栽培データを読み込めませんでした</b>
+    <span>GitHub Actions の同期が一度も成功していない場合は、Actions タブから「Sync Notion to data.json」を実行してください。（${esc(last)}）</span></div></section>`;
 }
 
 /* ===================== 起動 ===================== */
-const n = new Date();
-$("#today").textContent = `${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日（${DOW[n.getDay()]}）`;
+const n0 = new Date();
+const hol0 = holidays(n0.getFullYear());
+const key0 = `${n0.getFullYear()}-${pad(n0.getMonth()+1)}-${pad(n0.getDate())}`;
+$("#today").innerHTML = `${n0.getFullYear()}年${n0.getMonth()+1}月${n0.getDate()}日（${DOW[n0.getDay()]}）`
+  + (hol0.has(key0) ? `<span class="hol">　${hol0.get(key0)}</span>` : "");
 
-$("#reload").addEventListener("click", () => { loadWeather(); loadGarden(); });
+applySeasonStyle(n0.getMonth());
 renderSeason();
+$("#reload").addEventListener("click", () => { loadWeather(); loadGarden(); });
 loadWeather();
 loadGarden();
 setInterval(loadWeather, 10 * 60 * 1000);
