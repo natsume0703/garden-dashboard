@@ -1,55 +1,16 @@
 {
-  "generated_at": "2026-08-12T08:22:52+09:00",
+  "generated_at": "2026-08-12T10:33:44+09:00",
+  "archive_days": 30,
   "stats": {
-    "total_records": 22,
+    "plants_active": 5,
+    "plants_archived": 2,
+    "needs_attention": 2,
     "records_7d": 9,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "plants_tracked": 7,
-    "alerts_count": 8
+    "total_records": 22
   },
-  "alerts": [
-    {
-      "plant": "🌱バジル",
-      "level": "水やり",
-      "message": "水やりが必要です"
-    },
-    {
-      "plant": "🌿大葉",
-      "level": "水やり",
-      "message": "水やりが必要です"
-    },
-    {
-      "plant": "🍆ナス",
-      "level": "水やり",
-      "message": "水やりが必要です"
-    },
-    {
-      "plant": "🌱バジル",
-      "level": "注意",
-      "message": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与えてください。"
-    },
-    {
-      "plant": "🪴ゴムの木",
-      "level": "注意",
-      "message": "日当たりを改善するか、定期的な剪定で脇芽の成長を促し、より丈夫な株に育てましょう。"
-    },
-    {
-      "plant": "🌴パキラ",
-      "level": "注意",
-      "message": "土の表面だけでなく、指で数センチ深く触れてみて土が乾いていることを確認し、明るい間接光の場所に置いてください。"
-    },
-    {
-      "plant": "🍅トマト",
-      "level": "注意",
-      "message": "植物の画像を再度提供し、土の湿り具合を指で確認し、必要に応じて水やりを行ってください。"
-    },
-    {
-      "plant": "🍆ナス",
-      "level": "注意",
-      "message": "鉢底から水が流れ出るまでたっぷりと水を与え、土の湿り具合を確認してください。"
-    }
-  ],
+  "critical": [],
   "plants": [
     {
       "name": "🌱バジル",
@@ -65,23 +26,12 @@
       "last_record": "2026-08-10",
       "days_since_record": 2,
       "ai_comment": "気温31°Cはバジルにとってやや高温であり、水分の蒸発が早まります。土の乾燥に注意し、適切に管理しないと植物がストレスを受けやすい状態です。",
-      "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与えてください。"
-    },
-    {
-      "name": "🌴パキラ",
-      "phase": null,
-      "health": "注意",
-      "watering": "不要",
-      "harvest": null,
-      "status": "未対応",
-      "due": null,
-      "priority": "🟡中",
-      "last_watered": "2026-08-09",
-      "days_since_water": 3,
-      "last_record": "2026-08-09",
-      "days_since_record": 3,
-      "ai_comment": "上部の葉は健康で新しい芽も確認できます。しかし、株元には葉が落ちた跡が見られ、過去のストレスや光量不足の可能性があります。日々の管理に注意を払い、健康な状態を保ちましょう。",
-      "action": "土の表面だけでなく、指で数センチ深く触れてみて土が乾いていることを確認し、明るい間接光の場所に置いてください。"
+      "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
     },
     {
       "name": "🌿大葉",
@@ -97,7 +47,31 @@
       "last_record": "2026-08-09",
       "days_since_record": 3,
       "ai_comment": "写真の植物はオクラであり、提供された植物名（大葉）とは異なります。オクラ自体は新鮮で健康に見えます。記録されている最終水やり日が未来の日付であるため、直ちに水やりを行うことを推奨します。",
-      "action": "土の表面が乾いているようであれば、すぐに水やりをしましょう。"
+      "action": "土の表面が乾いているようであれば、すぐに水やりをしましょう。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
+    },
+    {
+      "name": "🌴パキラ",
+      "phase": null,
+      "health": "注意",
+      "watering": "不要",
+      "harvest": null,
+      "status": "未対応",
+      "due": null,
+      "priority": "🟡中",
+      "last_watered": "2026-08-09",
+      "days_since_water": 3,
+      "last_record": "2026-08-09",
+      "days_since_record": 3,
+      "ai_comment": "上部の葉は健康で新しい芽も確認できます。しかし、株元には葉が落ちた跡が見られ、過去のストレスや光量不足の可能性があります。日々の管理に注意を払い、健康な状態を保ちましょう。",
+      "action": "土の表面だけでなく、指で数センチ深く触れてみて土が乾いていることを確認し、明るい間接光の場所に置いてください。",
+      "active": true,
+      "flags": [],
+      "urgency": 4
     },
     {
       "name": "🍅トマト",
@@ -113,39 +87,10 @@
       "last_record": "2026-08-09",
       "days_since_record": 3,
       "ai_comment": "提供された画像には植物が確認できません。そのため、トマトの具体的な健康状態や水やりの必要性を正確に判断することはできません。一般的なトマトの管理として、土の表面が乾いたらたっぷりと水を与えてください。",
-      "action": "植物の画像を再度提供し、土の湿り具合を指で確認し、必要に応じて水やりを行ってください。"
-    },
-    {
-      "name": "🍆ナス",
-      "phase": null,
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "status": null,
-      "due": null,
-      "priority": null,
-      "last_watered": "2026-06-15",
-      "days_since_water": 58,
-      "last_record": "2026-06-15",
-      "days_since_record": 58,
-      "ai_comment": "葉がやや元気なく見え、土の表面も乾燥しています。ナスは定期的な水やりを好むため、土の乾燥には注意が必要です。",
-      "action": "鉢底から水が流れ出るまでたっぷりと水を与え、土の湿り具合を確認してください。"
-    },
-    {
-      "name": "🍉すいか",
-      "phase": null,
-      "health": null,
-      "watering": null,
-      "harvest": null,
-      "status": null,
-      "due": null,
-      "priority": null,
-      "last_watered": "2026-05-31",
-      "days_since_water": 73,
-      "last_record": "2026-05-31",
-      "days_since_record": 73,
-      "ai_comment": "提供された植物名と写真の植物に大きな違いが見受けられます。写真の植物は「すいか」ではなく、「パキラ（Pachira aquatica）」である可能性が非常に高いです。\n\nこのため、「すいか」という情報に基づいた診断は困難ですが、形式に沿って回答いたします。\n\n*   水やり：不要\n*   健康状態：異常\n*   診断コメント：提供された植物名が「すいか」とのことですが、写真の植物は「パキラ」と見受けられます。そのため、「すいか」として正確な水やりや健康状態の診断は困難です。植物名が異なると、適切なケアも大きく変わるため、まずは植物名の再確認をお勧めします。",
-      "action": null
+      "action": "植物の画像を再度提供し、土の湿り具合を指で確認し、必要に応じて水やりを行ってください。",
+      "active": true,
+      "flags": [],
+      "urgency": 4
     },
     {
       "name": "🪴ゴムの木",
@@ -161,8 +106,57 @@
       "last_record": "2026-08-10",
       "days_since_record": 2,
       "ai_comment": "最終水やり日が最近であるにもかかわらず、植物は細く徒長気味で支柱に頼っています。これは光量不足や栄養バランスの偏り、もしくは剪定の必要性を示唆しています。土の表面だけでなく、深部の乾燥具合も確認してください。",
-      "action": "日当たりを改善するか、定期的な剪定で脇芽の成長を促し、より丈夫な株に育てましょう。"
+      "action": "日当たりを改善するか、定期的な剪定で脇芽の成長を促し、より丈夫な株に育てましょう。",
+      "active": true,
+      "flags": [],
+      "urgency": 4
     }
+  ],
+  "archived": [
+    {
+      "name": "🍆ナス",
+      "phase": null,
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "status": null,
+      "due": null,
+      "priority": null,
+      "last_watered": "2026-06-15",
+      "days_since_water": 58,
+      "last_record": "2026-06-15",
+      "days_since_record": 58,
+      "ai_comment": "葉がやや元気なく見え、土の表面も乾燥しています。ナスは定期的な水やりを好むため、土の乾燥には注意が必要です。",
+      "action": "鉢底から水が流れ出るまでたっぷりと水を与え、土の湿り具合を確認してください。",
+      "active": false,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
+    },
+    {
+      "name": "🍉すいか",
+      "phase": null,
+      "health": null,
+      "watering": null,
+      "harvest": null,
+      "status": null,
+      "due": null,
+      "priority": null,
+      "last_watered": "2026-05-31",
+      "days_since_water": 73,
+      "last_record": "2026-05-31",
+      "days_since_record": 73,
+      "ai_comment": "提供された植物名と写真の植物に大きな違いが見受けられます。写真の植物は「すいか」ではなく、「パキラ（Pachira aquatica）」である可能性が非常に高いです。\n\nこのため、「すいか」という情報に基づいた診断は困難ですが、形式に沿って回答いたします。\n\n*   水やり：不要\n*   健康状態：異常\n*   診断コメント：提供された植物名が「すいか」とのことですが、写真の植物は「パキラ」と見受けられます。そのため、「すいか」として正確な水やりや健康状態の診断は困難です。植物名が異なると、適切なケアも大きく変わるため、まずは植物名の再確認をお勧めします。",
+      "action": null,
+      "active": false,
+      "flags": [],
+      "urgency": 5
+    }
+  ],
+  "archived_names": [
+    "🍆ナス",
+    "🍉すいか"
   ],
   "records": [
     {
