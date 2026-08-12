@@ -93,13 +93,16 @@
   summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
   .body{padding:16px 18px 18px;}
 
-  /* ---------- 数値帯 ---------- */
-  .figures{display:flex;flex-wrap:wrap;text-align:center;border:1px solid var(--line);background:var(--card);}
-  .fig{flex:1 1 110px;padding:11px 4px 10px;border-left:1px solid var(--line);}
-  .fig:first-child{border-left:none;}
-  .fig b{display:block;font-size:20px;font-weight:700;line-height:1.15;letter-spacing:.02em;}
-  .fig.hot b{color:var(--alert);}
-  .fig span{display:block;font-size:10px;color:var(--ink-soft);letter-spacing:.08em;margin-top:3px;}
+  /* ---------- 要約の一行 ---------- */
+  /* 箱で囲わず文章に近い並びにして、主役である株のカードへ視線を流す */
+  .tally{
+    display:flex;flex-wrap:wrap;align-items:baseline;
+    margin:-4px 0 16px;font-size:12.5px;color:var(--ink-soft);letter-spacing:.04em;
+  }
+  .tally span{padding:0 14px;border-left:1px solid var(--line);line-height:1.6;}
+  .tally span:first-child{padding-left:0;border-left:none;}
+  .tally b{font-size:15px;font-weight:700;color:var(--ink);margin:0 2px;letter-spacing:0;}
+  .tally .hot,.tally .hot b{color:var(--alert);}
 
   /* ---------- 重大な報せ ---------- */
   .critical{margin-top:12px;border:1px solid var(--alert);background:#FBEFED;padding:15px 18px;}
@@ -295,12 +298,10 @@
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
-    .fig b{font-size:19px;}
-    /* 3つ＋1つに折り返さないよう、狭い画面では2列2段に組む */
-    .figures{display:grid;grid-template-columns:1fr 1fr;}
-    .fig{border-left:1px solid var(--line);border-top:1px solid var(--line);}
-    .fig:nth-child(-n+2){border-top:none;}
-    .fig:nth-child(odd){border-left:none;}
+    /* 要約は狭い画面では区切り線をやめ、二行に折り返す */
+    .tally{gap:2px 0;}
+    .tally span{padding:0 10px;}
+    .tally span:nth-child(3){padding-left:0;border-left:none;}
   }
 </style>
 </head>
@@ -879,12 +880,13 @@ function render(d){
   $("#stamp").textContent = "最終同期 " + (d.generated_at || "").replace("T", " ").slice(0, 16);
 
   /* ① 株のようす */
+  const att = s.needs_attention ?? 0;
   let h = `<section><h2><span class="t">${icon("sprout")}株のようす</span><em>急ぎの順</em></h2>
-    <div class="figures">
-      <div class="fig"><b>${s.plants_active ?? 0}</b><span>栽培中の株</span></div>
-      <div class="fig${(s.needs_attention ?? 0) > 0 ? " hot" : ""}"><b>${s.needs_attention ?? 0}</b><span>対応が必要</span></div>
-      <div class="fig"><b>${s.records_7d ?? 0}</b><span>今週の記録</span></div>
-      <div class="fig"><b>${s.total_records ?? 0}</b><span>記録の総数</span></div>
+    <div class="tally">
+      <span><b>${s.plants_active ?? 0}</b>株を栽培中</span>
+      <span class="${att > 0 ? "hot" : ""}">${att > 0 ? `うち<b>${att}</b>株が要対応` : "対応が必要な株はなし"}</span>
+      <span>今週の記録<b>${s.records_7d ?? 0}</b>件</span>
+      <span>通算<b>${s.total_records ?? 0}</b>件</span>
     </div>`;
 
   const cr = d.critical || [];
