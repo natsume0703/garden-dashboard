@@ -103,6 +103,11 @@
   .tally span:first-child{padding-left:0;border-left:none;}
   .tally b{font-size:15px;font-weight:700;color:var(--ink);margin:0 2px;letter-spacing:0;}
   .tally .hot,.tally .hot b{color:var(--alert);}
+  /* 折り返すと行頭に区切り線が残ってしまうため、狭い幅では線をやめて2列に揃える */
+  @media(max-width:620px){
+    .tally{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-bottom:18px;}
+    .tally span{padding:0;border-left:none;}
+  }
 
   /* ---------- 重大な報せ ---------- */
   .critical{margin-top:12px;border:1px solid var(--alert);background:#FBEFED;padding:15px 18px;}
@@ -327,10 +332,6 @@
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
-    /* 要約は狭い画面では区切り線をやめ、二行に折り返す */
-    .tally{gap:2px 0;}
-    .tally span{padding:0 10px;}
-    .tally span:nth-child(3){padding-left:0;border-left:none;}
   }
 </style>
 </head>
