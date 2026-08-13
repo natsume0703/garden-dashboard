@@ -181,15 +181,19 @@
   .hr .i{font-size:18px;line-height:1.5;}
   .hr .d{font-size:14px;font-weight:700;}
   .hr .p{font-size:10px;color:var(--water);height:15px;}
+  .hr .mm{font-size:9.5px;color:var(--ink-soft);height:14px;letter-spacing:-.01em;}
   .hr .w{font-size:11px;color:var(--ink-soft);}
 
   /* ---------- 天気：週間 ---------- */
-  .wk{display:grid;grid-template-columns:62px 28px 44px 1fr 60px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;}
+  .wk{display:grid;grid-template-columns:62px 28px 54px 1fr 60px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;}
   .wk:first-child{border-top:none;}
   .wk .dy{letter-spacing:.04em;}
   .wk .dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
   .wk .ic{font-size:17px;text-align:center;}
-  .wk .pp{font-size:11px;color:var(--water);text-align:right;}
+  /* 降水は確率と雨量を上下に重ねる。どちらも無い日は空欄のまま */
+  .wk .pp{display:flex;flex-direction:column;align-items:flex-end;line-height:1.35;}
+  .wk .pp b{font-size:11px;color:var(--water);font-weight:400;}
+  .wk .pp s{text-decoration:none;font-size:10px;color:var(--ink-soft);}
   .wk .wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
   .rng{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);}
   .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:50px;}
@@ -327,7 +331,7 @@
     .hours{grid-template-columns:repeat(4,1fr);}
     .hr:nth-child(5){border-left:none;}
     .hr:nth-child(n+5){border-top:1px solid var(--line);}
-    .wk{grid-template-columns:54px 24px 40px 1fr;gap:8px;}
+    .wk{grid-template-columns:54px 24px 48px 1fr;gap:8px;}
     .wk .wd{display:none;}
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
@@ -741,8 +745,8 @@ async function loadWeather(){
   const q = new URLSearchParams({
     latitude:LAT, longitude:LON, timezone:"Asia/Tokyo", forecast_days:"7",
     current:"temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,precipitation",
-    hourly:"temperature_2m,precipitation_probability,weather_code,wind_direction_10m",
-    daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant"
+    hourly:"temperature_2m,precipitation_probability,precipitation,weather_code,wind_direction_10m",
+    daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant"
   });
 
   let d;
@@ -780,24 +784,35 @@ async function loadWeather(){
   const nowH = (c.time || "").slice(0, 13);
   let i0 = H.time.findIndex(t => t.slice(0, 13) >= nowH);
   if (i0 < 0) i0 = 0;
-  let cells = "", maxP = 0;
+
+  /* 見出しに出す24時間の総雨量は、3時間おきではなく全時刻を足す */
+  let sum24 = 0, maxP = 0;
+  for (let i = i0; i < Math.min(i0 + 24, H.time.length); i++){
+    sum24 += H.precipitation?.[i] || 0;
+    maxP = Math.max(maxP, H.precipitation_probability?.[i] ?? 0);
+  }
+
+  let cells = "";
   for (let k = 0; k < 8; k++){
     const i = i0 + k * 3;
     if (i >= H.time.length) break;
     const dt = new Date(H.time[i]), hh = dt.getHours();
     const pp = H.precipitation_probability?.[i] ?? 0;
-    maxP = Math.max(maxP, pp);
+    /* この列が受け持つ3時間ぶんの雨量をまとめる */
+    let mm = 0;
+    for (let j = i; j < Math.min(i + 3, H.time.length); j++) mm += H.precipitation?.[j] || 0;
     cells += `<div class="hr${(hh < 6 || hh >= 19) ? " night" : ""}">
       <div class="t">${k === 0 ? "今" : hh + "時"}</div>
       <div class="i">${W_ICON[H.weather_code[i]] || "・"}</div>
       <div class="d">${Math.round(H.temperature_2m[i])}°</div>
       <div class="p">${pp >= 10 ? pp + "%" : ""}</div>
+      <div class="mm">${mm >= 0.1 ? mm.toFixed(1) + "mm" : ""}</div>
       <div class="w"><span class="arw" style="transform:rotate(${(H.wind_direction_10m[i] + 180) % 360}deg)">↑</span></div>
     </div>`;
   }
-  h += `<details><summary>これから24時間　3時間ごと${maxP >= 30 ? `・最大降水確率 ${maxP}%` : ""}</summary>
+  h += `<details><summary>これから24時間　3時間ごと${maxP >= 30 ? `・最大降水確率 ${maxP}%` : ""}${sum24 >= 0.1 ? `・雨量 ${sum24.toFixed(1)}mm` : ""}</summary>
     <div class="hours">${cells}</div>
-    <div class="body" style="padding-top:10px;font-size:11px;color:var(--ink-soft)">青い数字は降水確率、矢印は風の向きです。</div></details>`;
+    <div class="body" style="padding-top:10px;font-size:11px;color:var(--ink-soft)">青い数字は降水確率、その下は3時間ぶんの雨量、矢印は風の向きです。</div></details>`;
 
   /* 週間 */
   const lo = Math.min(...D.temperature_2m_min), hi = Math.max(...D.temperature_2m_max);
@@ -809,17 +824,19 @@ async function loadWeather(){
     const isHol = hol.has(t);
     const mn = D.temperature_2m_min[i], mx = D.temperature_2m_max[i];
     const pp = D.precipitation_probability_max?.[i] ?? 0;
+    const ps = D.precipitation_sum?.[i] ?? 0;
     rows += `<div class="wk">
       <div class="dy ${isHol || w === 0 ? "sun" : w === 6 ? "sat" : ""}" ${isHol ? `title="${hol.get(t)}"` : ""}>${i === 0 ? "今日" : DOW[w] + "曜"}<s>${dt.getMonth()+1}/${dt.getDate()}</s></div>
       <div class="ic">${W_ICON[D.weather_code[i]] || "・"}</div>
-      <div class="pp">${pp >= 10 ? pp + "%" : ""}</div>
+      <div class="pp"><b>${pp >= 10 ? pp + "%" : ""}</b><s>${ps >= 0.1 ? ps.toFixed(1) + "mm" : ""}</s></div>
       <div class="rng"><span>${Math.round(mn)}°</span>
         <span class="track"><span class="fill" style="left:${(mn-lo)/span*100}%;width:${Math.max((mx-mn)/span*100,4)}%"></span></span>
         <b>${Math.round(mx)}°</b></div>
       <div class="wd">${D.wind_speed_10m_max[i].toFixed(0)}m/s ${wind(D.wind_direction_10m_dominant[i])}</div>
     </div>`;
   });
-  h += `<details><summary>この先一週間　${Math.round(Math.min(...D.temperature_2m_min))}°〜${Math.round(Math.max(...D.temperature_2m_max))}°</summary>
+  const rain7 = (D.precipitation_sum || []).reduce((a, b) => a + (b || 0), 0);
+  h += `<details><summary>この先一週間　${Math.round(Math.min(...D.temperature_2m_min))}°〜${Math.round(Math.max(...D.temperature_2m_max))}°${rain7 >= 0.1 ? `・雨量 ${rain7.toFixed(0)}mm` : ""}</summary>
     <div class="body">${rows}</div></details>`;
 
   $("#weather").innerHTML = h;
