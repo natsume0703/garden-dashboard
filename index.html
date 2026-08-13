@@ -180,25 +180,32 @@
   .hr .t{font-size:10.5px;color:var(--ink-soft);}
   .hr .i{font-size:18px;line-height:1.5;}
   .hr .d{font-size:14px;font-weight:700;}
-  .hr .p{font-size:10px;color:var(--water);height:15px;}
-  .hr .mm{font-size:9.5px;color:var(--ink-soft);height:14px;letter-spacing:-.01em;}
+  .hr .p{font-size:10px;color:var(--water);height:15px;white-space:nowrap;}
+  .hr .mm{font-size:9.5px;color:var(--ink-soft);height:14px;letter-spacing:-.02em;white-space:nowrap;}
   .hr .w{font-size:11px;color:var(--ink-soft);}
 
   /* ---------- 天気：週間 ---------- */
-  .wk{display:grid;grid-template-columns:62px 28px 54px 1fr 60px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;}
-  .wk:first-child{border-top:none;}
-  .wk .dy{letter-spacing:.04em;}
-  .wk .dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
-  .wk .ic{font-size:17px;text-align:center;}
+  /* 表全体をひとつの格子として組む。列幅は中身に合わせて決まるので、
+     風向が「西北西」になっても風速が2桁になってもはみ出さない */
+  .week{
+    display:grid;font-size:13px;align-items:center;
+    grid-template-columns:max-content max-content max-content minmax(64px,1fr) max-content;
+    column-gap:12px;
+  }
+  .wc{padding:10px 0;border-top:1px solid var(--line);min-width:0;}
+  .week > .wc:nth-child(-n+5){border-top:none;}
+  .wc.dy{letter-spacing:.04em;white-space:nowrap;}
+  .wc.dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
+  .wc.ic{font-size:17px;text-align:center;}
   /* 降水は確率と雨量を上下に重ねる。どちらも無い日は空欄のまま */
-  .wk .pp{display:flex;flex-direction:column;align-items:flex-end;line-height:1.35;}
-  .wk .pp b{font-size:11px;color:var(--water);font-weight:400;}
-  .wk .pp s{text-decoration:none;font-size:10px;color:var(--ink-soft);}
-  .wk .wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
+  .wc.pp{display:flex;flex-direction:column;align-items:flex-end;line-height:1.35;}
+  .wc.pp b{font-size:11px;color:var(--water);font-weight:400;}
+  .wc.pp s{text-decoration:none;font-size:10px;color:var(--ink-soft);}
+  .wc.wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
   .rng{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);}
-  .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:50px;}
+  .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:40px;}
   .rng .fill{position:absolute;height:100%;border-radius:3px;background:linear-gradient(90deg,#7FA8C4,#D8A15C);}
-  .rng b{color:var(--ink);font-weight:700;font-size:12px;}
+  .rng b{color:var(--ink);font-weight:700;font-size:12px;white-space:nowrap;}
 
   /* 曜日と祝日の色 */
   .sun,.hol{color:var(--alert);}
@@ -331,8 +338,8 @@
     .hours{grid-template-columns:repeat(4,1fr);}
     .hr:nth-child(5){border-left:none;}
     .hr:nth-child(n+5){border-top:1px solid var(--line);}
-    .wk{grid-template-columns:54px 24px 48px 1fr;gap:8px;}
-    .wk .wd{display:none;}
+    .week{grid-template-columns:max-content max-content max-content minmax(56px,1fr);column-gap:10px;}
+    .wc.wd{display:none;}
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
     h2 em{text-align:left;}
@@ -825,19 +832,17 @@ async function loadWeather(){
     const mn = D.temperature_2m_min[i], mx = D.temperature_2m_max[i];
     const pp = D.precipitation_probability_max?.[i] ?? 0;
     const ps = D.precipitation_sum?.[i] ?? 0;
-    rows += `<div class="wk">
-      <div class="dy ${isHol || w === 0 ? "sun" : w === 6 ? "sat" : ""}" ${isHol ? `title="${hol.get(t)}"` : ""}>${i === 0 ? "今日" : DOW[w] + "曜"}<s>${dt.getMonth()+1}/${dt.getDate()}</s></div>
-      <div class="ic">${W_ICON[D.weather_code[i]] || "・"}</div>
-      <div class="pp"><b>${pp >= 10 ? pp + "%" : ""}</b><s>${ps >= 0.1 ? ps.toFixed(1) + "mm" : ""}</s></div>
-      <div class="rng"><span>${Math.round(mn)}°</span>
+    rows += `<div class="wc dy ${isHol || w === 0 ? "sun" : w === 6 ? "sat" : ""}" ${isHol ? `title="${hol.get(t)}"` : ""}>${i === 0 ? "今日" : DOW[w] + "曜"}<s>${dt.getMonth()+1}/${dt.getDate()}</s></div>
+      <div class="wc ic">${W_ICON[D.weather_code[i]] || "・"}</div>
+      <div class="wc pp"><b>${pp >= 10 ? pp + "%" : ""}</b><s>${ps >= 0.1 ? ps.toFixed(1) + "mm" : ""}</s></div>
+      <div class="wc rng"><span>${Math.round(mn)}°</span>
         <span class="track"><span class="fill" style="left:${(mn-lo)/span*100}%;width:${Math.max((mx-mn)/span*100,4)}%"></span></span>
         <b>${Math.round(mx)}°</b></div>
-      <div class="wd">${D.wind_speed_10m_max[i].toFixed(0)}m/s ${wind(D.wind_direction_10m_dominant[i])}</div>
-    </div>`;
+      <div class="wc wd">${D.wind_speed_10m_max[i].toFixed(0)}m/s ${wind(D.wind_direction_10m_dominant[i])}</div>`;
   });
   const rain7 = (D.precipitation_sum || []).reduce((a, b) => a + (b || 0), 0);
   h += `<details><summary>この先一週間　${Math.round(Math.min(...D.temperature_2m_min))}°〜${Math.round(Math.max(...D.temperature_2m_max))}°${rain7 >= 0.1 ? `・雨量 ${rain7.toFixed(0)}mm` : ""}</summary>
-    <div class="body">${rows}</div></details>`;
+    <div class="body"><div class="week">${rows}</div></div></details>`;
 
   $("#weather").innerHTML = h;
 }
