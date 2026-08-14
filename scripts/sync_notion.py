@@ -242,6 +242,9 @@ def build_output(records):
         gap = days_between(r["date"], today)
         plants[name] = {
             "name": name,
+            # ダッシュボードから作業を申告するとき、この記録を更新する
+            "record_id": r["id"],
+            "works": r["works"],
             "phase": r["phase"],
             "health": r["health"],
             "watering": r["watering"],
