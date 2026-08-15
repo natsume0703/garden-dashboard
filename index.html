@@ -155,6 +155,38 @@
   .note{font-size:12.5px;color:var(--ink-soft);line-height:1.7;border-top:1px dotted var(--line);padding-top:11px;margin-top:auto;}
   .note b{color:var(--ink);font-weight:700;}
 
+  /* ---------- 作業の申告 ---------- */
+  .log{border-top:1px dotted var(--line);margin-top:11px;padding-top:10px;}
+  .log .open{
+    border:1px solid var(--line);background:transparent;color:var(--ink-soft);
+    font-family:inherit;font-size:11.5px;letter-spacing:.06em;padding:4px 11px;
+    border-radius:2px;cursor:pointer;width:100%;transition:background .15s,color .15s;
+  }
+  .log .open:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .log .open:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .log .done{font-size:11.5px;color:var(--leaf);letter-spacing:.06em;}
+  .log .picks{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+  .log .pick{
+    border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+    font-family:inherit;font-size:11.5px;letter-spacing:.04em;padding:3px 9px;
+    border-radius:2px;cursor:pointer;transition:all .12s;
+  }
+  .log .pick[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:700;}
+  .log .pick:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .log .row{display:flex;gap:6px;}
+  .log .send{
+    flex:1;border:1px solid var(--leaf);background:var(--leaf);color:#fff;
+    font-family:inherit;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+    padding:5px 0;border-radius:2px;cursor:pointer;
+  }
+  .log .send:disabled{opacity:.4;cursor:default;}
+  .log .cancel{
+    border:1px solid var(--line);background:transparent;color:var(--ink-soft);
+    font-family:inherit;font-size:11.5px;padding:5px 12px;border-radius:2px;cursor:pointer;
+  }
+  .log .msg{font-size:11.5px;letter-spacing:.04em;margin-top:7px;}
+  .log .msg.ng{color:var(--alert);}
+
   /* ---------- 天気：現在 ---------- */
   .now{
     background:var(--sky);border:1px solid var(--line);padding:20px 22px;
@@ -847,11 +879,78 @@ async function loadWeather(){
   $("#weather").innerHTML = h;
 }
 
+/* ===================== 作業の申告 ===================== */
+const HOOK = "https://hook.us2.make.com/p985gwt6eq9wgqhcvadd9a9v9ih1i5da";
+const WORKS = ["💧水やり", "🧺収穫", "✂️剪定", "🌱追肥", "👀観察のみ"];
+
+function logBox(p){
+  if (!p.record_id) return "";
+  const done = (p.works || []);
+  return `<div class="log" data-id="${esc(p.record_id)}" data-plant="${esc(p.name)}"
+    data-done="${esc(done.join(","))}">${shutView(done)}</div>`;
+}
+
+/* 閉じているときの見た目 */
+function shutView(done){
+  const label = done.length ? `記録済み　${done.join("・")}` : "まだ記録がありません";
+  return `<button class="open" type="button">${done.length ? "作業を修正する" : "作業を記録する"}</button>
+    <div class="msg" style="color:var(--ink-soft)">${esc(label)}</div>`;
+}
+
+function closeLog(box){
+  box.innerHTML = shutView((box.dataset.done || "").split(",").filter(Boolean));
+}
+
+function openLog(box){
+  const done = (box.dataset.done || "").split(",").filter(Boolean);
+  const picks = WORKS.map(w =>
+    `<button class="pick" type="button" data-w="${esc(w)}" aria-pressed="${done.includes(w)}">${esc(w)}</button>`
+  ).join("");
+  box.innerHTML = `<div class="picks">${picks}</div>
+    <div class="row">
+      <button class="send" type="button">記録する</button>
+      <button class="cancel" type="button">やめる</button>
+    </div>
+    <div class="msg"></div>`;
+}
+
+async function sendLog(box){
+  const chosen = [...box.querySelectorAll('.pick[aria-pressed="true"]')].map(b => b.dataset.w);
+  const msg = box.querySelector(".msg");
+  const send = box.querySelector(".send");
+  send.disabled = true;
+  msg.className = "msg";
+  msg.style.color = "var(--ink-soft)";
+  msg.textContent = "送信しています…";
+
+  try {
+    /* 相手の応答を待たない形式で送る。ブラウザの制約を避けるための方法 */
+    await fetch(HOOK, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        record_id: box.dataset.id,
+        plant: box.dataset.plant,
+        works: chosen.join(","),
+      }),
+    });
+    box.dataset.done = chosen.join(",");
+    box.innerHTML = `<div class="msg done">記録しました　${esc(chosen.join("・") || "作業なし")}</div>
+      <div class="msg" style="color:var(--ink-soft)">30秒ほどでダッシュボードに反映されます。</div>`;
+  } catch(e) {
+    msg.className = "msg ng";
+    msg.textContent = "送信できませんでした。通信を確認してください。";
+    send.disabled = false;
+  }
+}
+
 /* ===================== 栽培記録 ===================== */
 let RECORDS = [];
 let ACTIVE = [];
 let CAL = null;          /* 表示中の年月 */
 let PICKED = null;       /* 選ばれている日 */
+let BOUND = false;       /* 操作の受け取りを一度だけ設定するための印 */
 
 function gauge(days){
   if (days == null){
@@ -992,6 +1091,7 @@ function render(d){
         <div class="flags">${flags}</div>
         ${gauge(p.days_since_water)}
         <div class="note">${p.action ? `<b>次の一手</b>　${esc(p.action)}` : (p.ai_comment ? esc(p.ai_comment) : "コメントはまだありません。")}</div>
+        ${logBox(p)}
       </div>`;
     });
     h += `</div>`;
@@ -1001,6 +1101,17 @@ function render(d){
   const app = $("#app");
   app.className = "fade";
   app.innerHTML = h;
+
+  /* 作業申告の操作。カードは描き直されるので、まとめて受け取る */
+  if (!BOUND) app.addEventListener("click", (ev) => {
+    const box = ev.target.closest(".log");
+    if (!box) return;
+    if (ev.target.closest(".open"))   { openLog(box); return; }
+    if (ev.target.closest(".cancel")) { closeLog(box); return; }
+    if (ev.target.closest(".send"))   { sendLog(box); return; }
+    const pick = ev.target.closest(".pick");
+    if (pick) pick.setAttribute("aria-pressed", pick.getAttribute("aria-pressed") !== "true");
+  });
 
   /* ③〜⑤ 天気のうしろに置くもの */
   let t = `<section><h2><span class="t">${icon("calendar")}記録カレンダー</span><em>月をまたいで見られます</em></h2>
@@ -1037,7 +1148,7 @@ function render(d){
   paintCalendar();
   renderSeason();   /* 育てている株が分かってから料理を選び直す */
 
-  $("#tail").addEventListener("click", (ev) => {
+  if (!BOUND) $("#tail").addEventListener("click", (ev) => {
     const day = ev.target.closest("[data-day]");
     if (day){ showDay(day.dataset.day); return; }
 
@@ -1054,6 +1165,8 @@ function render(d){
     PICKED = null;
     paintCalendar();
   });
+
+  BOUND = true;
 }
 
 async function loadGarden(){
