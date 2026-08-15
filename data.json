@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-15T06:53:16+09:00",
+  "generated_at": "2026-08-15T13:15:36+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 6,
@@ -14,6 +14,8 @@
   "plants": [
     {
       "name": "🌱バジル",
+      "record_id": "3b8dc851-a820-81aa-9521-d70017e6cc76",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "必要",
@@ -35,6 +37,8 @@
     },
     {
       "name": "🌴パキラ",
+      "record_id": "3badc851-a820-81dc-94c0-f4a198f5d81d",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "必要",
@@ -56,6 +60,8 @@
     },
     {
       "name": "🌿大葉",
+      "record_id": "3b6dc851-a820-81fd-9862-f5c18fdc45e0",
+      "works": [],
       "phase": null,
       "health": "良好",
       "watering": "必要",
@@ -77,6 +83,8 @@
     },
     {
       "name": "🍆ナス",
+      "record_id": "3badc851-a820-813d-83df-e0972082cc47",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "必要",
@@ -98,6 +106,8 @@
     },
     {
       "name": "🍅トマト",
+      "record_id": "3b6dc851-a820-8104-a99b-f1cf759a9f8e",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "不要",
@@ -117,6 +127,8 @@
     },
     {
       "name": "🪴ゴムの木",
+      "record_id": "3b8dc851-a820-81fd-a3ba-c1106b97377e",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "不要",
@@ -138,6 +150,8 @@
   "archived": [
     {
       "name": "🍉すいか",
+      "record_id": "371dc851-a820-81bd-b414-d61f86aee041",
+      "works": [],
       "phase": null,
       "health": null,
       "watering": null,
