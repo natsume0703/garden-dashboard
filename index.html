@@ -103,6 +103,15 @@
   .tally span:first-child{padding-left:0;border-left:none;}
   .tally b{font-size:15px;font-weight:700;color:var(--ink);margin:0 2px;letter-spacing:0;}
   .tally .hot,.tally .hot b{color:var(--alert);}
+  /* 要対応の数は押せる。押すと該当の株だけに絞られる */
+  .tally .jump{
+    font-family:inherit;font-size:inherit;letter-spacing:inherit;line-height:inherit;
+    color:var(--alert);background:transparent;border:none;padding:0;cursor:pointer;
+    border-bottom:1px dashed var(--alert);
+  }
+  .tally .jump b{color:var(--alert);}
+  .tally .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .plants.only .card:not(.attn){display:none;}
   /* 折り返すと行頭に区切り線が残ってしまうため、狭い幅では線をやめて2列に揃える */
   @media(max-width:620px){
     .tally{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-bottom:18px;}
@@ -139,15 +148,29 @@
   .badge.良好{background:var(--leaf);}
   .badge.注意{background:var(--warn-deep);}
   .badge.異常{background:var(--alert);}
-  /* 高さを揃えるため、印がない株でも枠だけ確保する */
-  .flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;min-height:20px;}
-  .flag{font-size:10.5px;letter-spacing:.08em;padding:2px 8px;border-radius:2px;color:#fff;background:var(--ink-soft);white-space:nowrap;}
-  .flag.水やり{background:var(--water);}
-  .flag.収穫{background:var(--harvest);}
-  .flag.期限{background:var(--alert);}
+  /* 右上のならび。対応済みの印は札の左に置く */
+  .marks{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .done-chip{
+    display:none;align-items:center;gap:3px;white-space:nowrap;
+    font-size:10.5px;font-weight:700;letter-spacing:.08em;
+    color:var(--leaf);border:1px solid var(--leaf);border-radius:2px;padding:2px 6px 2px 4px;
+  }
+  .card.logged .done-chip{display:inline-flex;}
+  .done-chip .ic{width:11px;height:11px;}
+  /* 要対応の理由。何をすればよいかをカード上で言い切る */
+  .why{
+    display:flex;align-items:flex-start;gap:5px;margin-top:9px;
+    font-size:11.5px;line-height:1.6;letter-spacing:.04em;font-weight:700;color:var(--warn-deep);
+  }
+  .why .ic{width:13px;height:13px;flex-shrink:0;margin-top:2px;}
+  .why.bad{color:var(--alert);}
   .gauge{margin:12px 0 13px;}
   .gauge .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-bottom:6px;}
   .gauge .row .val{color:var(--ink);font-weight:700;}
+  /* 水やりが要る株は、この行そのものを水の色にする */
+  .gauge .row.need,.gauge .row.need .val{color:var(--water);font-weight:700;}
+  .gauge .row .lb{display:inline-flex;align-items:center;gap:4px;}
+  .gauge .row .lb .ic{width:12px;height:12px;}
   .bar{display:flex;gap:2px;height:7px;}
   .bar i{flex:1;background:var(--line);border-radius:1px;}
   .bar i.on{background:var(--water);}
@@ -164,7 +187,16 @@
   }
   .log .open:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
   .log .open:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-  .log .done{font-size:11.5px;color:var(--leaf);letter-spacing:.06em;}
+  /* まだ記録していない株は、押してほしいので塗りにする */
+  .log .open.lead{background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:700;}
+  .log .open.lead:hover{background:var(--ink);border-color:var(--ink);}
+  .log .done{
+    display:flex;align-items:center;gap:4px;
+    font-size:11.5px;color:var(--leaf);font-weight:700;letter-spacing:.06em;
+  }
+  .log .done .ic{width:12px;height:12px;flex-shrink:0;}
+  .log .todo{font-size:11.5px;color:var(--ink-soft);letter-spacing:.06em;}
+  .log .sent{font-size:11px;color:var(--ink-soft);letter-spacing:.04em;}
   .log .picks{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
   .log .pick{
     border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
@@ -447,6 +479,7 @@ const ICONS = {
   dish:     `<circle cx="10.5" cy="12" r="7.5"/><circle cx="10.5" cy="12" r="4"/><path d="M20.5 4.5v15"/><path d="M20.5 4.5c-1.6 1-1.6 4.5 0 5.5"/>`,
   pot:      `<path d="M5 10.5h14l-1.4 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8Z"/><path d="M12 10.5V7"/><path d="M12 8.6C9.6 8.6 8 7 8 4.6c2.4 0 4 1.6 4 4Z"/><path d="M12.6 8c0-2 1.4-3.4 3.6-3.4 0 2-1.4 3.4-3.6 3.4Z"/>`,
   bulb:     `<path d="M9 17.5h6"/><path d="M9.8 20.5h4.4"/><path d="M12 3.5a6 6 0 0 0-3.4 10.9c.5.4.8 1 .8 1.6h5.2c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3.5Z"/>`,
+  drop:     `<path d="M12 3.6c3.4 4 5.4 6.7 5.4 9.3a5.4 5.4 0 0 1-10.8 0c0-2.6 2-5.3 5.4-9.3Z"/>`,
   /* 状態を表す記号。色が見分けにくくても形で判別できる */
   ok:       `<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>`,
   warn:     `<path d="M12 3.8 21.5 20H2.5Z"/><path d="M12 10v4.2M12 17.2v.6"/>`,
@@ -887,18 +920,29 @@ function logBox(p){
   if (!p.record_id) return "";
   const done = (p.works || []);
   return `<div class="log" data-id="${esc(p.record_id)}" data-plant="${esc(p.name)}"
-    data-done="${esc(done.join(","))}">${shutView(done)}</div>`;
+    data-when="${esc(p.last_record || "")}"
+    data-done="${esc(done.join(","))}">${shutView(done, p.last_record)}</div>`;
+}
+
+/* 「8/10の提案」のように、どの記録に対する話かを添える */
+function whenLabel(d){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || "");
+  return m ? `${+m[2]}/${+m[3]}の提案` : "AIの提案";
 }
 
 /* 閉じているときの見た目 */
-function shutView(done){
-  const label = done.length ? `記録済み　${done.join("・")}` : "まだ記録がありません";
-  return `<button class="open" type="button">${done.length ? "作業を修正する" : "作業を記録する"}</button>
-    <div class="msg" style="color:var(--ink-soft)">${esc(label)}</div>`;
+function shutView(done, when){
+  const w = whenLabel(when);
+  if (done.length){
+    return `<button class="open" type="button">対応を修正する</button>
+      <div class="msg done">${icon("ok")}<span>${esc(w)}に対応　${esc(done.join("・"))}</span></div>`;
+  }
+  return `<button class="open lead" type="button">対応を記録する</button>
+    <div class="msg todo">${esc(w)}はまだ記録していません</div>`;
 }
 
 function closeLog(box){
-  box.innerHTML = shutView((box.dataset.done || "").split(",").filter(Boolean));
+  box.innerHTML = shutView((box.dataset.done || "").split(",").filter(Boolean), box.dataset.when);
 }
 
 function openLog(box){
@@ -936,8 +980,11 @@ async function sendLog(box){
       }),
     });
     box.dataset.done = chosen.join(",");
-    box.innerHTML = `<div class="msg done">記録しました　${esc(chosen.join("・") || "作業なし")}</div>
-      <div class="msg" style="color:var(--ink-soft)">30秒ほどでダッシュボードに反映されます。</div>`;
+    /* Notionの反映を待たず、その場でカードの見た目を変える */
+    const card = box.closest(".card");
+    if (card) card.classList.toggle("logged", chosen.length > 0);
+    box.innerHTML = shutView(chosen, box.dataset.when)
+      + `<div class="msg sent">送信しました。Notionにも反映されます。</div>`;
   } catch(e) {
     msg.className = "msg ng";
     msg.textContent = "送信できませんでした。通信を確認してください。";
@@ -952,17 +999,32 @@ let CAL = null;          /* 表示中の年月 */
 let PICKED = null;       /* 選ばれている日 */
 let BOUND = false;       /* 操作の受け取りを一度だけ設定するための印 */
 
-function gauge(days){
+function gauge(days, need){
+  /* 水やりが要るときは、この行を水の色と滴の記号で示す */
+  const lb = need ? `<span class="lb">${icon("drop")}最終水やり</span>` : `<span class="lb">最終水やり</span>`;
   if (days == null){
-    return `<div class="gauge"><div class="row"><span>乾き具合</span><span>記録なし</span></div>
+    return `<div class="gauge"><div class="row ${need ? "need" : ""}">${lb}<span class="val">記録なし</span></div>
       <div class="bar">${"<i></i>".repeat(7)}</div></div>`;
   }
   const filled = Math.max(0, 7 - Math.min(days, 7));
   let cells = "";
   for (let i = 0; i < 7; i++) cells += `<i class="${i < filled ? "on" : ""}"></i>`;
   return `<div class="gauge">
-    <div class="row"><span>最終水やり</span><span class="val">${days === 0 ? "今日" : days + "日前"}</span></div>
+    <div class="row ${need ? "need" : ""}">${lb}<span class="val">${days === 0 ? "今日" : days + "日前"}</span></div>
     <div class="bar${days >= 4 ? " thirsty" : ""}">${cells}</div></div>`;
+}
+
+/* 要対応の理由。急ぎの重い順に並べる */
+function reasons(p){
+  const r = [];
+  const today = new Date();
+  const ts = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+  if (p.health === "異常") r.push("状態が異常です");
+  if (p.due && p.status === "未対応" && p.due <= ts) r.push("対応期限を過ぎています");
+  if (p.harvest === "急ぎ") r.push("収穫が急ぎです");
+  if (p.watering === "必要") r.push("水やりが必要です");
+  if (p.health === "注意") r.push("状態が注意です");
+  return r;
 }
 const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
 const HICON = {良好:"ok", 注意:"warn", 異常:"bad", unknown:"q"};
@@ -1059,12 +1121,12 @@ function render(d){
   }
   $("#stamp").textContent = "最終同期 " + (d.generated_at || "").replace("T", " ").slice(0, 16);
 
-  /* ① 株のようす */
-  const att = s.needs_attention ?? 0;
+  /* ① 株のようす。要対応は「理由がひとつでもある株」と数える */
+  const att = (d.plants || []).filter(p => reasons(p).length).length;
   let h = `<section><h2><span class="t">${icon("sprout")}株のようす</span><em>急ぎの順</em></h2>
     <div class="tally">
       <span><b>${s.plants_active ?? 0}</b>株を栽培中</span>
-      <span class="${att > 0 ? "hot" : ""}">${att > 0 ? `うち<b>${att}</b>株が要対応` : "対応が必要な株はなし"}</span>
+      <span class="${att > 0 ? "hot" : ""}">${att > 0 ? `<button class="jump" type="button">うち<b>${att}</b>株が要対応</button>` : "対応が必要な株はなし"}</span>
       <span>今週の記録<b>${s.records_7d ?? 0}</b>件</span>
       <span>通算<b>${s.total_records ?? 0}</b>件</span>
     </div>`;
@@ -1082,14 +1144,17 @@ function render(d){
   } else {
     h += `<div class="plants">`;
     pl.forEach(p => {
-      const flags = (p.flags || []).map(f => `<span class="flag ${esc(f)}">${esc(f)}</span>`).join("");
-      h += `<div class="card u${p.urgency ?? 5} s${hc(p.health)}">
+      const rs = reasons(p);
+      const why = rs.length
+        ? `<div class="why ${p.health === "異常" ? "bad" : ""}">${icon(p.health === "異常" ? "bad" : "warn")}<span>${esc(rs.join("・"))}</span></div>`
+        : "";
+      h += `<div class="card u${p.urgency ?? 5} s${hc(p.health)}${rs.length ? " attn" : ""}${(p.works || []).length ? " logged" : ""}">
         <div class="top">
           <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
-          ${badge(p.health)}
+          <div class="marks"><span class="done-chip">${icon("ok")}済</span>${badge(p.health)}</div>
         </div>
-        <div class="flags">${flags}</div>
-        ${gauge(p.days_since_water)}
+        ${why}
+        ${gauge(p.days_since_water, p.watering === "必要")}
         <div class="note">${p.action ? `<b>次の一手</b>　${esc(p.action)}` : (p.ai_comment ? esc(p.ai_comment) : "コメントはまだありません。")}</div>
         ${logBox(p)}
       </div>`;
@@ -1104,6 +1169,16 @@ function render(d){
 
   /* 作業申告の操作。カードは描き直されるので、まとめて受け取る */
   if (!BOUND) app.addEventListener("click", (ev) => {
+    /* 要対応の数を押すと、その株だけに絞る。もう一度押すと元に戻る */
+    const jump = ev.target.closest(".jump");
+    if (jump){
+      const grid = app.querySelector(".plants");
+      if (grid){
+        const on = grid.classList.toggle("only");
+        jump.innerHTML = on ? "すべての株を表示" : `うち<b>${grid.querySelectorAll(".card.attn").length}</b>株が要対応`;
+      }
+      return;
+    }
     const box = ev.target.closest(".log");
     if (!box) return;
     if (ev.target.closest(".open"))   { openLog(box); return; }
