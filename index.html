@@ -16,7 +16,6 @@
     --warn:#B07A12;
     --warn-deep:#8A5E0A;
     --alert:#A63D2C;
-    --harvest:#7B5EA7;
     --sky:#E8F1F6;
     --accent:#3F6B45;
     --accent-soft:#3F6B4526;
@@ -102,20 +101,23 @@
   .tally span{padding:0 14px;border-left:1px solid var(--line);line-height:1.6;}
   .tally span:first-child{padding-left:0;border-left:none;}
   .tally b{font-size:15px;font-weight:700;color:var(--ink);margin:0 2px;letter-spacing:0;}
-  .tally .hot,.tally .hot b{color:var(--alert);}
-  /* 要対応の数は押せる。押すと該当の株だけに絞られる */
+  /* 要対応はふだん山吹。異常の株があるときだけ煉瓦色に上げる */
+  .tally .hot,.tally .hot b,.tally .hot .jump,.tally .hot .jump b{color:var(--warn-deep);}
+  .tally .hot .jump{border-bottom-color:var(--warn-deep);}
+  .tally .hot.bad,.tally .hot.bad b,.tally .hot.bad .jump,.tally .hot.bad .jump b{color:var(--alert);}
+  .tally .hot.bad .jump{border-bottom-color:var(--alert);}
   .tally .jump{
     font-family:inherit;font-size:inherit;letter-spacing:inherit;line-height:inherit;
-    color:var(--alert);background:transparent;border:none;padding:0;cursor:pointer;
-    border-bottom:1px dashed var(--alert);
+    background:transparent;border:none;padding:0;cursor:pointer;
+    border-bottom:1px dashed currentColor;
   }
-  .tally .jump b{color:var(--alert);}
   .tally .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .plants.only .card:not(.attn){display:none;}
   .only-note{
-    display:none;font-size:11.5px;letter-spacing:.06em;color:var(--alert);
-    border-left:3px solid var(--alert);padding:5px 0 5px 10px;margin-bottom:12px;
+    display:none;font-size:11.5px;letter-spacing:.06em;color:var(--warn-deep);
+    border-left:3px solid var(--warn-deep);padding:5px 0 5px 10px;margin-bottom:12px;
   }
+  .only-note.bad{color:var(--alert);border-left-color:var(--alert);}
   /* 折り返すと行頭に区切り線が残ってしまうため、狭い幅では線をやめて2列に揃える */
   @media(max-width:620px){
     .tally{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-bottom:18px;}
@@ -136,7 +138,7 @@
   }
   /* 状態は左端の帯でも示す。並べたとき端を追うだけで見分けられる */
   .card.s良好{border-left-color:var(--leaf);}
-  .card.s注意{border-left-color:var(--warn);}
+  .card.s注意{border-left-color:var(--warn-deep);}
   .card.s異常{border-left-color:var(--alert);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
@@ -157,7 +159,7 @@
   .done-chip{
     display:none;align-items:center;gap:3px;white-space:nowrap;
     font-size:10.5px;font-weight:700;letter-spacing:.08em;
-    color:var(--leaf);border:1px solid var(--leaf);border-radius:2px;padding:2px 6px 2px 4px;
+    color:var(--ink);border:1px solid var(--ink);border-radius:2px;padding:2px 6px 2px 4px;
   }
   .card.logged .done-chip{display:inline-flex;}
   .done-chip .ic{width:11px;height:11px;}
@@ -196,11 +198,11 @@
   .log .open:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
   .log .open:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   /* まだ記録していない株は、押してほしいので塗りにする */
-  .log .open.lead{background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:700;}
-  .log .open.lead:hover{background:var(--ink);border-color:var(--ink);}
+  .log .open.lead{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700;}
+  .log .open.lead:hover{background:var(--ink-soft);border-color:var(--ink-soft);}
   .log .done{
     display:flex;align-items:center;gap:4px;
-    font-size:11.5px;color:var(--leaf);font-weight:700;letter-spacing:.06em;
+    font-size:11.5px;color:var(--ink);font-weight:700;letter-spacing:.06em;
   }
   .log .done .ic{width:12px;height:12px;flex-shrink:0;}
   .log .todo{font-size:11.5px;color:var(--ink-soft);letter-spacing:.06em;}
@@ -211,11 +213,11 @@
     font-family:inherit;font-size:11.5px;letter-spacing:.04em;padding:3px 9px;
     border-radius:2px;cursor:pointer;transition:all .12s;
   }
-  .log .pick[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:700;}
+  .log .pick[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700;}
   .log .pick:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
   .log .row{display:flex;gap:6px;}
   .log .send{
-    flex:1;border:1px solid var(--leaf);background:var(--leaf);color:#fff;
+    flex:1;border:1px solid var(--ink);background:var(--ink);color:#fff;
     font-family:inherit;font-size:11.5px;font-weight:700;letter-spacing:.06em;
     padding:5px 0;border-radius:2px;cursor:pointer;
   }
@@ -1132,10 +1134,11 @@ function render(d){
 
   /* ① 株のようす。要対応は「理由がひとつでもある株」と数える */
   const att = (d.plants || []).filter(p => reasons(p).length).length;
+  const anyBad = (d.plants || []).some(p => p.health === "異常");
   let h = `<section><h2><span class="t">${icon("sprout")}株のようす</span><em>急ぎの順</em></h2>
     <div class="tally">
       <span><b>${s.plants_active ?? 0}</b>株を栽培中</span>
-      <span class="${att > 0 ? "hot" : ""}">${att > 0 ? `<button class="jump" type="button">うち<b>${att}</b>株が要対応</button>` : "対応が必要な株はなし"}</span>
+      <span class="${att > 0 ? "hot" : ""}${anyBad ? " bad" : ""}">${att > 0 ? `<button class="jump" type="button">うち<b>${att}</b>株が要対応</button>` : "対応が必要な株はなし"}</span>
       <span>今週の記録<b>${s.records_7d ?? 0}</b>件</span>
       <span>通算<b>${s.total_records ?? 0}</b>件</span>
     </div>`;
@@ -1151,7 +1154,7 @@ function render(d){
   if (!pl.length){
     h += `<div class="state">栽培中の株がありません。</div>`;
   } else {
-    h += `<div class="only-note"></div><div class="plants">`;
+    h += `<div class="only-note${anyBad ? " bad" : ""}"></div><div class="plants">`;
     pl.forEach(p => {
       const rs = reasons(p);
       const why = rs.length
