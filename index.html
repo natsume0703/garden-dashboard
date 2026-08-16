@@ -138,7 +138,7 @@
   }
   /* 状態は左端の帯でも示す。並べたとき端を追うだけで見分けられる */
   .card.s良好{border-left-color:var(--leaf);}
-  .card.s注意{border-left-color:var(--warn-deep);}
+  .card.s注意{border-left-color:var(--warn);}
   .card.s異常{border-left-color:var(--alert);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
@@ -162,6 +162,8 @@
     color:var(--ink);border:1px solid var(--ink);border-radius:2px;padding:2px 6px 2px 4px;
   }
   .card.logged .done-chip{display:inline-flex;}
+  /* 今日より前の記録に対する対応は、日付を添えて弱く出す */
+  .done-chip.old{color:var(--ink-soft);border-color:var(--line);font-weight:400;}
   .done-chip .ic{width:11px;height:11px;}
   /* 要対応の理由。何をすればよいかをカード上で言い切る */
   .why{
@@ -1025,17 +1027,25 @@ function gauge(days, need){
     <div class="bar${days >= 4 ? " thirsty" : ""}">${cells}</div></div>`;
 }
 
+/* 今日の日付。判定と表示で共用する */
+function todayStr(){
+  const t = new Date();
+  return `${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
+}
+
 /* 要対応の理由。急ぎの重い順に並べる */
 function reasons(p){
   const r = [];
-  const today = new Date();
-  const ts = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+  const ts = todayStr();
   if (p.health === "異常") r.push("状態が異常です");
-  if (p.due && p.status === "未対応" && p.due <= ts) r.push("対応期限を過ぎています");
+  if (p.due && p.status === "未対応"){
+    if (p.due < ts) r.push("対応期限を過ぎています");
+    else if (p.due === ts) r.push("today");
+  }
   if (p.harvest === "急ぎ") r.push("収穫が急ぎです");
   if (p.watering === "必要") r.push("水やりが必要です");
   if (p.health === "注意") r.push("状態が注意です");
-  return r;
+  return r.map(x => x === "today" ? "今日が対応期限です" : x);
 }
 const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
 const HICON = {良好:"good", 注意:"warn", 異常:"bad", unknown:"q"};
@@ -1163,7 +1173,7 @@ function render(d){
       h += `<div class="card u${p.urgency ?? 5} s${hc(p.health)}${rs.length ? " attn" : ""}${(p.works || []).length ? " logged" : ""}">
         <div class="top">
           <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
-          <div class="marks"><span class="done-chip">${icon("ok")}済</span>${badge(p.health)}</div>
+          <div class="marks"><span class="done-chip${(p.last_record && p.last_record !== todayStr()) ? " old" : ""}">${icon("ok")}${esc(p.last_record && p.last_record !== todayStr() ? whenLabel(p.last_record).replace("の提案", "") + "済" : "済")}</span>${badge(p.health)}</div>
         </div>
         ${why}
         ${gauge(p.days_since_water, p.watering === "必要")}
