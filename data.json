@@ -1,17 +1,47 @@
 {
-  "generated_at": "2026-08-16T18:23:21+09:00",
+  "generated_at": "2026-08-16T18:27:39+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 6,
     "plants_archived": 1,
     "needs_attention": 3,
-    "records_7d": 12,
+    "records_7d": 13,
     "watering_7d": 1,
     "harvest_7d": 0,
-    "total_records": 28
+    "total_records": 29
   },
-  "critical": [],
+  "critical": [
+    {
+      "plant": "🍆ナス",
+      "level": "期限",
+      "message": "土の表面だけでなく、数センチ下の湿り気も確認し、乾燥している場合はたっぷりと水を与えてください。"
+    }
+  ],
   "plants": [
+    {
+      "name": "🍆ナス",
+      "record_id": "3bedc851-a820-8144-9152-eb051b322cbd",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-16",
+      "priority": "🟡中",
+      "last_watered": "2026-08-16",
+      "days_since_water": 0,
+      "last_record": "2026-08-16",
+      "days_since_record": 0,
+      "ai_comment": "葉が全体的にやや下向きで、土の表面も乾燥気味に見えます。ナスの健康な成長には適切な水やりが不可欠です。",
+      "action": "土の表面だけでなく、数センチ下の湿り気も確認し、乾燥している場合はたっぷりと水を与えてください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
+      ],
+      "urgency": 1
+    },
     {
       "name": "🌱バジル",
       "record_id": "3bedc851-a820-81cf-91df-d0b54fdab7c2",
@@ -52,29 +82,6 @@
       "days_since_record": 0,
       "ai_comment": "全体的に茎が細長く、葉にやや張りがありません。開花が始まっているので、葉の収穫を優先するなら摘心が必要です。日照不足の可能性もあります。",
       "action": "水やりを行い、一番上の花芽を摘み取り、風通しと日当たりを改善してください。",
-      "active": true,
-      "flags": [
-        "水やり"
-      ],
-      "urgency": 3
-    },
-    {
-      "name": "🍆ナス",
-      "record_id": "3badc851-a820-813d-83df-e0972082cc47",
-      "works": [],
-      "phase": null,
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "status": "未対応",
-      "due": null,
-      "priority": "🟡中",
-      "last_watered": "2026-08-12",
-      "days_since_water": 4,
-      "last_record": "2026-08-12",
-      "days_since_record": 4,
-      "ai_comment": "土の表面がかなり乾燥しており、植物全体に軽い水ストレスが見られます。ナスは水分を多く必要とするため、適切な水やりが重要です。",
-      "action": "今日は鉢底から水が流れ出るまでたっぷりと水を与え、以降は土の表面が乾いたらすぐに水やりをしてください。",
       "active": true,
       "flags": [
         "水やり"
@@ -176,6 +183,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3bedc851-a820-8144-9152-eb051b322cbd",
+      "date": "2026-08-16",
+      "created": "2026-08-16T09:27:00",
+      "title": "🍆ナス",
+      "plant": "🍆ナス",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "🌤くもり",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-16",
+      "last_watered": "2026-08-16",
+      "ai_comment": "葉が全体的にやや下向きで、土の表面も乾燥気味に見えます。ナスの健康な成長には適切な水やりが不可欠です。",
+      "action": "土の表面だけでなく、数センチ下の湿り気も確認し、乾燥している場合はたっぷりと水を与えてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3bedc851-a820-818d-9ded-ce527043421f",
       "date": "2026-08-16",
