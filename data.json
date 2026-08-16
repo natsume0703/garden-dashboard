@@ -1,23 +1,21 @@
 {
-  "generated_at": "2026-08-16T16:53:48+09:00",
+  "generated_at": "2026-08-16T17:38:35+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 6,
     "plants_archived": 1,
     "needs_attention": 4,
-    "records_7d": 10,
+    "records_7d": 11,
     "watering_7d": 1,
     "harvest_7d": 0,
-    "total_records": 26
+    "total_records": 27
   },
   "critical": [],
   "plants": [
     {
       "name": "🌱バジル",
-      "record_id": "3b8dc851-a820-81aa-9521-d70017e6cc76",
-      "works": [
-        "👀観察のみ"
-      ],
+      "record_id": "3bedc851-a820-81cf-91df-d0b54fdab7c2",
+      "works": [],
       "phase": null,
       "health": "注意",
       "watering": "必要",
@@ -25,12 +23,12 @@
       "status": "未対応",
       "due": null,
       "priority": "🟡中",
-      "last_watered": "2026-08-05",
-      "days_since_water": 11,
-      "last_record": "2026-08-10",
-      "days_since_record": 6,
-      "ai_comment": "気温31°Cはバジルにとってやや高温であり、水分の蒸発が早まります。土の乾燥に注意し、適切に管理しないと植物がストレスを受けやすい状態です。",
-      "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "last_watered": "2026-08-16",
+      "days_since_water": 0,
+      "last_record": "2026-08-16",
+      "days_since_record": 0,
+      "ai_comment": "バジルが少し徒長気味で、一部の葉には薄い色や小さな白い斑点が見られます。これは光量不足、栄養不足、または初期の害虫の兆候かもしれません。",
+      "action": "土の湿り気をチェックし必要であれば水やりを行い、白い斑点を確認して害虫対策を検討後、徒長を防ぐために摘心しましょう。",
       "active": true,
       "flags": [
         "水やり"
@@ -180,6 +178,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3bedc851-a820-81cf-91df-d0b54fdab7c2",
+      "date": "2026-08-16",
+      "created": "2026-08-16T08:37:00",
+      "title": "🌱バジル",
+      "plant": "🌱バジル",
+      "phase": null,
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "weather": "🌤くもり",
+      "temp": 27,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": null,
+      "last_watered": "2026-08-16",
+      "ai_comment": "バジルが少し徒長気味で、一部の葉には薄い色や小さな白い斑点が見られます。これは光量不足、栄養不足、または初期の害虫の兆候かもしれません。",
+      "action": "土の湿り気をチェックし必要であれば水やりを行い、白い斑点を確認して害虫対策を検討後、徒長を防ぐために摘心しましょう。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3bedc851-a820-8155-b92f-db4ca7adf39f",
       "date": "2026-08-16",
