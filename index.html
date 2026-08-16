@@ -112,6 +112,10 @@
   .tally .jump b{color:var(--alert);}
   .tally .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .plants.only .card:not(.attn){display:none;}
+  .only-note{
+    display:none;font-size:11.5px;letter-spacing:.06em;color:var(--alert);
+    border-left:3px solid var(--alert);padding:5px 0 5px 10px;margin-bottom:12px;
+  }
   /* 折り返すと行頭に区切り線が残ってしまうため、狭い幅では線をやめて2列に揃える */
   @media(max-width:620px){
     .tally{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-bottom:18px;}
@@ -177,6 +181,10 @@
   .bar.thirsty i.on{background:var(--soil);}
   .note{font-size:12.5px;color:var(--ink-soft);line-height:1.7;border-top:1px dotted var(--line);padding-top:11px;margin-top:auto;}
   .note b{color:var(--ink);font-weight:700;}
+  /* 見立ては状態の説明、次の一手は行動。後者を前に出す */
+  .note .see{font-size:12px;padding-bottom:9px;}
+  .note .see b{color:var(--ink-soft);font-weight:700;}
+  .note .act b{color:var(--ink);}
 
   /* ---------- 作業の申告 ---------- */
   .log{border-top:1px dotted var(--line);margin-top:11px;padding-top:10px;}
@@ -482,6 +490,7 @@ const ICONS = {
   drop:     `<path d="M12 3.6c3.4 4 5.4 6.7 5.4 9.3a5.4 5.4 0 0 1-10.8 0c0-2.6 2-5.3 5.4-9.3Z"/>`,
   /* 状態を表す記号。色が見分けにくくても形で判別できる */
   ok:       `<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>`,
+  good:     `<circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3.4"/>`,
   warn:     `<path d="M12 3.8 21.5 20H2.5Z"/><path d="M12 10v4.2M12 17.2v.6"/>`,
   bad:      `<circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.2v.6"/>`,
   q:        `<circle cx="12" cy="12" r="9"/><path d="M9.4 9.4a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.2-2.6 3.9M12 17.2v.6"/>`,
@@ -1027,7 +1036,7 @@ function reasons(p){
   return r;
 }
 const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
-const HICON = {良好:"ok", 注意:"warn", 異常:"bad", unknown:"q"};
+const HICON = {良好:"good", 注意:"warn", 異常:"bad", unknown:"q"};
 /* 状態の札。色と記号の両方で示す */
 const badge = (h) => `<span class="badge ${hc(h)}">${icon(HICON[hc(h)])}${esc(h || "未判定")}</span>`;
 const pill  = (h) => `<span class="pill ${hc(h)}">${icon(HICON[hc(h)])}${esc(h)}</span>`;
@@ -1142,7 +1151,7 @@ function render(d){
   if (!pl.length){
     h += `<div class="state">栽培中の株がありません。</div>`;
   } else {
-    h += `<div class="plants">`;
+    h += `<div class="only-note"></div><div class="plants">`;
     pl.forEach(p => {
       const rs = reasons(p);
       const why = rs.length
@@ -1155,7 +1164,11 @@ function render(d){
         </div>
         ${why}
         ${gauge(p.days_since_water, p.watering === "必要")}
-        <div class="note">${p.action ? `<b>次の一手</b>　${esc(p.action)}` : (p.ai_comment ? esc(p.ai_comment) : "コメントはまだありません。")}</div>
+        <div class="note">
+          ${p.ai_comment ? `<div class="see"><b>見立て</b>　${esc(p.ai_comment)}</div>` : ""}
+          ${p.action ? `<div class="act"><b>次の一手</b>　${esc(p.action)}</div>`
+            : (p.ai_comment ? "" : `<div class="act">コメントはまだありません。</div>`)}
+        </div>
         ${logBox(p)}
       </div>`;
     });
@@ -1175,7 +1188,14 @@ function render(d){
       const grid = app.querySelector(".plants");
       if (grid){
         const on = grid.classList.toggle("only");
-        jump.innerHTML = on ? "すべての株を表示" : `うち<b>${grid.querySelectorAll(".card.attn").length}</b>株が要対応`;
+        const n = grid.querySelectorAll(".card.attn").length;
+        const all = grid.querySelectorAll(".card").length;
+        jump.innerHTML = on ? "すべての株を表示" : `うち<b>${n}</b>株が要対応`;
+        const note = app.querySelector(".only-note");
+        if (note){
+          note.textContent = `要対応の${n}株だけを表示中（栽培中は${all}株）`;
+          note.style.display = on ? "block" : "none";
+        }
       }
       return;
     }
