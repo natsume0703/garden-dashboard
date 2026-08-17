@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-08-17T23:05:14+09:00",
+  "generated_at": "2026-08-17T23:17:05+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 6,
     "plants_archived": 1,
     "needs_attention": 4,
-    "records_7d": 10,
+    "records_7d": 11,
     "watering_7d": 1,
     "harvest_7d": 0,
-    "total_records": 30
+    "total_records": 31
   },
   "critical": [
     {
       "plant": "🍅トマト",
-      "level": "異常",
-      "message": "枯れた枝を取り除き、日当たりの良い場所へ移動させ、土壌の湿り具合を確認し必要であれば水をやり、追肥を検討してください。"
+      "level": "期限",
+      "message": "土が乾いているようであれば、すぐにたっぷりと水を与え、実つきを良くするための液体肥料も与えましょう。"
     },
     {
       "plant": "🍆ナス",
@@ -25,27 +25,27 @@
   "plants": [
     {
       "name": "🍅トマト",
-      "record_id": "3bfdc851-a820-8195-80ce-f9ffd0659ca2",
+      "record_id": "3bfdc851-a820-8197-870c-f0446a0162bc",
       "works": [],
-      "phase": "🌿成長中",
-      "health": "異常",
+      "phase": "🍅収穫期",
+      "health": "注意",
       "watering": "必要",
-      "harvest": "まだ",
+      "harvest": "OK",
       "status": "未対応",
       "due": "2026-08-17",
-      "priority": "🔴高",
+      "priority": "🟡中",
       "last_watered": "2026-08-17",
       "days_since_water": 0,
       "last_record": "2026-08-17",
       "days_since_record": 0,
-      "ai_comment": "植物は非常にひょろひょろとしており、葉がほとんどありません。これは日照不足、水や栄養の欠乏など深刻なストレスを受けている兆候で、生育が著しく阻害されています。",
-      "action": "枯れた枝を取り除き、日当たりの良い場所へ移動させ、土壌の湿り具合を確認し必要であれば水をやり、追肥を検討してください。",
+      "ai_comment": "トマトは実をつけていますが、土の表面が乾燥しているように見えます。水やりが不足しているか、養分が足りない可能性があります。",
+      "action": "土が乾いているようであれば、すぐにたっぷりと水を与え、実つきを良くするための液体肥料も与えましょう。",
       "active": true,
       "flags": [
         "期限",
         "水やり"
       ],
-      "urgency": 0
+      "urgency": 1
     },
     {
       "name": "🍆ナス",
@@ -189,6 +189,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3bfdc851-a820-8197-870c-f0446a0162bc",
+      "date": "2026-08-17",
+      "created": "2026-08-17T14:16:00",
+      "title": "🍅トマト",
+      "plant": "🍅トマト",
+      "phase": "🍅収穫期",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "OK",
+      "weather": "🌤くもり",
+      "temp": 25,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-17",
+      "last_watered": "2026-08-17",
+      "ai_comment": "トマトは実をつけていますが、土の表面が乾燥しているように見えます。水やりが不足しているか、養分が足りない可能性があります。",
+      "action": "土が乾いているようであれば、すぐにたっぷりと水を与え、実つきを良くするための液体肥料も与えましょう。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3bfdc851-a820-8195-80ce-f9ffd0659ca2",
       "date": "2026-08-17",
