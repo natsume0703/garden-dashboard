@@ -1,16 +1,21 @@
 {
-  "generated_at": "2026-08-17T19:17:52+09:00",
+  "generated_at": "2026-08-17T23:04:13+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 6,
     "plants_archived": 1,
-    "needs_attention": 3,
-    "records_7d": 9,
+    "needs_attention": 4,
+    "records_7d": 10,
     "watering_7d": 1,
     "harvest_7d": 0,
-    "total_records": 29
+    "total_records": 30
   },
   "critical": [
+    {
+      "plant": "🍅トマト",
+      "level": "異常",
+      "message": "枯れた枝を取り除き、日当たりの良い場所へ移動させ、土壌の湿り具合を確認し必要であれば水をやり、追肥を検討してください。"
+    },
     {
       "plant": "🍆ナス",
       "level": "期限",
@@ -18,6 +23,30 @@
     }
   ],
   "plants": [
+    {
+      "name": "🍅トマト",
+      "record_id": "3bfdc851-a820-8195-80ce-f9ffd0659ca2",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "異常",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-17",
+      "priority": "🔴高",
+      "last_watered": "2026-08-17",
+      "days_since_water": 0,
+      "last_record": "2026-08-17",
+      "days_since_record": 0,
+      "ai_comment": "植物は非常にひょろひょろとしており、葉がほとんどありません。これは日照不足、水や栄養の欠乏など深刻なストレスを受けている兆候で、生育が著しく阻害されています。",
+      "action": "枯れた枝を取り除き、日当たりの良い場所へ移動させ、土壌の湿り具合を確認し必要であれば水をやり、追肥を検討してください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
+      ],
+      "urgency": 0
+    },
     {
       "name": "🍆ナス",
       "record_id": "3bedc851-a820-8144-9152-eb051b322cbd",
@@ -87,29 +116,6 @@
         "水やり"
       ],
       "urgency": 3
-    },
-    {
-      "name": "🍅トマト",
-      "record_id": "3b6dc851-a820-8104-a99b-f1cf759a9f8e",
-      "works": [
-        "👀観察のみ"
-      ],
-      "phase": null,
-      "health": "注意",
-      "watering": "不要",
-      "harvest": null,
-      "status": "未対応",
-      "due": null,
-      "priority": "🟡中",
-      "last_watered": "2026-08-09",
-      "days_since_water": 8,
-      "last_record": "2026-08-09",
-      "days_since_record": 8,
-      "ai_comment": "提供された画像には植物が確認できません。そのため、トマトの具体的な健康状態や水やりの必要性を正確に判断することはできません。一般的なトマトの管理として、土の表面が乾いたらたっぷりと水を与えてください。",
-      "action": "植物の画像を再度提供し、土の湿り具合を指で確認し、必要に応じて水やりを行ってください。",
-      "active": true,
-      "flags": [],
-      "urgency": 4
     },
     {
       "name": "🪴ゴムの木",
@@ -183,6 +189,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3bfdc851-a820-8195-80ce-f9ffd0659ca2",
+      "date": "2026-08-17",
+      "created": "2026-08-17T14:04:00",
+      "title": "🍅トマト",
+      "plant": "🍅トマト",
+      "phase": "🌿成長中",
+      "health": "異常",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "🌤くもり",
+      "temp": 25,
+      "priority": "🔴高",
+      "status": "未対応",
+      "due": "2026-08-17",
+      "last_watered": "2026-08-17",
+      "ai_comment": "植物は非常にひょろひょろとしており、葉がほとんどありません。これは日照不足、水や栄養の欠乏など深刻なストレスを受けている兆候で、生育が著しく阻害されています。",
+      "action": "枯れた枝を取り除き、日当たりの良い場所へ移動させ、土壌の湿り具合を確認し必要であれば水をやり、追肥を検討してください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3bedc851-a820-8144-9152-eb051b322cbd",
       "date": "2026-08-16",
