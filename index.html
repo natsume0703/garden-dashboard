@@ -250,8 +250,7 @@
 
   /* ---------- 天気：3時間ごと ---------- */
   .hours{display:grid;grid-template-columns:repeat(8,1fr);}
-  .hr{padding:10px 2px 9px;text-align:center;border-left:1px solid var(--line);}
-  .hr:first-child{border-left:none;}
+  .hr{padding:10px 2px 9px;text-align:center;}
   .hr.night{background:#FAFBF8;}
   .hr .t{font-size:10.5px;color:var(--ink-soft);}
   .hr .i{font-size:18px;line-height:1.5;}
@@ -262,22 +261,29 @@
 
   /* ---------- 天気：週間 ---------- */
   /* 表全体をひとつの格子として組む。列幅は中身に合わせて決まるので、
-     風向が「西北西」になっても風速が2桁になってもはみ出さない */
+     風向が「西北西」になっても風速が2桁になってもはみ出さない。
+     区切り線は各セルの上辺をつないで一本に見せるため、列の間隔は空けず
+     セル内側の余白で間を取る。高さも行いっぱいに伸ばして線の位置を揃える */
   .week{
-    display:grid;font-size:13px;align-items:center;
+    display:grid;font-size:13px;align-items:stretch;
     grid-template-columns:max-content max-content max-content minmax(64px,1fr) max-content;
-    column-gap:12px;
   }
-  .wc{padding:10px 0;border-top:1px solid var(--line);min-width:0;}
+  .wc{
+    padding:10px 6px;border-top:1px solid var(--line);min-width:0;
+    display:flex;align-items:center;
+  }
   .week > .wc:nth-child(-n+5){border-top:none;}
-  .wc.dy{letter-spacing:.04em;white-space:nowrap;}
+  .wc.dy{padding-left:0;letter-spacing:.04em;white-space:nowrap;}
   .wc.dy s{text-decoration:none;font-size:11px;color:var(--ink-soft);margin-left:3px;}
-  .wc.ic{font-size:17px;text-align:center;}
+  .wc.ic{font-size:17px;justify-content:center;}
   /* 降水は確率と雨量を上下に重ねる。どちらも無い日は空欄のまま */
-  .wc.pp{display:flex;flex-direction:column;align-items:flex-end;line-height:1.35;}
+  .wc.pp{flex-direction:column;align-items:flex-end;justify-content:center;line-height:1.35;}
   .wc.pp b{font-size:11px;color:var(--water);font-weight:400;}
   .wc.pp s{text-decoration:none;font-size:10px;color:var(--ink-soft);}
-  .wc.wd{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
+  .wc.wd{
+    padding-right:0;justify-content:flex-end;
+    font-size:11px;color:var(--ink-soft);white-space:nowrap;
+  }
   .rng{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-soft);}
   .rng .track{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;min-width:40px;}
   .rng .fill{position:absolute;height:100%;border-radius:3px;background:linear-gradient(90deg,#7FA8C4,#D8A15C);}
@@ -412,9 +418,10 @@
     .now .m b small{font-size:10px;}
     .now .m span{font-size:9.5px;letter-spacing:.04em;}
     .hours{grid-template-columns:repeat(4,1fr);}
-    .hr:nth-child(5){border-left:none;}
     .hr:nth-child(n+5){border-top:1px solid var(--line);}
-    .week{grid-template-columns:max-content max-content max-content minmax(56px,1fr);column-gap:10px;}
+    .week{grid-template-columns:max-content max-content max-content minmax(56px,1fr);}
+    .wc{padding:10px 5px;}
+    .wc.rng{padding-right:0;}
     .wc.wd{display:none;}
     td.w,th.w{display:none;}
     h2{flex-direction:column;gap:2px;}
