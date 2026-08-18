@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-18T22:48:48+09:00",
+  "generated_at": "2026-08-18T23:18:36+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 7,
     "plants_archived": 1,
-    "needs_attention": 4,
-    "records_7d": 14,
+    "needs_attention": 5,
+    "records_7d": 15,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 36
+    "total_records": 37
   },
   "critical": [
     {
@@ -20,6 +20,11 @@
       "plant": "🌿大葉",
       "level": "異常",
       "message": "大葉が写っている写真を再度アップロードしてください。"
+    },
+    {
+      "plant": "🍅トマト",
+      "level": "期限",
+      "message": "今日中に鉢底から水が流れ出るまでたっぷりと水を与えてください。"
     },
     {
       "plant": "🍆ナス",
@@ -75,6 +80,30 @@
       "urgency": 0
     },
     {
+      "name": "🍅トマト",
+      "record_id": "3c0dc851-a820-81fb-9735-ed4ea3118608",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-18",
+      "priority": "🟡中",
+      "last_watered": "2026-08-18",
+      "days_since_water": 0,
+      "last_record": "2026-08-18",
+      "days_since_record": 0,
+      "ai_comment": "葉がややしおれており、土の表面も乾燥しているようです。水分不足の可能性があります。",
+      "action": "今日中に鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
+      ],
+      "urgency": 1
+    },
+    {
       "name": "🍆ナス",
       "record_id": "3c0dc851-a820-81c6-a5a2-d43fb300a3e4",
       "works": [],
@@ -120,27 +149,6 @@
         "水やり"
       ],
       "urgency": 3
-    },
-    {
-      "name": "🍅トマト",
-      "record_id": "3c0dc851-a820-814f-aa87-d777725d21ab",
-      "works": [],
-      "phase": "🌿成長中",
-      "health": "注意",
-      "watering": "不要",
-      "harvest": "まだ",
-      "status": "未対応",
-      "due": "2026-08-21",
-      "priority": "🟡中",
-      "last_watered": "2026-08-18",
-      "days_since_water": 0,
-      "last_record": "2026-08-18",
-      "days_since_record": 0,
-      "ai_comment": "このトマトは草丈がありますが、葉がまばらで徒長気味に見えます。日照不足や窒素過多の可能性があります。適切な生育段階に合わせ、日照を確保し、栄養バランスを見直す時期です。",
-      "action": "日当たりを改善し、追肥のバランスを見直し、脇芽を摘んで生殖成長を促しましょう。",
-      "active": true,
-      "flags": [],
-      "urgency": 4
     },
     {
       "name": "🪴ゴムの木",
@@ -214,6 +222,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3c0dc851-a820-81fb-9735-ed4ea3118608",
+      "date": "2026-08-18",
+      "created": "2026-08-18T14:18:00",
+      "title": "🍅トマト",
+      "plant": "🍅トマト",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "🌤くもり",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-18",
+      "last_watered": "2026-08-18",
+      "ai_comment": "葉がややしおれており、土の表面も乾燥しているようです。水分不足の可能性があります。",
+      "action": "今日中に鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c0dc851-a820-81f9-96d5-cba8d4b306c6",
       "date": "2026-08-18",
