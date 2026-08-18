@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-18T23:21:44+09:00",
+  "generated_at": "2026-08-18T23:35:33+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 7,
     "plants_archived": 1,
     "needs_attention": 5,
-    "records_7d": 15,
+    "records_7d": 16,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 37
+    "total_records": 38
   },
   "critical": [
     {
@@ -24,7 +24,7 @@
     {
       "plant": "🍅トマト",
       "level": "期限",
-      "message": "今日中に鉢底から水が流れ出るまでたっぷりと水を与えてください。"
+      "message": "株元の状態を確認し、土が乾燥していれば水やりを行ってください。"
     },
     {
       "plant": "🍆ナス",
@@ -83,10 +83,10 @@
     },
     {
       "name": "🍅トマト",
-      "record_id": "3c0dc851-a820-81fb-9735-ed4ea3118608",
+      "record_id": "3c0dc851-a820-81c5-b0f2-c81472d75fe3",
       "works": [],
       "phase": "🌿成長中",
-      "health": "注意",
+      "health": "良好",
       "watering": "必要",
       "harvest": "まだ",
       "status": "未対応",
@@ -96,8 +96,8 @@
       "days_since_water": 0,
       "last_record": "2026-08-18",
       "days_since_record": 0,
-      "ai_comment": "葉がややしおれており、土の表面も乾燥しているようです。水分不足の可能性があります。",
-      "action": "今日中に鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "ai_comment": "葉の色は濃く、全体的にしっかりとして見えます。健全に成長しているようです。株元が乾燥している可能性があるので確認してください。",
+      "action": "株元の状態を確認し、土が乾燥していれば水やりを行ってください。",
       "active": true,
       "flags": [
         "期限",
@@ -224,6 +224,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3c0dc851-a820-81c5-b0f2-c81472d75fe3",
+      "date": "2026-08-18",
+      "created": "2026-08-18T14:35:00",
+      "title": "🍅トマト",
+      "plant": "🍅トマト",
+      "phase": "🌿成長中",
+      "health": "良好",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "🌤くもり",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-18",
+      "last_watered": "2026-08-18",
+      "ai_comment": "葉の色は濃く、全体的にしっかりとして見えます。健全に成長しているようです。株元が乾燥している可能性があるので確認してください。",
+      "action": "株元の状態を確認し、土が乾燥していれば水やりを行ってください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c0dc851-a820-81fb-9735-ed4ea3118608",
       "date": "2026-08-18",
