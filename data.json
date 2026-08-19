@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-19T23:39:52+09:00",
+  "generated_at": "2026-08-19T23:42:18+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 7,
     "plants_archived": 1,
     "needs_attention": 4,
-    "records_7d": 21,
+    "records_7d": 22,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 43
+    "total_records": 44
   },
   "critical": [
     {
@@ -20,6 +20,11 @@
       "plant": "🌵子宝草",
       "level": "期限",
       "message": "土が乾燥しているので、鉢底から水が流れ出るまでたっぷりと水を与えてください。"
+    },
+    {
+      "plant": "🍅トマト",
+      "level": "期限",
+      "message": "土壌の水分をよく確認し、必要であれば十分に水やりを行い、日当たりの良い場所へ移動させるか、液肥を与えてください。"
     },
     {
       "plant": "🍆ナス",
@@ -76,6 +81,30 @@
       "urgency": 1
     },
     {
+      "name": "🍅トマト",
+      "record_id": "3c1dc851-a820-8193-bcba-fd7515358bd9",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-19",
+      "priority": "🟡中",
+      "last_watered": "2026-08-19",
+      "days_since_water": 0,
+      "last_record": "2026-08-19",
+      "days_since_record": 0,
+      "ai_comment": "植物はやや間延びしており、葉が少なく、茎が細いです。日照不足や栄養不足の可能性があります。土の表面が乾燥しているため、水やりも確認が必要です。",
+      "action": "土壌の水分をよく確認し、必要であれば十分に水やりを行い、日当たりの良い場所へ移動させるか、液肥を与えてください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
+      ],
+      "urgency": 1
+    },
+    {
       "name": "🍆ナス",
       "record_id": "3c1dc851-a820-8120-949e-ee658b4ced49",
       "works": [],
@@ -98,29 +127,6 @@
         "水やり"
       ],
       "urgency": 1
-    },
-    {
-      "name": "🍅トマト",
-      "record_id": "3c0dc851-a820-8190-82a0-e5ec0c3986c5",
-      "works": [],
-      "phase": "🌿成長中",
-      "health": "注意",
-      "watering": "必要",
-      "harvest": "まだ",
-      "status": "未対応",
-      "due": "2026-08-20",
-      "priority": "🟡中",
-      "last_watered": "2026-08-18",
-      "days_since_water": 1,
-      "last_record": "2026-08-18",
-      "days_since_record": 1,
-      "ai_comment": "葉が全体的に垂れており、元気がないように見えます。水やり不足、栄養不足、または生育環境の問題が考えられます。",
-      "action": "まず土の湿り具合を確認し、乾燥しているようであればたっぷりと水を与えてください。同時に、葉の色や虫の有無も確認しましょう。",
-      "active": true,
-      "flags": [
-        "水やり"
-      ],
-      "urgency": 3
     },
     {
       "name": "🌴パキラ",
@@ -215,6 +221,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3c1dc851-a820-8193-bcba-fd7515358bd9",
+      "date": "2026-08-19",
+      "created": "2026-08-19T14:41:00",
+      "title": "🍅トマト",
+      "plant": "🍅トマト",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "☀️晴れ",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-19",
+      "last_watered": "2026-08-19",
+      "ai_comment": "植物はやや間延びしており、葉が少なく、茎が細いです。日照不足や栄養不足の可能性があります。土の表面が乾燥しているため、水やりも確認が必要です。",
+      "action": "土壌の水分をよく確認し、必要であれば十分に水やりを行い、日当たりの良い場所へ移動させるか、液肥を与えてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c1dc851-a820-8120-949e-ee658b4ced49",
       "date": "2026-08-19",
