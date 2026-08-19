@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-19T19:03:03+09:00",
+  "generated_at": "2026-08-19T23:39:52+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 7,
     "plants_archived": 1,
     "needs_attention": 4,
-    "records_7d": 20,
+    "records_7d": 21,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 42
+    "total_records": 43
   },
   "critical": [
     {
@@ -24,7 +24,7 @@
     {
       "plant": "🍆ナス",
       "level": "期限",
-      "message": "土の乾き具合を指で確認し、乾燥している場合は鉢底から水が流れ出るまでたっぷりと水を与えましょう。"
+      "message": "葉の裏側を確認し、害虫がいる場合は除去し、必要に応じて水やりと葉面散布を行いましょう。"
     }
   ],
   "plants": [
@@ -77,21 +77,21 @@
     },
     {
       "name": "🍆ナス",
-      "record_id": "3c0dc851-a820-81c6-a5a2-d43fb300a3e4",
+      "record_id": "3c1dc851-a820-8120-949e-ee658b4ced49",
       "works": [],
       "phase": "🌿成長中",
       "health": "注意",
       "watering": "必要",
       "harvest": "まだ",
       "status": "未対応",
-      "due": "2026-08-18",
+      "due": "2026-08-19",
       "priority": "🟡中",
-      "last_watered": "2026-08-18",
-      "days_since_water": 1,
-      "last_record": "2026-08-18",
-      "days_since_record": 1,
-      "ai_comment": "ナスは活発に成長する時期なので、十分な水分と栄養が必要です。土の表面が乾き気味で、葉に少し元気がなく見えます。水やりと合わせて、肥料の必要性も検討してください。",
-      "action": "土の乾き具合を指で確認し、乾燥している場合は鉢底から水が流れ出るまでたっぷりと水を与えましょう。",
+      "last_watered": "2026-08-19",
+      "days_since_water": 0,
+      "last_record": "2026-08-19",
+      "days_since_record": 0,
+      "ai_comment": "葉に白い斑点が見られ、害虫の可能性があります。また、一部の葉が縁から変色しており、水分や栄養バランスの確認が必要です。全体的に少し元気がなく見えます。",
+      "action": "葉の裏側を確認し、害虫がいる場合は除去し、必要に応じて水やりと葉面散布を行いましょう。",
       "active": true,
       "flags": [
         "期限",
@@ -215,6 +215,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3c1dc851-a820-8120-949e-ee658b4ced49",
+      "date": "2026-08-19",
+      "created": "2026-08-19T14:39:00",
+      "title": "🍆ナス",
+      "plant": "🍆ナス",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "☀️晴れ",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-19",
+      "last_watered": "2026-08-19",
+      "ai_comment": "葉に白い斑点が見られ、害虫の可能性があります。また、一部の葉が縁から変色しており、水分や栄養バランスの確認が必要です。全体的に少し元気がなく見えます。",
+      "action": "葉の裏側を確認し、害虫がいる場合は除去し、必要に応じて水やりと葉面散布を行いましょう。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c0dc851-a820-8156-93cc-e2cb0bf53749",
       "date": "2026-08-19",
