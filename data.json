@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-19T23:42:18+09:00",
+  "generated_at": "2026-08-19T23:48:15+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 7,
     "plants_archived": 1,
     "needs_attention": 4,
-    "records_7d": 22,
+    "records_7d": 23,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 44
+    "total_records": 45
   },
   "critical": [
     {
@@ -29,7 +29,7 @@
     {
       "plant": "🍆ナス",
       "level": "期限",
-      "message": "葉の裏側を確認し、害虫がいる場合は除去し、必要に応じて水やりと葉面散布を行いましょう。"
+      "message": "鉢底から水が染み出るまでたっぷりと水を与え、土の乾燥具合を毎日確認してください。"
     }
   ],
   "plants": [
@@ -106,7 +106,7 @@
     },
     {
       "name": "🍆ナス",
-      "record_id": "3c1dc851-a820-8120-949e-ee658b4ced49",
+      "record_id": "3c1dc851-a820-815e-bbd7-c3f542eaa7ce",
       "works": [],
       "phase": "🌿成長中",
       "health": "注意",
@@ -119,8 +119,8 @@
       "days_since_water": 0,
       "last_record": "2026-08-19",
       "days_since_record": 0,
-      "ai_comment": "葉に白い斑点が見られ、害虫の可能性があります。また、一部の葉が縁から変色しており、水分や栄養バランスの確認が必要です。全体的に少し元気がなく見えます。",
-      "action": "葉の裏側を確認し、害虫がいる場合は除去し、必要に応じて水やりと葉面散布を行いましょう。",
+      "ai_comment": "土の表面が乾燥しているように見え、葉にわずかなしおれが見られます。ナスは水を好むため、乾燥は生育に影響します。",
+      "action": "鉢底から水が染み出るまでたっぷりと水を与え、土の乾燥具合を毎日確認してください。",
       "active": true,
       "flags": [
         "期限",
@@ -221,6 +221,28 @@
     "🍉すいか"
   ],
   "records": [
+    {
+      "id": "3c1dc851-a820-815e-bbd7-c3f542eaa7ce",
+      "date": "2026-08-19",
+      "created": "2026-08-19T14:47:00",
+      "title": "🍆ナス",
+      "plant": "🍆ナス",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "☀️晴れ",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-19",
+      "last_watered": "2026-08-19",
+      "ai_comment": "土の表面が乾燥しているように見え、葉にわずかなしおれが見られます。ナスは水を好むため、乾燥は生育に影響します。",
+      "action": "鉢底から水が染み出るまでたっぷりと水を与え、土の乾燥具合を毎日確認してください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c1dc851-a820-8193-bcba-fd7515358bd9",
       "date": "2026-08-19",
