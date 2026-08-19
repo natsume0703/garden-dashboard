@@ -112,6 +112,11 @@
     border-bottom:1px dashed currentColor;
   }
   .tally .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  /* 裏で新しい記録に切り替わったことを、数秒だけ知らせる */
+  #fresh{
+    display:none;font-size:12px;letter-spacing:.06em;font-weight:700;color:var(--leaf);
+    border-left:3px solid var(--leaf);padding:7px 0 7px 11px;margin:0 0 14px;
+  }
   .plants.only .card:not(.attn){display:none;}
   .only-note{
     display:none;font-size:11.5px;letter-spacing:.06em;color:var(--warn-deep);
@@ -447,6 +452,7 @@
     <div class="place">埼玉・三郷市<br>12階ベランダ</div>
   </header>
 
+  <div id="fresh">新しい記録が届きました</div>
   <div id="app"><div class="state">Notionのデータを取得しています…</div></div>
   <section id="weather"><h2><span class="t">空のようす</span><em>読み込み中</em></h2><div class="state">天気を取得しています…</div></section>
   <div id="tail"></div>
@@ -963,6 +969,12 @@ function shutView(done, when){
 
 function closeLog(box){
   box.innerHTML = shutView((box.dataset.done || "").split(",").filter(Boolean), box.dataset.when);
+  /* 申告中に届いていたデータがあれば、ここで反映する */
+  if (WAITING && !isBusy()){
+    const d = WAITING; WAITING = null;
+    STAMP = d.generated_at || "";
+    paint(d, true);
+  }
 }
 
 function openLog(box){
@@ -1018,6 +1030,23 @@ let ACTIVE = [];
 let CAL = null;          /* 表示中の年月 */
 let PICKED = null;       /* 選ばれている日 */
 let BOUND = false;       /* 操作の受け取りを一度だけ設定するための印 */
+let ONLY = false;        /* 要対応だけに絞っているかどうか。描き直しても保つ */
+
+/* 絞り込みの状態を画面に反映する。描画のたびに呼ぶ */
+function applyOnly(){
+  const grid = $("#app").querySelector(".plants");
+  if (!grid) return;
+  const n = grid.querySelectorAll(".card.attn").length;
+  const all = grid.querySelectorAll(".card").length;
+  grid.classList.toggle("only", ONLY);
+  const jump = $("#app").querySelector(".jump");
+  if (jump) jump.innerHTML = ONLY ? "すべての株を表示" : `うち<b>${n}</b>株が要対応`;
+  const note = $("#app").querySelector(".only-note");
+  if (note){
+    note.textContent = `要対応の${n}株だけを表示中（栽培中は${all}株）`;
+    note.style.display = ONLY ? "block" : "none";
+  }
+}
 
 function gauge(days, need){
   /* 水やりが要るときは、この行を水の色と滴の記号で示す */
@@ -1204,21 +1233,7 @@ function render(d){
   if (!BOUND) app.addEventListener("click", (ev) => {
     /* 要対応の数を押すと、その株だけに絞る。もう一度押すと元に戻る */
     const jump = ev.target.closest(".jump");
-    if (jump){
-      const grid = app.querySelector(".plants");
-      if (grid){
-        const on = grid.classList.toggle("only");
-        const n = grid.querySelectorAll(".card.attn").length;
-        const all = grid.querySelectorAll(".card").length;
-        jump.innerHTML = on ? "すべての株を表示" : `うち<b>${n}</b>株が要対応`;
-        const note = app.querySelector(".only-note");
-        if (note){
-          note.textContent = `要対応の${n}株だけを表示中（栽培中は${all}株）`;
-          note.style.display = on ? "block" : "none";
-        }
-      }
-      return;
-    }
+    if (jump){ ONLY = !ONLY; applyOnly(); return; }
     const box = ev.target.closest(".log");
     if (!box) return;
     if (ev.target.closest(".open"))   { openLog(box); return; }
@@ -1284,18 +1299,49 @@ function render(d){
   BOUND = true;
 }
 
-async function loadGarden(){
-  $("#app").innerHTML = `<div class="state">Notionのデータを取得しています…</div>`;
+/* ===================== 栽培データの読み込み ===================== */
+/* 30秒ごとに data.json を見に行き、中身が変わっていたら描き直す。
+   撮影の直後にダッシュボードを開いても、待たずに新しい記録へ切り替わる */
+
+let STAMP = "";          /* いま画面に出しているデータの生成時刻 */
+let WAITING = null;      /* 申告の途中で届いたデータを、いったん預かる場所 */
+
+/* 作業を選んでいる最中は描き直さない。選択が消えてしまうため */
+const isBusy = () => !!$("#app").querySelector(".log .pick");
+
+function paint(d, quiet){
+  render(d);
+  applyOnly();
+  if (quiet) flash();
+}
+
+/* 新しい記録が届いたことを、控えめに知らせる */
+function flash(){
+  const el = $("#fresh");
+  if (!el) return;
+  el.style.display = "block";
+  clearTimeout(flash.t);
+  flash.t = setTimeout(() => { el.style.display = "none"; }, 6000);
+}
+
+async function loadGarden(quiet){
+  if (!quiet) $("#app").innerHTML = `<div class="state">Notionのデータを取得しています…</div>`;
   const routes = ["data.json", "https://natsume0703.github.io/garden-dashboard/data.json"];
   let last = "";
   for (const url of routes){
     try {
       const res = await fetch(url + "?t=" + Date.now(), {cache:"no-store"});
       if (!res.ok) throw new Error("HTTP " + res.status);
-      render(await res.json());
+      const d = await res.json();
+      const st = d.generated_at || "";
+      if (quiet && st === STAMP) return;      /* 変わっていなければ触らない */
+      if (quiet && isBusy()){ WAITING = d; return; }  /* 申告中なら預かる */
+      STAMP = st;
+      paint(d, quiet);
       return;
     } catch(e){ last = e.message; }
   }
+  if (quiet) return;                          /* 裏での確認が失敗しても画面は壊さない */
   $("#stamp").textContent = "同期できていません";
   $("#app").innerHTML = `<section><div class="state err"><b>栽培データを読み込めませんでした</b>
     <span>GitHub Actions の同期が一度も成功していない場合は、Actions タブから「Sync Notion to data.json」を実行してください。（${esc(last)}）</span></div></section>`;
@@ -1314,6 +1360,11 @@ $("#reload").addEventListener("click", () => { loadWeather(); loadGarden(); });
 loadWeather();
 loadGarden();
 setInterval(loadWeather, 10 * 60 * 1000);
+
+/* 30秒ごとに新しい記録が届いていないか確認する。
+   画面を見ていないときは止め、戻ってきたらすぐ確認する */
+setInterval(() => { if (!document.hidden) loadGarden(true); }, 30 * 1000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadGarden(true); });
 </script>
 </body>
 </html>
