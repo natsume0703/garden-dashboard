@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-20T00:07:02+09:00",
+  "generated_at": "2026-08-20T00:09:12+09:00",
   "archive_days": 30,
   "stats": {
-    "plants_active": 7,
-    "plants_archived": 1,
-    "needs_attention": 5,
-    "records_7d": 23,
+    "plants_active": 8,
+    "plants_archived": 0,
+    "needs_attention": 6,
+    "records_7d": 24,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 48
+    "total_records": 49
   },
   "critical": [
     {
@@ -20,6 +20,11 @@
       "plant": "🌿大葉",
       "level": "異常",
       "message": "大葉が写っている写真を再度アップロードしてください。"
+    },
+    {
+      "plant": "🍉すいか",
+      "level": "異常",
+      "message": "土の乾燥状態を即座に確認し、根元にたっぷりと水を与えてください。"
     },
     {
       "plant": "🌵子宝草",
@@ -82,6 +87,30 @@
       "active": true,
       "flags": [
         "期限"
+      ],
+      "urgency": 0
+    },
+    {
+      "name": "🍉すいか",
+      "record_id": "3c1dc851-a820-815a-af15-d05cbcedc741",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "異常",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-20",
+      "priority": "🔴高",
+      "last_watered": "2026-08-20",
+      "days_since_water": 0,
+      "last_record": "2026-08-20",
+      "days_since_record": 0,
+      "ai_comment": "最終水やり日が将来の日付となっており、植物が極度の水分不足にある可能性が高いです。早急な対応が求められる緊急状態です。",
+      "action": "土の乾燥状態を即座に確認し、根元にたっぷりと水を与えてください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
       ],
       "urgency": 0
     },
@@ -202,33 +231,31 @@
       "urgency": 5
     }
   ],
-  "archived": [
-    {
-      "name": "🍉すいか",
-      "record_id": "371dc851-a820-81bd-b414-d61f86aee041",
-      "works": [],
-      "phase": null,
-      "health": null,
-      "watering": null,
-      "harvest": null,
-      "status": null,
-      "due": null,
-      "priority": null,
-      "last_watered": "2026-05-31",
-      "days_since_water": 81,
-      "last_record": "2026-05-31",
-      "days_since_record": 81,
-      "ai_comment": "提供された植物名と写真の植物に大きな違いが見受けられます。写真の植物は「すいか」ではなく、「パキラ（Pachira aquatica）」である可能性が非常に高いです。\n\nこのため、「すいか」という情報に基づいた診断は困難ですが、形式に沿って回答いたします。\n\n*   水やり：不要\n*   健康状態：異常\n*   診断コメント：提供された植物名が「すいか」とのことですが、写真の植物は「パキラ」と見受けられます。そのため、「すいか」として正確な水やりや健康状態の診断は困難です。植物名が異なると、適切なケアも大きく変わるため、まずは植物名の再確認をお勧めします。",
-      "action": null,
-      "active": false,
-      "flags": [],
-      "urgency": 5
-    }
-  ],
-  "archived_names": [
-    "🍉すいか"
-  ],
+  "archived": [],
+  "archived_names": [],
   "records": [
+    {
+      "id": "3c1dc851-a820-815a-af15-d05cbcedc741",
+      "date": "2026-08-20",
+      "created": "2026-08-19T15:08:00",
+      "title": "🍉すいか",
+      "plant": "🍉すいか",
+      "phase": "🌿成長中",
+      "health": "異常",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "☀️晴れ",
+      "temp": 26,
+      "priority": "🔴高",
+      "status": "未対応",
+      "due": "2026-08-20",
+      "last_watered": "2026-08-20",
+      "ai_comment": "最終水やり日が将来の日付となっており、植物が極度の水分不足にある可能性が高いです。早急な対応が求められる緊急状態です。",
+      "action": "土の乾燥状態を即座に確認し、根元にたっぷりと水を与えてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c1dc851-a820-819b-9589-ccf355663816",
       "date": "2026-08-20",
