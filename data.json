@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-20T00:11:40+09:00",
+  "generated_at": "2026-08-20T00:12:02+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
     "needs_attention": 6,
     "records_7d": 24,
-    "watering_7d": 2,
+    "watering_7d": 3,
     "harvest_7d": 0,
     "total_records": 49
   },
@@ -175,7 +175,9 @@
     {
       "name": "🍆ナス",
       "record_id": "3c1dc851-a820-815e-bbd7-c3f542eaa7ce",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "phase": "🌿成長中",
       "health": "注意",
       "watering": "必要",
@@ -354,7 +356,9 @@
       "last_watered": "2026-08-19",
       "ai_comment": "土の表面が乾燥しているように見え、葉にわずかなしおれが見られます。ナスは水を好むため、乾燥は生育に影響します。",
       "action": "鉢底から水が染み出るまでたっぷりと水を与え、土の乾燥具合を毎日確認してください。",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "by": null,
       "has_photo": true
     },
