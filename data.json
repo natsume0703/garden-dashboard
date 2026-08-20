@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-20T19:05:52+09:00",
+  "generated_at": "2026-08-20T23:00:29+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
     "needs_attention": 6,
-    "records_7d": 24,
+    "records_7d": 25,
     "watering_7d": 3,
     "harvest_7d": 0,
-    "total_records": 49
+    "total_records": 50
   },
   "critical": [
     {
@@ -223,14 +223,12 @@
     },
     {
       "name": "🌱バジル",
-      "record_id": "3c1dc851-a820-819b-9589-ccf355663816",
-      "works": [
-        "👀観察のみ"
-      ],
-      "phase": "🌿成長中",
-      "health": "良好",
-      "watering": "不要",
-      "harvest": "まだ",
+      "record_id": "3c2dc851-a820-8196-9d42-c33bb6d466eb",
+      "works": [],
+      "phase": null,
+      "health": "判別不能",
+      "watering": null,
+      "harvest": null,
       "status": "対応不要",
       "due": "2026-08-27",
       "priority": "🟢低",
@@ -238,8 +236,8 @@
       "days_since_water": 0,
       "last_record": "2026-08-20",
       "days_since_record": 0,
-      "ai_comment": "バジルは26°Cのほぼ快晴の環境で健全に成長しています。水やりは昨日行われたため、土の湿度を確認しながら次の水やりを検討してください。",
-      "action": "土の表面が乾いたら水やりを行い、定期的に葉の状態を観察しましょう。",
+      "ai_comment": "写真に対象の植物であるバジルが写っていないため、診断できません。写っているのは黒いタワーファンと室内の様子です。",
+      "action": "バジルが写った鮮明な写真を再度アップロードしてください。",
       "active": true,
       "flags": [],
       "urgency": 5
@@ -248,6 +246,28 @@
   "archived": [],
   "archived_names": [],
   "records": [
+    {
+      "id": "3c2dc851-a820-8196-9d42-c33bb6d466eb",
+      "date": "2026-08-20",
+      "created": "2026-08-20T13:59:00",
+      "title": "🌱バジル",
+      "plant": "🌱バジル",
+      "phase": null,
+      "health": "判別不能",
+      "watering": null,
+      "harvest": null,
+      "weather": "🌤くもり",
+      "temp": 26,
+      "priority": "🟢低",
+      "status": "対応不要",
+      "due": "2026-08-27",
+      "last_watered": "2026-08-20",
+      "ai_comment": "写真に対象の植物であるバジルが写っていないため、診断できません。写っているのは黒いタワーファンと室内の様子です。",
+      "action": "バジルが写った鮮明な写真を再度アップロードしてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c1dc851-a820-815a-af15-d05cbcedc741",
       "date": "2026-08-20",
