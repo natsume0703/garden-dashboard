@@ -1,21 +1,16 @@
 {
-  "generated_at": "2026-08-20T23:32:20+09:00",
+  "generated_at": "2026-08-20T23:33:08+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
     "needs_attention": 5,
-    "records_7d": 26,
+    "records_7d": 27,
     "watering_7d": 3,
     "harvest_7d": 0,
-    "total_records": 51
+    "total_records": 52
   },
   "critical": [
-    {
-      "plant": "🌴パキラ",
-      "level": "異常",
-      "message": "枯れた上部の幹は取り除き、鉢底から水が流れ出るまでたっぷりと水を与え、明るい日陰に移動させてください。"
-    },
     {
       "plant": "🌿大葉",
       "level": "異常",
@@ -38,32 +33,6 @@
     }
   ],
   "plants": [
-    {
-      "name": "🌴パキラ",
-      "record_id": "3c1dc851-a820-81d2-9ce0-f700803cd1e1",
-      "works": [
-        "👀観察のみ"
-      ],
-      "phase": "🌿成長中",
-      "health": "異常",
-      "watering": "必要",
-      "harvest": null,
-      "status": "未対応",
-      "due": "2026-08-19",
-      "priority": "🔴高",
-      "last_watered": "2026-08-19",
-      "days_since_water": 1,
-      "last_record": "2026-08-19",
-      "days_since_record": 1,
-      "ai_comment": "パキラの主幹上部が完全に枯れており、非常に危険な状態です。根元から新しい芽が出ていますが、株全体の回復には緊急のケアが必要です。",
-      "action": "枯れた上部の幹は取り除き、鉢底から水が流れ出るまでたっぷりと水を与え、明るい日陰に移動させてください。",
-      "active": true,
-      "flags": [
-        "期限",
-        "水やり"
-      ],
-      "urgency": 0
-    },
     {
       "name": "🌿大葉",
       "record_id": "3c0dc851-a820-81f9-96d5-cba8d4b306c6",
@@ -168,6 +137,29 @@
       "urgency": 1
     },
     {
+      "name": "🌴パキラ",
+      "record_id": "3c2dc851-a820-81bb-b28c-f337388819d6",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "status": "未対応",
+      "due": "2026-08-22",
+      "priority": "🟡中",
+      "last_watered": "2026-08-20",
+      "days_since_water": 0,
+      "last_record": "2026-08-20",
+      "days_since_record": 0,
+      "ai_comment": "株元に枯れ枝が見られ、やや元気がない状態です。上部の葉は健康そうに見えますが、全体的にバランスが崩れています。水やり日が未来の日付となっており、水やりサイクルを見直す必要があります。",
+      "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与え、枯れた枝は剪定して風通しを良くしましょう。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
+    },
+    {
       "name": "🪴ゴムの木",
       "record_id": "3b8dc851-a820-81fd-a3ba-c1106b97377e",
       "works": [
@@ -236,6 +228,28 @@
   "archived": [],
   "archived_names": [],
   "records": [
+    {
+      "id": "3c2dc851-a820-81bb-b28c-f337388819d6",
+      "date": "2026-08-20",
+      "created": "2026-08-20T14:32:00",
+      "title": "🌴パキラ",
+      "plant": "🌴パキラ",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "weather": "🌤くもり",
+      "temp": 26,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-22",
+      "last_watered": "2026-08-20",
+      "ai_comment": "株元に枯れ枝が見られ、やや元気がない状態です。上部の葉は健康そうに見えますが、全体的にバランスが崩れています。水やり日が未来の日付となっており、水やりサイクルを見直す必要があります。",
+      "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与え、枯れた枝は剪定して風通しを良くしましょう。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c2dc851-a820-81c8-9d41-ef9cb0c6ba72",
       "date": "2026-08-20",
