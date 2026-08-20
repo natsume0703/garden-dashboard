@@ -955,6 +955,8 @@ const WORKS = ["💧水やり", "🧺収穫", "✂️剪定", "🌱追肥", "�
 
 function logBox(p){
   if (!p.record_id) return "";
+  /* 判別不能は撮り直しが先。記録すべき作業がないので申告欄は出さない */
+  if (p.health === "判別不能") return "";
   const done = (p.works || []);
   return `<div class="log" data-id="${esc(p.record_id)}" data-plant="${esc(p.name)}"
     data-when="${esc(p.last_record || "")}"
