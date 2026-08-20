@@ -150,6 +150,8 @@
   .card.s良好{border-left-color:var(--leaf);}
   .card.s注意{border-left-color:var(--warn);}
   .card.s異常{border-left-color:var(--alert);}
+  /* 判別不能は「撮り直せば分かる」状態。異常や注意より軽く、灰緑で置く */
+  .card.s判別不能{border-left-color:var(--ink-soft);}
   .card.u0,.card.u1{background:#FEFAF9;}
   .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .card .nm{font-size:16px;font-weight:700;letter-spacing:.04em;}
@@ -164,6 +166,7 @@
   .badge.良好{background:var(--leaf);}
   .badge.注意{background:var(--warn-deep);}
   .badge.異常{background:var(--alert);}
+  .badge.判別不能{background:var(--ink-soft);}
   /* 右上のならび。対応済みの印は札の左に置く */
   .marks{display:flex;align-items:center;gap:6px;flex-shrink:0;}
   .done-chip{
@@ -182,6 +185,7 @@
   }
   .why .ic{width:13px;height:13px;flex-shrink:0;margin-top:2px;}
   .why.bad{color:var(--alert);}
+  .why.cam{color:var(--ink-soft);}
   .gauge{margin:12px 0 13px;}
   .gauge .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-bottom:6px;}
   .gauge .row .val{color:var(--ink);font-weight:700;}
@@ -365,6 +369,7 @@
   .pill.異常{color:#fff;background:var(--alert);}
   .pill.異常 .ic{color:#fff;}
   .pill.unknown{color:var(--ink-soft);background:var(--line);}
+  .pill.判別不能{color:var(--ink-soft);background:var(--line);}
   .past .r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dotted var(--line);font-size:13px;}
   .past .r:last-child{border-bottom:none;}
   .past .r span{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
@@ -509,6 +514,7 @@ const ICONS = {
   dish:     `<circle cx="10.5" cy="12" r="7.5"/><circle cx="10.5" cy="12" r="4"/><path d="M20.5 4.5v15"/><path d="M20.5 4.5c-1.6 1-1.6 4.5 0 5.5"/>`,
   pot:      `<path d="M5 10.5h14l-1.4 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8Z"/><path d="M12 10.5V7"/><path d="M12 8.6C9.6 8.6 8 7 8 4.6c2.4 0 4 1.6 4 4Z"/><path d="M12.6 8c0-2 1.4-3.4 3.6-3.4 0 2-1.4 3.4-3.6 3.4Z"/>`,
   bulb:     `<path d="M9 17.5h6"/><path d="M9.8 20.5h4.4"/><path d="M12 3.5a6 6 0 0 0-3.4 10.9c.5.4.8 1 .8 1.6h5.2c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3.5Z"/>`,
+  cam:      `<path d="M3.5 8.2h3.2l1.6-2.4h7.4l1.6 2.4h3.2v11H3.5Z"/><circle cx="12" cy="13.4" r="3.6"/>`,
   drop:     `<path d="M12 3.6c3.4 4 5.4 6.7 5.4 9.3a5.4 5.4 0 0 1-10.8 0c0-2.6 2-5.3 5.4-9.3Z"/>`,
   /* 状態を表す記号。色が見分けにくくても形で判別できる */
   ok:       `<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>`,
@@ -1074,7 +1080,8 @@ function todayStr(){
   return `${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
 }
 
-/* 要対応の理由。急ぎの重い順に並べる */
+/* 要対応の理由。急ぎの重い順に並べる。
+   判別不能は「撮り直せば分かる」だけなので、要対応には数えず案内だけ出す */
 function reasons(p){
   const r = [];
   const ts = todayStr();
@@ -1088,8 +1095,8 @@ function reasons(p){
   if (p.health === "注意") r.push("状態が注意です");
   return r.map(x => x === "today" ? "今日が対応期限です" : x);
 }
-const hc = (h) => ["良好","注意","異常"].includes(h) ? h : "unknown";
-const HICON = {良好:"good", 注意:"warn", 異常:"bad", unknown:"q"};
+const hc = (h) => ["良好","注意","異常","判別不能"].includes(h) ? h : "unknown";
+const HICON = {良好:"good", 注意:"warn", 異常:"bad", 判別不能:"cam", unknown:"q"};
 /* 状態の札。色と記号の両方で示す */
 const badge = (h) => `<span class="badge ${hc(h)}">${icon(HICON[hc(h)])}${esc(h || "未判定")}</span>`;
 const pill  = (h) => `<span class="pill ${hc(h)}">${icon(HICON[hc(h)])}${esc(h)}</span>`;
@@ -1208,9 +1215,12 @@ function render(d){
     h += `<div class="only-note${anyBad ? " bad" : ""}"></div><div class="plants">`;
     pl.forEach(p => {
       const rs = reasons(p);
-      const why = rs.length
-        ? `<div class="why ${p.health === "異常" ? "bad" : ""}">${icon(p.health === "異常" ? "bad" : "warn")}<span>${esc(rs.join("・"))}</span></div>`
-        : "";
+      const cam = p.health === "判別不能";
+      const why = cam
+        ? `<div class="why cam">${icon("cam")}<span>写真を撮り直してください</span></div>`
+        : (rs.length
+          ? `<div class="why ${p.health === "異常" ? "bad" : ""}">${icon(p.health === "異常" ? "bad" : "warn")}<span>${esc(rs.join("・"))}</span></div>`
+          : "");
       h += `<div class="card u${p.urgency ?? 5} s${hc(p.health)}${rs.length ? " attn" : ""}${(p.works || []).length ? " logged" : ""}">
         <div class="top">
           <div><div class="nm">${esc(p.name)}</div><div class="phase">${esc(p.phase || "フェーズ未設定")}</div></div>
