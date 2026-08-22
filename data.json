@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-22T15:34:34+09:00",
+  "generated_at": "2026-08-22T15:35:18+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
-    "needs_attention": 5,
-    "records_7d": 30,
+    "needs_attention": 4,
+    "records_7d": 31,
     "watering_7d": 3,
     "harvest_7d": 0,
-    "total_records": 55
+    "total_records": 56
   },
   "critical": [
     {
@@ -20,11 +20,6 @@
       "plant": "🌴パキラ",
       "level": "期限",
       "message": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与え、枯れた枝は剪定して風通しを良くしましょう。"
-    },
-    {
-      "plant": "🌵子宝草",
-      "level": "期限",
-      "message": "土が乾燥しているので、鉢底から水が流れ出るまでたっぷりと水を与えてください。"
     },
     {
       "plant": "🍆ナス",
@@ -81,32 +76,6 @@
       "days_since_record": 2,
       "ai_comment": "株元に枯れ枝が見られ、やや元気がない状態です。上部の葉は健康そうに見えますが、全体的にバランスが崩れています。水やり日が未来の日付となっており、水やりサイクルを見直す必要があります。",
       "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与え、枯れた枝は剪定して風通しを良くしましょう。",
-      "active": true,
-      "flags": [
-        "期限",
-        "水やり"
-      ],
-      "urgency": 1
-    },
-    {
-      "name": "🌵子宝草",
-      "record_id": "3c0dc851-a820-8156-93cc-e2cb0bf53749",
-      "works": [
-        "💧水やり"
-      ],
-      "phase": "🌿成長中",
-      "health": "良好",
-      "watering": "必要",
-      "harvest": null,
-      "status": "未対応",
-      "due": "2026-08-19",
-      "priority": "🟡中",
-      "last_watered": "2026-08-19",
-      "days_since_water": 3,
-      "last_record": "2026-08-19",
-      "days_since_record": 3,
-      "ai_comment": "子宝草は全体的に非常に健康で、葉の縁にはたくさんの子株が元気に育っています。これは生育が順調に進んでいる良い兆候です。現在の土の状態は乾燥しているようですので、水やりを検討してください。",
-      "action": "土が乾燥しているので、鉢底から水が流れ出るまでたっぷりと水を与えてください。",
       "active": true,
       "flags": [
         "期限",
@@ -205,6 +174,27 @@
       "urgency": 5
     },
     {
+      "name": "🌵子宝草",
+      "record_id": "3c4dc851-a820-8170-9d61-fe1c93f23c7d",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "良好",
+      "watering": "不要",
+      "harvest": null,
+      "status": "対応不要",
+      "due": "2026-08-29",
+      "priority": "🟢低",
+      "last_watered": "2026-08-22",
+      "days_since_water": 0,
+      "last_record": "2026-08-22",
+      "days_since_record": 0,
+      "ai_comment": "子宝草は非常に健康な状態です。葉は肉厚で鮮やかな緑色をしており、縁には特徴的な子株がたくさんついていて、順調に成長していることがわかります。特に心配な点はありません。",
+      "action": "土の表面が乾いてから数日後に水やりを行い、乾燥気味に管理してください。",
+      "active": true,
+      "flags": [],
+      "urgency": 5
+    },
+    {
       "name": "🍅トマト",
       "record_id": "3c2dc851-a820-81c8-9d41-ef9cb0c6ba72",
       "works": [],
@@ -229,6 +219,28 @@
   "archived": [],
   "archived_names": [],
   "records": [
+    {
+      "id": "3c4dc851-a820-8170-9d61-fe1c93f23c7d",
+      "date": "2026-08-22",
+      "created": "2026-08-22T06:35:00",
+      "title": "🌵子宝草",
+      "plant": "🌵子宝草",
+      "phase": "🌿成長中",
+      "health": "良好",
+      "watering": "不要",
+      "harvest": null,
+      "weather": "🌤くもり",
+      "temp": 30,
+      "priority": "🟢低",
+      "status": "対応不要",
+      "due": "2026-08-29",
+      "last_watered": "2026-08-22",
+      "ai_comment": "子宝草は非常に健康な状態です。葉は肉厚で鮮やかな緑色をしており、縁には特徴的な子株がたくさんついていて、順調に成長していることがわかります。特に心配な点はありません。",
+      "action": "土の表面が乾いてから数日後に水やりを行い、乾燥気味に管理してください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c4dc851-a820-816b-8fbc-cfecbcf19ae5",
       "date": "2026-08-22",
