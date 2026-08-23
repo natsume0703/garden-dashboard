@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-23T18:55:13+09:00",
+  "generated_at": "2026-08-23T20:57:21+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
     "needs_attention": 6,
     "records_7d": 35,
-    "watering_7d": 3,
+    "watering_7d": 4,
     "harvest_7d": 0,
     "total_records": 60
   },
@@ -72,7 +72,9 @@
     {
       "name": "🌴パキラ",
       "record_id": "3c2dc851-a820-81bb-b28c-f337388819d6",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "phase": "🌿成長中",
       "health": "注意",
       "watering": "必要",
@@ -80,8 +82,8 @@
       "status": "未対応",
       "due": "2026-08-22",
       "priority": "🟡中",
-      "last_watered": "2026-08-20",
-      "days_since_water": 3,
+      "last_watered": "2026-08-23",
+      "days_since_water": 0,
       "last_record": "2026-08-20",
       "days_since_record": 3,
       "ai_comment": "株元に枯れ枝が見られ、やや元気がない状態です。上部の葉は健康そうに見えますが、全体的にバランスが崩れています。水やり日が未来の日付となっており、水やりサイクルを見直す必要があります。",
@@ -425,10 +427,12 @@
       "priority": "🟡中",
       "status": "未対応",
       "due": "2026-08-22",
-      "last_watered": "2026-08-20",
+      "last_watered": "2026-08-23",
       "ai_comment": "株元に枯れ枝が見られ、やや元気がない状態です。上部の葉は健康そうに見えますが、全体的にバランスが崩れています。水やり日が未来の日付となっており、水やりサイクルを見直す必要があります。",
       "action": "土の表面が乾いていたら、鉢底から水が流れ出るまでたっぷりと水を与え、枯れた枝は剪定して風通しを良くしましょう。",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "by": null,
       "has_photo": true
     },
