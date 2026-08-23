@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-23T13:57:04+09:00",
+  "generated_at": "2026-08-23T17:50:39+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
-    "needs_attention": 5,
-    "records_7d": 33,
+    "needs_attention": 6,
+    "records_7d": 34,
     "watering_7d": 3,
     "harvest_7d": 0,
-    "total_records": 58
+    "total_records": 59
   },
   "critical": [
     {
@@ -30,6 +30,11 @@
       "plant": "🍅トマト",
       "level": "期限",
       "message": "鉢底から水が流れ出るまで、たっぷりと水を与えてください。"
+    },
+    {
+      "plant": "🍆ナス",
+      "level": "期限",
+      "message": "土が乾いているようであれば、鉢底から水が流れ出るまでたっぷりと水を与えてください。"
     },
     {
       "plant": "🪴ゴムの木",
@@ -136,6 +141,30 @@
       "urgency": 1
     },
     {
+      "name": "🍆ナス",
+      "record_id": "3c5dc851-a820-81da-9afa-d478672e2061",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "status": "未対応",
+      "due": "2026-08-23",
+      "priority": "🟡中",
+      "last_watered": "2026-08-23",
+      "days_since_water": 0,
+      "last_record": "2026-08-23",
+      "days_since_record": 0,
+      "ai_comment": "ナスの葉が全体的に少し垂れており、土の表面も乾いて見えるため、水分不足の可能性があります。大きな病害虫の兆候は見られず、植物自体は健康そうに見えますが、このまま放置すると生育に影響が出る恐れがあります。",
+      "action": "土が乾いているようであれば、鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "active": true,
+      "flags": [
+        "期限",
+        "水やり"
+      ],
+      "urgency": 1
+    },
+    {
       "name": "🪴ゴムの木",
       "record_id": "3c4dc851-a820-816b-8fbc-cfecbcf19ae5",
       "works": [],
@@ -200,32 +229,33 @@
       "active": true,
       "flags": [],
       "urgency": 5
-    },
-    {
-      "name": "🍆ナス",
-      "record_id": "3c4dc851-a820-8164-b121-df15d29f50bb",
-      "works": [],
-      "phase": "🌿成長中",
-      "health": "良好",
-      "watering": "不要",
-      "harvest": "まだ",
-      "status": "対応不要",
-      "due": "2026-08-29",
-      "priority": "🟢低",
-      "last_watered": "2026-08-22",
-      "days_since_water": 1,
-      "last_record": "2026-08-22",
-      "days_since_record": 1,
-      "ai_comment": "ナスは全体的に葉色が濃く、元気な状態に見えます。特に病害虫の兆候や水不足のサインは見られません。このまま健康な成長を続けられるでしょう。",
-      "action": "特に緊急な手入れは不要です。継続して健康な成長を見守りましょう。",
-      "active": true,
-      "flags": [],
-      "urgency": 5
     }
   ],
   "archived": [],
   "archived_names": [],
   "records": [
+    {
+      "id": "3c5dc851-a820-81da-9afa-d478672e2061",
+      "date": "2026-08-23",
+      "created": "2026-08-23T08:50:00",
+      "title": "🍆ナス",
+      "plant": "🍆ナス",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": "まだ",
+      "weather": "🌤くもり",
+      "temp": 29,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-08-23",
+      "last_watered": "2026-08-23",
+      "ai_comment": "ナスの葉が全体的に少し垂れており、土の表面も乾いて見えるため、水分不足の可能性があります。大きな病害虫の兆候は見られず、植物自体は健康そうに見えますが、このまま放置すると生育に影響が出る恐れがあります。",
+      "action": "土が乾いているようであれば、鉢底から水が流れ出るまでたっぷりと水を与えてください。",
+      "works": [],
+      "by": null,
+      "has_photo": true
+    },
     {
       "id": "3c4dc851-a820-8164-b121-df15d29f50bb",
       "date": "2026-08-22",
