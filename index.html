@@ -139,6 +139,26 @@
   .critical h3{margin:0 0 6px;font-size:11.5px;letter-spacing:.14em;color:var(--alert);font-weight:700;}
   .critical p{margin:0 0 4px;font-size:13.5px;line-height:1.7;}
   .critical p:last-child{margin-bottom:0;}
+  /* 文と「確認した」を左右に置く。文が何行になってもボタンは行の頭に留まる */
+  .critical .line{display:flex;align-items:flex-start;gap:14px;margin:0 0 7px;}
+  .critical .line:last-child{margin-bottom:0;}
+  .critical .line p{flex:1 1 auto;margin:0;}
+  .critical .rsn{font-weight:700;}
+  /* 記録の進捗にあたる操作なので、異常の煉瓦色ではなく墨色で示す */
+  .critical .seen{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+    font:inherit;font-size:12px;line-height:1.5;padding:4px 11px;cursor:pointer;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);
+  }
+  .critical .seen .ic{width:12px;height:12px;color:currentColor;}
+  .critical .seen:hover{background:var(--ink);color:#FBEFED;}
+  .critical .seen[disabled]{opacity:.45;cursor:default;}
+  .critical .more{margin:9px 0 0;font-size:12.5px;color:var(--ink-soft);}
+  /* 狭い幅では左右に置けないので、ボタンを次の行へ回す */
+  @media(max-width:520px){
+    .critical .line{flex-wrap:wrap;gap:6px;}
+    .critical .line p{flex:1 1 100%;}
+  }
 
   /* ---------- 株カード ---------- */
   .plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:var(--card);border:1px solid var(--line);margin-top:12px;}
@@ -953,6 +973,11 @@ async function loadWeather(){
 const HOOK = "https://hook.us2.make.com/p985gwt6eq9wgqhcvadd9a9v9ih1i5da";
 const WORKS = ["💧水やり", "🧺収穫", "✂️剪定", "🌱追肥", "👀観察のみ"];
 
+/* 「すぐに確認してください」で確認した記録。
+   Notion → GitHub の反映には少し時間がかかるので、その間の再描画で
+   消したはずの行が戻ってこないよう、こちらで覚えておく */
+const SEEN = new Set();
+
 function logBox(p){
   if (!p.record_id) return "";
   /* 判別不能は撮り直しが先。記録すべき作業がないので申告欄は出さない */
@@ -960,6 +985,7 @@ function logBox(p){
   const done = (p.works || []);
   return `<div class="log" data-id="${esc(p.record_id)}" data-plant="${esc(p.name)}"
     data-when="${esc(p.last_record || "")}"
+    data-status="${esc(p.status || "")}" data-water="${esc(p.last_watered || "")}"
     data-done="${esc(done.join(","))}">${shutView(done, p.last_record)}</div>`;
 }
 
@@ -1022,6 +1048,9 @@ async function sendLog(box){
         record_id: box.dataset.id,
         plant: box.dataset.plant,
         works: chosen.join(","),
+        /* 送らないとNotion側が空になるため、変えない値もそのまま送り返す */
+        status: box.dataset.status || "未対応",
+        last_watered: box.dataset.water || "",
       }),
     });
     box.dataset.done = chosen.join(",");
@@ -1034,6 +1063,36 @@ async function sendLog(box){
     msg.className = "msg ng";
     msg.textContent = "送信できませんでした。通信を確認してください。";
     send.disabled = false;
+  }
+}
+
+/* 「すぐに確認してください」の行を確認済みにする。
+   Notionの対応ステータスを「対応不要」に変えるだけで、株のカードは今までどおり残る */
+async function sendSeen(btn){
+  const id = btn.dataset.id;
+  btn.disabled = true;
+  try {
+    await fetch(HOOK, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        record_id: id,
+        plant: btn.dataset.plant,
+        status: "対応不要",
+        /* 作業と水やりの記録は変えない。現状をそのまま送り返す */
+        works: btn.dataset.works || "",
+        last_watered: btn.dataset.water || "",
+      }),
+    });
+    SEEN.add(id);
+    const line = btn.closest(".line");
+    if (line) line.remove();
+    /* 行が全部なくなったら、欄ごと閉じる */
+    const box = $("#app").querySelector(".critical");
+    if (box && !box.querySelector(".line")) box.remove();
+  } catch(e) {
+    btn.disabled = false;
   }
 }
 
@@ -1203,10 +1262,25 @@ function render(d){
       <span>通算<b>${s.total_records ?? 0}</b>件</span>
     </div>`;
 
-  const cr = d.critical || [];
+  /* 「確認した」を押した行は、Notionの反映が届くまでの間だけ画面から伏せておく */
+  const cr = (d.critical || []).filter(c => !SEEN.has(c.record_id));
   if (cr.length){
     h += `<div class="critical"><h3>すぐに確認してください</h3>`;
-    cr.forEach(c => { h += `<p><b>${esc(c.plant)}</b>　${esc(c.message)}</p>`; });
+    cr.forEach(c => {
+      /* 古い data.json には why が無いので、その場合は従来の文をそのまま使う */
+      const body = c.why
+        ? `<span class="rsn">${esc(c.why)}</span>${esc(c.action || "")}`
+        : esc(c.message || "");
+      const seen = c.record_id
+        ? `<button class="seen" type="button" data-id="${esc(c.record_id)}"
+             data-plant="${esc(c.plant)}" data-works="${esc((c.works || []).join(","))}"
+             data-water="${esc(c.last_watered || "")}">${icon("ok")}確認した</button>`
+        : "";
+      h += `<div class="line"><p><b>${esc(c.plant)}</b>　${body}</p>${seen}</div>`;
+    });
+    if (d.critical_more > 0){
+      h += `<p class="more">ほか${d.critical_more}株にも対応が必要です。下の一覧をご覧ください。</p>`;
+    }
     h += `</div>`;
   }
 
@@ -1251,6 +1325,8 @@ function render(d){
     /* 要対応の数を押すと、その株だけに絞る。もう一度押すと元に戻る */
     const jump = ev.target.closest(".jump");
     if (jump){ ONLY = !ONLY; applyOnly(); return; }
+    const seen = ev.target.closest(".critical .seen");
+    if (seen){ sendSeen(seen); return; }
     const box = ev.target.closest(".log");
     if (!box) return;
     if (ev.target.closest(".open"))   { openLog(box); return; }
