@@ -9,6 +9,7 @@ Notion「📋 栽培記録」DB → data.json 生成スクリプト
   OUTPUT_PATH         出力先（省略時 data.json）
   RECORD_LIMIT        recordsに含める件数（省略時 60）
   ARCHIVE_DAYS        この日数以上記録がない株を「過去の株」とする（省略時 30）
+  CRITICAL_LIMIT      「すぐに確認してください」に並べる上限件数（省略時 3）
 
 依存ライブラリなし（標準ライブラリのみ）
 """
@@ -27,6 +28,7 @@ DATABASE_ID = os.environ.get("NOTION_DATABASE_ID", "").strip()
 OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data.json")
 RECORD_LIMIT = int(os.environ.get("RECORD_LIMIT", "60"))
 ARCHIVE_DAYS = int(os.environ.get("ARCHIVE_DAYS", "30"))
+CRITICAL_LIMIT = int(os.environ.get("CRITICAL_LIMIT", "3"))
 
 NOTION_VERSION = "2022-06-28"
 API_URL = "https://api.notion.com/v1/databases/{}/query"
@@ -293,21 +295,46 @@ def build_output(records):
         "total_records": len(records),
     }
 
-    # --- 最上部に出す重大な報せ（異常・期限切れのみ） ------------------------
-    critical = [
-        {
+    # --- 最上部に出す重大な報せ ---------------------------------------------
+    #   載せる条件は「異常、または対応期限が来ている」かつ「まだ未対応」。
+    #   ダッシュボードで「確認した」を押すと対応ステータスが「対応不要」になり、
+    #   この欄から外れる。カード自体は今までどおり残る。
+    def critical_line(p):
+        if p["health"] == "異常":
+            level = "異常"
+            why = "健康状態が「異常」と判定されています。"
+        else:
+            level = "期限"
+            d = to_date(p["due"])
+            if d and d < today:
+                why = "対応期限（{}）を過ぎています。".format(p["due"])
+            else:
+                why = "対応期限は今日です。"
+        action = (p["action"] or "").strip()
+        return {
             "plant": p["name"],
-            "level": "異常" if p["health"] == "異常" else "期限",
-            "message": p["action"] or "対応期限（{}）を過ぎています".format(p["due"]),
+            "record_id": p.get("record_id"),
+            "level": level,
+            "why": why,
+            "action": action,
+            # 「確認した」を押したとき、これらを送り返して現状を保つ
+            # （送らないとNotion側で空になってしまう）
+            "works": p["works"] or [],
+            "last_watered": p["last_watered"] or "",
+            # 旧い画面でも読めるように、理由と提案をつないだ文も残す
+            "message": (why + action).strip(),
         }
-        for p in active if p["urgency"] <= 1
-    ]
+
+    urgent = [p for p in active if p["urgency"] <= 1 and p["status"] == "未対応"]
+    critical = [critical_line(p) for p in urgent[:CRITICAL_LIMIT]]
+    critical_more = max(0, len(urgent) - CRITICAL_LIMIT)
 
     return {
         "generated_at": datetime.now(JST).isoformat(timespec="seconds"),
         "archive_days": ARCHIVE_DAYS,
         "stats": stats,
         "critical": critical,
+        "critical_more": critical_more,
         "plants": active,
         "archived": archived,
         "archived_names": archived_names,
