@@ -139,10 +139,15 @@
   .critical h3{margin:0 0 6px;font-size:11.5px;letter-spacing:.14em;color:var(--alert);font-weight:700;}
   .critical p{margin:0 0 4px;font-size:13.5px;line-height:1.7;}
   .critical p:last-child{margin-bottom:0;}
-  /* 文と「確認した」を左右に置く。文が何行になってもボタンは行の頭に留まる */
-  .critical .line{display:flex;align-items:flex-start;gap:14px;margin:0 0 7px;}
-  .critical .line:last-child{margin-bottom:0;}
-  .critical .line p{flex:1 1 auto;margin:0;}
+  /* 株名・本文・ボタンを3つの列に分ける。
+     こうすると折り返した2行目が、1行目の本文の頭（「健」「対」）に揃う */
+  .critical .line{
+    display:grid;grid-template-columns:max-content 1fr max-content;
+    align-items:start;column-gap:14px;margin:0 0 7px;
+  }
+  .critical .line:last-of-type{margin-bottom:0;}
+  .critical .line p{margin:0;}
+  .critical .line .nm{font-weight:700;white-space:nowrap;line-height:1.7;}
   .critical .rsn{font-weight:700;}
   /* 記録の進捗にあたる操作なので、異常の煉瓦色ではなく墨色で示す */
   .critical .seen{
@@ -154,10 +159,11 @@
   .critical .seen:hover{background:var(--ink);color:#FBEFED;}
   .critical .seen[disabled]{opacity:.45;cursor:default;}
   .critical .more{margin:9px 0 0;font-size:12.5px;color:var(--ink-soft);}
-  /* 狭い幅では左右に置けないので、ボタンを次の行へ回す */
+  /* 狭い幅では左右に置けないので、ボタンを本文の下へ回す。
+     このときも本文の頭に揃えて、ぶら下がりを崩さない */
   @media(max-width:520px){
-    .critical .line{flex-wrap:wrap;gap:6px;}
-    .critical .line p{flex:1 1 100%;}
+    .critical .line{grid-template-columns:max-content 1fr;column-gap:10px;row-gap:7px;}
+    .critical .line .seen{grid-column:2;justify-self:start;}
   }
 
   /* ---------- 株カード ---------- */
@@ -1275,8 +1281,8 @@ function render(d){
         ? `<button class="seen" type="button" data-id="${esc(c.record_id)}"
              data-plant="${esc(c.plant)}" data-works="${esc((c.works || []).join(","))}"
              data-water="${esc(c.last_watered || "")}">${icon("ok")}確認した</button>`
-        : "";
-      h += `<div class="line"><p><b>${esc(c.plant)}</b>　${body}</p>${seen}</div>`;
+        : `<span></span>`;
+      h += `<div class="line"><b class="nm">${esc(c.plant)}</b><p>${body}</p>${seen}</div>`;
     });
     if (d.critical_more > 0){
       h += `<p class="more">ほか${d.critical_more}株にも対応が必要です。下の一覧をご覧ください。</p>`;
