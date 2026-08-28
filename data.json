@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29T08:07:21+09:00",
+  "generated_at": "2026-08-29T08:12:27+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
@@ -11,16 +11,6 @@
     "total_records": 65
   },
   "critical": [
-    {
-      "plant": "🌴パキラ",
-      "record_id": "3c5dc851-a820-8154-abf9-cde6dacaff76",
-      "level": "期限",
-      "why": "対応期限（2026-08-24）を過ぎています。",
-      "action": "株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。",
-      "works": [],
-      "last_watered": "",
-      "message": "対応期限（2026-08-24）を過ぎています。株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。"
-    },
     {
       "plant": "🌿大葉",
       "record_id": "3c2dc851-a820-81b5-bbc4-c38b59804e3a",
@@ -103,30 +93,6 @@
       "urgency": 0
     },
     {
-      "name": "🌴パキラ",
-      "record_id": "3c5dc851-a820-8154-abf9-cde6dacaff76",
-      "works": [],
-      "phase": "🌿成長中",
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "status": "未対応",
-      "due": "2026-08-24",
-      "priority": "🟡中",
-      "last_watered": null,
-      "days_since_water": null,
-      "last_record": "2026-08-23",
-      "days_since_record": 6,
-      "ai_comment": "上部の葉は活発で健康に見えますが、幹の中央部分に枯れた枝や葉が少ない部分が見られます。土の表面は乾燥しているようです。",
-      "action": "株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。",
-      "active": true,
-      "flags": [
-        "期限",
-        "水やり"
-      ],
-      "urgency": 1
-    },
-    {
       "name": "🌿大葉",
       "record_id": "3c2dc851-a820-81b5-bbc4-c38b59804e3a",
       "works": [],
@@ -196,6 +162,29 @@
         "水やり"
       ],
       "urgency": 1
+    },
+    {
+      "name": "🌴パキラ",
+      "record_id": "3c5dc851-a820-8154-abf9-cde6dacaff76",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "status": "対応不要",
+      "due": "2026-08-24",
+      "priority": "🟡中",
+      "last_watered": null,
+      "days_since_water": null,
+      "last_record": "2026-08-23",
+      "days_since_record": 6,
+      "ai_comment": "上部の葉は活発で健康に見えますが、幹の中央部分に枯れた枝や葉が少ない部分が見られます。土の表面は乾燥しているようです。",
+      "action": "株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
     },
     {
       "name": "🌱バジル",
@@ -278,7 +267,7 @@
       "weather": "☀️晴れ",
       "temp": 26,
       "priority": "🟡中",
-      "status": "未対応",
+      "status": "対応不要",
       "due": "2026-08-24",
       "last_watered": null,
       "ai_comment": "上部の葉は活発で健康に見えますが、幹の中央部分に枯れた枝や葉が少ない部分が見られます。土の表面は乾燥しているようです。",
