@@ -1092,11 +1092,16 @@ async function sendSeen(btn){
       }),
     });
     SEEN.add(id);
-    const line = btn.closest(".line");
-    if (line) line.remove();
-    /* 行が全部なくなったら、欄ごと閉じる */
-    const box = $("#app").querySelector(".critical");
-    if (box && !box.querySelector(".line")) box.remove();
+    if (SHOWN && !isBusy()){
+      /* 描き直すと、伏せた分だけ次の株が繰り上がり、件数も数え直される */
+      paint(SHOWN);
+    } else {
+      /* 作業を選んでいる最中は描き直せないので、押した行だけ伏せる */
+      const line = btn.closest(".line");
+      if (line) line.remove();
+      const box = $("#app").querySelector(".critical");
+      if (box && !box.querySelector(".line")) box.remove();
+    }
   } catch(e) {
     btn.disabled = false;
   }
@@ -1268,8 +1273,13 @@ function render(d){
       <span>通算<b>${s.total_records ?? 0}</b>件</span>
     </div>`;
 
-  /* 「確認した」を押した行は、Notionの反映が届くまでの間だけ画面から伏せておく */
-  const cr = (d.critical || []).filter(c => !SEEN.has(c.record_id));
+  /* 「確認した」を押した行は、Notionの反映が届くまでの間だけ画面から伏せておく。
+     残りは伏せたあとに数え直すので、押すとその場で次の株が繰り上がる */
+  const remain = (d.critical || []).filter(c => !SEEN.has(c.record_id));
+  const climit = d.critical_limit || 3;
+  const cr = remain.slice(0, climit);
+  /* critical_more は旧い data.json のための読み替え。新しい版には入っていない */
+  const cmore = (remain.length - cr.length) + (d.critical_more || 0);
   if (cr.length){
     h += `<div class="critical"><h3>すぐに確認してください</h3>`;
     cr.forEach(c => {
@@ -1284,8 +1294,8 @@ function render(d){
         : `<span></span>`;
       h += `<div class="line"><b class="nm">${esc(c.plant)}</b><p>${body}</p>${seen}</div>`;
     });
-    if (d.critical_more > 0){
-      h += `<p class="more">ほか${d.critical_more}株にも対応が必要です。下の一覧をご覧ください。</p>`;
+    if (cmore > 0){
+      h += `<p class="more">ほか${cmore}株にも対応が必要です。下の一覧をご覧ください。</p>`;
     }
     h += `</div>`;
   }
@@ -1403,12 +1413,14 @@ function render(d){
    撮影の直後にダッシュボードを開いても、待たずに新しい記録へ切り替わる */
 
 let STAMP = "";          /* いま画面に出しているデータの生成時刻 */
+let SHOWN = null;        /* いま画面に出しているデータそのもの。描き直しに使う */
 let WAITING = null;      /* 申告の途中で届いたデータを、いったん預かる場所 */
 
 /* 作業を選んでいる最中は描き直さない。選択が消えてしまうため */
 const isBusy = () => !!$("#app").querySelector(".log .pick");
 
 function paint(d, quiet){
+  SHOWN = d;
   render(d);
   applyOnly();
   if (quiet) flash();
