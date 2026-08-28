@@ -9,7 +9,7 @@ Notion「📋 栽培記録」DB → data.json 生成スクリプト
   OUTPUT_PATH         出力先（省略時 data.json）
   RECORD_LIMIT        recordsに含める件数（省略時 60）
   ARCHIVE_DAYS        この日数以上記録がない株を「過去の株」とする（省略時 30）
-  CRITICAL_LIMIT      「すぐに確認してください」に並べる上限件数（省略時 3）
+  CRITICAL_LIMIT      「すぐに確認してください」に一度に並べる件数（省略時 3）
 
 依存ライブラリなし（標準ライブラリのみ）
 """
@@ -325,16 +325,17 @@ def build_output(records):
             "message": (why + action).strip(),
         }
 
+    # 上限は画面側で適用する。表示しきれない分もここに含めて渡すことで、
+    # ダッシュボードで「確認した」を押したとき、その場で次の株を繰り上げられる。
     urgent = [p for p in active if p["urgency"] <= 1 and p["status"] == "未対応"]
-    critical = [critical_line(p) for p in urgent[:CRITICAL_LIMIT]]
-    critical_more = max(0, len(urgent) - CRITICAL_LIMIT)
+    critical = [critical_line(p) for p in urgent]
 
     return {
         "generated_at": datetime.now(JST).isoformat(timespec="seconds"),
         "archive_days": ARCHIVE_DAYS,
         "stats": stats,
         "critical": critical,
-        "critical_more": critical_more,
+        "critical_limit": CRITICAL_LIMIT,
         "plants": active,
         "archived": archived,
         "archived_names": archived_names,
