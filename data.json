@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-31T22:47:15+09:00",
+  "generated_at": "2026-08-31T23:07:35+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
     "plants_archived": 0,
     "needs_attention": 6,
     "records_7d": 2,
-    "watering_7d": 0,
+    "watering_7d": 1,
     "harvest_7d": 0,
     "total_records": 67
   },
@@ -17,7 +17,9 @@
       "level": "異常",
       "why": "健康状態が「異常」と判定されています。",
       "action": "土壌の乾燥状態を確認し、すぐにたっぷりの水を与えてください。",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "last_watered": "",
       "message": "健康状態が「異常」と判定されています。土壌の乾燥状態を確認し、すぐにたっぷりの水を与えてください。"
     },
@@ -57,7 +59,9 @@
     {
       "name": "🍅トマト",
       "record_id": "3cadc851-a820-819f-a9aa-f9dbd6e98dd0",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "phase": "🪦終了",
       "health": "異常",
       "watering": "必要",
@@ -283,7 +287,9 @@
       "last_watered": null,
       "ai_comment": "トマトの株は著しく乾燥しており、ほとんどの葉が枯れています。これは深刻な水不足か、栽培サイクルの終盤にきている可能性があります。現状では非常に弱っています。",
       "action": "土壌の乾燥状態を確認し、すぐにたっぷりの水を与えてください。",
-      "works": [],
+      "works": [
+        "💧水やり"
+      ],
       "by": null,
       "has_photo": true
     },
