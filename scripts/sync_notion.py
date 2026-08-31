@@ -307,7 +307,8 @@ def build_output(records):
             level = "期限"
             d = to_date(p["due"])
             if d and d < today:
-                why = "対応期限（{}）を過ぎています。".format(p["due"])
+                # 2026-08-23 ではなく 2026/8/23 と書く。文章に混ぜたとき読みやすい
+                why = "対応期限（{}/{}/{}）を過ぎています。".format(d.year, d.month, d.day)
             else:
                 why = "対応期限は今日です。"
         action = (p["action"] or "").strip()
