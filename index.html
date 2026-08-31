@@ -1037,6 +1037,13 @@ function openLog(box){
 
 async function sendLog(box){
   const chosen = [...box.querySelectorAll('.pick[aria-pressed="true"]')].map(b => b.dataset.w);
+  /* 最終水やり日は「今日あらたに水やりを選んだとき」だけ更新する。
+     すでに記録済みの水やりを選び直しただけなら、元の日付を保つ。
+     ここで決めた値がそのままNotionに入る（Make.com側では判断しない） */
+  const already = (box.dataset.done || "").split(",").filter(Boolean);
+  const newlyWatered = chosen.some(w => w.includes("水やり"))
+                    && !already.some(w => w.includes("水やり"));
+  const water = newlyWatered ? todayStr() : (box.dataset.water || "");
   const msg = box.querySelector(".msg");
   const send = box.querySelector(".send");
   send.disabled = true;
@@ -1056,9 +1063,10 @@ async function sendLog(box){
         works: chosen.join(","),
         /* 送らないとNotion側が空になるため、変えない値もそのまま送り返す */
         status: box.dataset.status || "未対応",
-        last_watered: box.dataset.water || "",
+        last_watered: water,
       }),
     });
+    box.dataset.water = water;
     box.dataset.done = chosen.join(",");
     /* Notionの反映を待たず、その場でカードの見た目を変える */
     const card = box.closest(".card");
@@ -1086,7 +1094,8 @@ async function sendSeen(btn){
         record_id: id,
         plant: btn.dataset.plant,
         status: "対応不要",
-        /* 作業と水やりの記録は変えない。現状をそのまま送り返す */
+        /* 「確認した」は水をやったという意味ではない。
+           作業と最終水やり日は現状をそのまま送り返し、一切動かさない */
         works: btn.dataset.works || "",
         last_watered: btn.dataset.water || "",
       }),
