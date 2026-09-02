@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T22:11:20+09:00",
+  "generated_at": "2026-09-03T06:10:05+09:00",
   "archive_days": 30,
   "stats": {
     "plants_active": 8,
@@ -22,19 +22,6 @@
       ],
       "last_watered": "",
       "message": "健康状態が「異常」と判定されています。土壌の乾燥状態を確認し、すぐにたっぷりの水を与えてください。"
-    },
-    {
-      "plant": "🌿大葉",
-      "record_id": "3c2dc851-a820-81b5-bbc4-c38b59804e3a",
-      "level": "期限",
-      "why": "対応期限（2026/8/23）を過ぎています。",
-      "action": "枯れた枝は剪定して取り除き、株の風通しと光の当たり方を改善することを検討してください。",
-      "works": [
-        "💧水やり",
-        "🧺収穫"
-      ],
-      "last_watered": "2026-08-31",
-      "message": "対応期限（2026/8/23）を過ぎています。枯れた枝は剪定して取り除き、株の風通しと光の当たり方を改善することを検討してください。"
     },
     {
       "plant": "🍆ナス",
@@ -60,6 +47,29 @@
   "critical_limit": 3,
   "plants": [
     {
+      "name": "🌿大葉",
+      "record_id": "3c0dc851-a820-81f9-96d5-cba8d4b306c6",
+      "works": [
+        "👀観察のみ"
+      ],
+      "phase": "🪦終了",
+      "health": "異常",
+      "watering": "不要",
+      "harvest": null,
+      "status": "対応不要",
+      "due": "2026-08-18",
+      "priority": "🔴高",
+      "last_watered": "2026-08-18",
+      "days_since_water": 16,
+      "last_record": "2026-08-18",
+      "days_since_record": 16,
+      "ai_comment": "画像には植物が写っていません。大葉の診断を行うためには、対象の植物が鮮明に写っている写真が必要です。",
+      "action": "大葉が写っている写真を再度アップロードしてください。",
+      "active": true,
+      "flags": [],
+      "urgency": 0
+    },
+    {
       "name": "🍅トマト",
       "record_id": "3cadc851-a820-819f-a9aa-f9dbd6e98dd0",
       "works": [
@@ -75,7 +85,7 @@
       "last_watered": null,
       "days_since_water": null,
       "last_record": "2026-08-29",
-      "days_since_record": 4,
+      "days_since_record": 5,
       "ai_comment": "トマトの株は著しく乾燥しており、ほとんどの葉が枯れています。これは深刻な水不足か、栽培サイクルの終盤にきている可能性があります。現状では非常に弱っています。",
       "action": "土壌の乾燥状態を確認し、すぐにたっぷりの水を与えてください。",
       "active": true,
@@ -99,9 +109,9 @@
       "due": "2026-08-20",
       "priority": "🔴高",
       "last_watered": "2026-08-26",
-      "days_since_water": 7,
+      "days_since_water": 8,
       "last_record": "2026-08-20",
-      "days_since_record": 13,
+      "days_since_record": 14,
       "ai_comment": "最終水やり日が将来の日付となっており、植物が極度の水分不足にある可能性が高いです。早急な対応が求められる緊急状態です。",
       "action": "土の乾燥状態を即座に確認し、根元にたっぷりと水を与えてください。",
       "active": true,
@@ -109,32 +119,6 @@
         "水やり"
       ],
       "urgency": 0
-    },
-    {
-      "name": "🌿大葉",
-      "record_id": "3c2dc851-a820-81b5-bbc4-c38b59804e3a",
-      "works": [
-        "💧水やり",
-        "🧺収穫"
-      ],
-      "phase": "🌿成長中",
-      "health": "注意",
-      "watering": "不要",
-      "harvest": null,
-      "status": "未対応",
-      "due": "2026-08-23",
-      "priority": "🟡中",
-      "last_watered": "2026-08-31",
-      "days_since_water": 2,
-      "last_record": "2026-08-20",
-      "days_since_record": 13,
-      "ai_comment": "この植物はパキラ（マネーツリー）であり、ご申告の大葉とは異なります。上部には健康な新芽が見られますが、中央部の枝が枯れているようです。株全体の健康を維持するため、定期的な観察が必要です。",
-      "action": "枯れた枝は剪定して取り除き、株の風通しと光の当たり方を改善することを検討してください。",
-      "active": true,
-      "flags": [
-        "期限"
-      ],
-      "urgency": 1
     },
     {
       "name": "🍆ナス",
@@ -150,7 +134,7 @@
       "last_watered": null,
       "days_since_water": null,
       "last_record": "2026-08-29",
-      "days_since_record": 4,
+      "days_since_record": 5,
       "ai_comment": "ナスは元気に成長しており、葉も緑色で健康そうに見えます。しかし、土の表面が乾いているようです。今後の成長のために適切な水やりが必要です。",
       "action": "すぐに水やりをして、土の表面が乾いたら再度水やりをしてください。",
       "active": true,
@@ -172,9 +156,9 @@
       "due": "2026-08-22",
       "priority": "🟡中",
       "last_watered": "2026-08-22",
-      "days_since_water": 11,
+      "days_since_water": 12,
       "last_record": "2026-08-22",
-      "days_since_record": 11,
+      "days_since_record": 12,
       "ai_comment": "ゴムの木は全体的に健康そうに見えます。土の表面が乾いているため、水やりを行いましょう。日当たりの良い環境で元気に育っています。",
       "action": "鉢底から水が流れ出るまでたっぷりと水を与えてください。",
       "active": true,
@@ -198,7 +182,7 @@
       "last_watered": null,
       "days_since_water": null,
       "last_record": "2026-08-23",
-      "days_since_record": 10,
+      "days_since_record": 11,
       "ai_comment": "上部の葉は活発で健康に見えますが、幹の中央部分に枯れた枝や葉が少ない部分が見られます。土の表面は乾燥しているようです。",
       "action": "株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。",
       "active": true,
@@ -219,9 +203,9 @@
       "due": "2026-08-27",
       "priority": "🟢低",
       "last_watered": "2026-08-20",
-      "days_since_water": 13,
+      "days_since_water": 14,
       "last_record": "2026-08-20",
-      "days_since_record": 13,
+      "days_since_record": 14,
       "ai_comment": "写真に対象の植物であるバジルが写っていないため、診断できません。写っているのは黒いタワーファンと室内の様子です。",
       "action": "バジルが写った鮮明な写真を再度アップロードしてください。",
       "active": true,
@@ -240,9 +224,9 @@
       "due": "2026-08-29",
       "priority": "🟢低",
       "last_watered": "2026-08-22",
-      "days_since_water": 11,
+      "days_since_water": 12,
       "last_record": "2026-08-22",
-      "days_since_record": 11,
+      "days_since_record": 12,
       "ai_comment": "子宝草は非常に健康な状態です。葉は肉厚で鮮やかな緑色をしており、縁には特徴的な子株がたくさんついていて、順調に成長していることがわかります。特に心配な点はありません。",
       "action": "土の表面が乾いてから数日後に水やりを行い、乾燥気味に管理してください。",
       "active": true,
@@ -546,7 +530,7 @@
       "date": "2026-08-20",
       "created": "2026-08-20T14:41:00",
       "title": "🌿大葉",
-      "plant": "🌿大葉",
+      "plant": "🌴パキラ",
       "phase": "🌿成長中",
       "health": "注意",
       "watering": "不要",
@@ -556,13 +540,10 @@
       "priority": "🟡中",
       "status": "未対応",
       "due": "2026-08-23",
-      "last_watered": "2026-08-31",
+      "last_watered": null,
       "ai_comment": "この植物はパキラ（マネーツリー）であり、ご申告の大葉とは異なります。上部には健康な新芽が見られますが、中央部の枝が枯れているようです。株全体の健康を維持するため、定期的な観察が必要です。",
       "action": "枯れた枝は剪定して取り除き、株の風通しと光の当たり方を改善することを検討してください。",
-      "works": [
-        "💧水やり",
-        "🧺収穫"
-      ],
+      "works": [],
       "by": null,
       "has_photo": true
     },
@@ -967,7 +948,7 @@
       "weather": "🌤くもり",
       "temp": 26,
       "priority": "🔴高",
-      "status": "未対応",
+      "status": "対応不要",
       "due": "2026-08-18",
       "last_watered": "2026-08-18",
       "ai_comment": "画像には植物が写っていません。大葉の診断を行うためには、対象の植物が鮮明に写っている写真が必要です。",
