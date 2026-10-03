@@ -1,18 +1,42 @@
 {
-  "generated_at": "2026-10-03T09:10:29+09:00",
+  "generated_at": "2026-10-03T09:20:29+09:00",
   "archive_days": 30,
   "stats": {
-    "plants_active": 0,
-    "plants_archived": 8,
-    "needs_attention": 0,
-    "records_7d": 0,
+    "plants_active": 1,
+    "plants_archived": 7,
+    "needs_attention": 1,
+    "records_7d": 1,
     "watering_7d": 0,
     "harvest_7d": 0,
-    "total_records": 67
+    "total_records": 68
   },
   "critical": [],
   "critical_limit": 3,
-  "plants": [],
+  "plants": [
+    {
+      "name": "🌴パキラ",
+      "record_id": "3eedc851-a820-8172-8916-c2fc1f0cb98a",
+      "works": [],
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "status": "未対応",
+      "due": "2026-10-06",
+      "priority": "🟡中",
+      "last_watered": null,
+      "days_since_water": null,
+      "last_record": "2026-10-03",
+      "days_since_record": 0,
+      "ai_comment": "パキラは水耕栽培されており、全体的には健康に見えます。しかし、一部の葉に色が薄い部分があり、水の鮮度や微量栄養素の不足が原因かもしれません。",
+      "action": "週に一度は水を交換し、植物用の液体肥料を規定量より薄めて少量与えてみてください。",
+      "active": true,
+      "flags": [
+        "水やり"
+      ],
+      "urgency": 3
+    }
+  ],
   "archived": [
     {
       "name": "🍆ナス",
@@ -63,29 +87,6 @@
         "水やり"
       ],
       "urgency": 0
-    },
-    {
-      "name": "🌴パキラ",
-      "record_id": "3c5dc851-a820-8154-abf9-cde6dacaff76",
-      "works": [],
-      "phase": "🌿成長中",
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "status": "対応不要",
-      "due": "2026-08-24",
-      "priority": "🟡中",
-      "last_watered": null,
-      "days_since_water": null,
-      "last_record": "2026-08-23",
-      "days_since_record": 41,
-      "ai_comment": "上部の葉は活発で健康に見えますが、幹の中央部分に枯れた枝や葉が少ない部分が見られます。土の表面は乾燥しているようです。",
-      "action": "株元に水をたっぷり与え、鉢底から水が流れ出るのを確認してください。枯れた枝があれば剪定を検討してください。",
-      "active": false,
-      "flags": [
-        "水やり"
-      ],
-      "urgency": 3
     },
     {
       "name": "🌵子宝草",
@@ -205,7 +206,6 @@
   "archived_names": [
     "🍆ナス",
     "🍅トマト",
-    "🌴パキラ",
     "🌵子宝草",
     "🪴ゴムの木",
     "🌱バジル",
@@ -213,6 +213,28 @@
     "🌿大葉"
   ],
   "records": [
+    {
+      "id": "3eedc851-a820-8172-8916-c2fc1f0cb98a",
+      "date": "2026-10-03",
+      "created": "2026-10-03T00:20:00",
+      "title": "🌴パキラ",
+      "plant": "🌴パキラ",
+      "phase": "🌿成長中",
+      "health": "注意",
+      "watering": "必要",
+      "harvest": null,
+      "weather": "☀️晴れ",
+      "temp": 21,
+      "priority": "🟡中",
+      "status": "未対応",
+      "due": "2026-10-06",
+      "last_watered": null,
+      "ai_comment": "パキラは水耕栽培されており、全体的には健康に見えます。しかし、一部の葉に色が薄い部分があり、水の鮮度や微量栄養素の不足が原因かもしれません。",
+      "action": "週に一度は水を交換し、植物用の液体肥料を規定量より薄めて少量与えてみてください。",
+      "works": [],
+      "by": "純",
+      "has_photo": true
+    },
     {
       "id": "3cbdc851-a820-818d-82b8-f5b60b001699",
       "date": "2026-08-29",
@@ -1539,28 +1561,6 @@
         "✂️剪定"
       ],
       "by": "純",
-      "has_photo": true
-    },
-    {
-      "id": "374dc851-a820-81a0-a7dd-de1b56b4ba3b",
-      "date": "2026-06-03",
-      "created": "2026-06-03T13:11:00",
-      "title": "🍆ナス",
-      "plant": "🍆ナス",
-      "phase": null,
-      "health": "注意",
-      "watering": "必要",
-      "harvest": null,
-      "weather": "🌤くもり",
-      "temp": 19,
-      "priority": null,
-      "status": null,
-      "due": null,
-      "last_watered": "2026-06-01",
-      "ai_comment": "ナスの葉に黄化が見られ、土の表面も乾燥しているようです。水分不足や栄養不足の可能性があります。",
-      "action": null,
-      "works": [],
-      "by": null,
       "has_photo": true
     }
   ]
